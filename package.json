@@ -5,8 +5,7 @@
   "description": "My Electron application description",
   "main": ".vite/build/main.js",
   "scripts": {
-    "dev:app": "electron-forge start",
-    "dev:slidev": "npx slidev",
+    "dev": "electron-forge start",
     "package": "electron-forge package",
     "make": "electron-forge make",
     "build": "electron-forge package && electron-forge make",
