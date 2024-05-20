@@ -1,7 +1,7 @@
 import { app, BrowserWindow } from 'electron';
 import path from 'path';
 import squirrelStartup from 'electron-squirrel-startup';
-import child_process from 'node:child_process';
+// import child_process from 'node:child_process';
 /**
  * don't actively support pnpm across many Electron tools
  * https://github.com/electron/forge/issues/2633#issuecomment-1724117216
@@ -37,15 +37,15 @@ const createWindow = () => {
 };
 
 // HACK to create slidev server
-const createServer = () => {
-  child_process.exec('npx slidev', (error, stdout, stderr) => {
-    if (error) {
-      console.error(`exec error: ${error}`);
-      return;
-    }
-    console.log(`stdout: ${stdout}`);
-    console.error(`stderr: ${stderr}`);
-  });
+const createServer = async () => {
+  // child_process.exec('npx slidev', (error, stdout, stderr) => {
+  //   if (error) {
+  //     console.error(`exec error: ${error}`);
+  //     return;
+  //   }
+  //   console.log(`stdout: ${stdout}`);
+  //   console.error(`stderr: ${stderr}`);
+  // });
 };
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.

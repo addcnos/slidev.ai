@@ -6,6 +6,7 @@
   "main": ".vite/build/main.js",
   "scripts": {
     "dev": "electron-forge start",
+    "slidev": "slidev",
     "package": "electron-forge package",
     "make": "electron-forge make",
     "build": "electron-forge package && electron-forge make",
@@ -42,6 +43,7 @@
   "dependencies": {
     "@slidev/cli": "^0.49.2",
     "@slidev/theme-default": "^0.25.0",
+    "@webcontainer/api": "^1.1.9",
     "electron-squirrel-startup": "^1.0.1",
     "vue": "^3.4.27"
   }

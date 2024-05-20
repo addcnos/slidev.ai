@@ -2232,6 +2232,11 @@
   dependencies:
     vue-demi ">=0.14.7"
 
+"@webcontainer/api@^1.1.9":
+  version "1.1.9"
+  resolved "https://npmjs.addcn.com/@webcontainer/api/-/api-1.1.9.tgz#b546bc71f06740975d15c8dbf9b8287f51f92a9b"
+  integrity sha512-Sp6PV0K9D/3f8fSbCubqhfmBFH8XbngZCBOCF+aExyGqnz2etmw+KYvbQ/JxYvYX5KPaSxM+asFQwoP2RHl5cg==
+
 "@xmldom/xmldom@^0.8.8":
   version "0.8.10"
   resolved "https://npmjs.addcn.com/@xmldom/xmldom/-/xmldom-0.8.10.tgz#a1337ca426aa61cef9fe15b5b28e340a72f6fa99"
