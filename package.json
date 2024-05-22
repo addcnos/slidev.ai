@@ -31,8 +31,7 @@
     "eslint-plugin-import": "^2.25.0",
     "sass": "^1.77.2",
     "ts-node": "^10.9.2",
-    "typescript": "~4.5.4",
-    "vite": "^5.2.11"
+    "typescript": "~4.5.4"
   },
   "keywords": [],
   "author": {
@@ -46,6 +45,7 @@
     "@slidev/theme-default": "^0.25.0",
     "@slidev/types": "^0.49.3",
     "electron-squirrel-startup": "^1.0.1",
-    "vue": "^3.4.27"
+    "vue": "^3.4.27",
+    "vite": "^5.2.11"
   }
 }

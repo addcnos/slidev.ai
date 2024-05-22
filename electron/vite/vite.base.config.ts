@@ -1,7 +1,7 @@
 import { builtinModules } from 'node:module';
 import type { AddressInfo } from 'node:net';
 import type { ConfigEnv, Plugin, UserConfig } from 'vite';
-import pkg from './package.json';
+import pkg from '../../package.json';
 
 export const builtins = ['electron', ...builtinModules.map((m) => [m, `node:${m}`]).flat()];
 
@@ -50,7 +50,7 @@ export function getBuildDefine(env: ConfigEnv<'build'>) {
       [VITE_NAME]: JSON.stringify(name),
     };
     return { ...acc, ...def };
-  }, {} as Record<string, any>);
+  }, {} as Record<string, string>);
 
   return define;
 }
@@ -64,7 +64,6 @@ export function pluginExposeRenderer(name: string): Plugin {
       process.viteDevServers ??= {};
       // Expose server for preload scripts hot reload.
       process.viteDevServers[name] = server;
-
       server.httpServer?.once('listening', () => {
         const addressInfo = server.httpServer!.address() as AddressInfo;
         // Expose env constant for main process use.

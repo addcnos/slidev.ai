@@ -1,7 +1,6 @@
 import type { ConfigEnv, UserConfig } from 'vite';
 import { defineConfig, mergeConfig } from 'vite';
 import { getBuildConfig, getBuildDefine, external, pluginHotRestart } from './vite.base.config';
-import SlidevPreBuildPlugin from './slidev.plugin';
 
 // https://vitejs.dev/config
 export default defineConfig((env) => {
@@ -19,7 +18,7 @@ export default defineConfig((env) => {
         external,
       },
     },
-    plugins: [pluginHotRestart('restart'), SlidevPreBuildPlugin()],
+    plugins: [pluginHotRestart('restart')],
     define,
     resolve: {
       // Load the Node.js entry.
