@@ -1,4 +1,3 @@
-
 /**
  * This file will automatically be loaded by vite and run in the "renderer" context.
  * To learn more about the differences between the "main" and the "renderer" context in
@@ -27,8 +26,6 @@
  * ```
  */
 
-import { createApp } from 'vue';
-import App from './App.vue';
+import './index.css';
 
-const app = createApp(App)
-app.mount('#app')
+console.log('👋 This message is being logged by "renderer.ts", included via Vite');

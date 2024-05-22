@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "target": "ESNext",
-    "module": "CommonJS",
+    "module": "commonjs",
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
@@ -9,7 +9,7 @@
     "sourceMap": true,
     "baseUrl": ".",
     "outDir": "dist",
-    "moduleResolution": "Node",
+    "moduleResolution": "node",
     "resolveJsonModule": true
-  }
+  },
 }

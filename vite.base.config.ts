@@ -61,21 +61,14 @@ export function pluginExposeRenderer(name: string): Plugin {
   return {
     name: '@electron-forge/plugin-vite:expose-renderer',
     configureServer(server) {
-      
       process.viteDevServers ??= {};
       // Expose server for preload scripts hot reload.
       process.viteDevServers[name] = server;
-      
+
       server.httpServer?.once('listening', () => {
         const addressInfo = server.httpServer!.address() as AddressInfo;
         // Expose env constant for main process use.
         process.env[VITE_DEV_SERVER_URL] = `http://localhost:${addressInfo?.port}`;
-      });
-      server.middlewares.use((_req, res, next) => {
-        res.setHeader('Cross-Origin-Opener-Policy', 'same-origin');
-        res.setHeader('Cross-Origin-Embedder-Policy', 'require-corp');
-        res.setHeader('Cross-Origin-Resource-Policy', 'cross-origin');
-        next();
       });
     },
   };
