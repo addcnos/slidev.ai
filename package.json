@@ -23,20 +23,20 @@
     "@electron/fuses": "^1.8.0",
     "@rollup/plugin-commonjs": "^25.0.7",
     "@rollup/plugin-node-resolve": "^15.2.3",
-    "@typescript-eslint/eslint-plugin": "^5.0.0",
-    "@typescript-eslint/parser": "^5.0.0",
+    "@typescript-eslint/eslint-plugin": "^7.10.0",
+    "@typescript-eslint/parser": "^7.10.0",
     "@vitejs/plugin-vue": "^5.0.4",
     "electron": "30.0.6",
     "eslint": "^8.0.1",
-    "eslint-plugin-import": "^2.25.0",
+    "eslint-plugin-import": "^2.29.1",
     "sass": "^1.77.2",
     "ts-node": "^10.9.2",
-    "typescript": "~4.5.4"
+    "typescript": "^5.4.5"
   },
   "keywords": [],
   "author": {
-    "name": "zhangmanyi",
-    "email": "zhangmanyi@addcn.com"
+    "name": "ll526e",
+    "email": "ll526e@163.com"
   },
   "license": "MIT",
   "dependencies": {
