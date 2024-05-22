@@ -5,27 +5,31 @@ import path from 'path';
 if (require('electron-squirrel-startup')) {
   app.quit();
 }
+// const isProd = process.env.NODE_ENV === 'production';
 
-const createWindow =  async () => {
+const createWindow = async () => {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
     width: 1440,
     height: 960,
     webPreferences: {
+      nodeIntegration: true,
+      contextIsolation: false,
       preload: path.join(__dirname, 'preload.js'),
     },
   });
-
   // and load the index.html of the app.
   if (MAIN_WINDOW_VITE_DEV_SERVER_URL) {
     mainWindow.loadURL(MAIN_WINDOW_VITE_DEV_SERVER_URL);
   } else {
     mainWindow.loadFile(path.join(__dirname, `../renderer/${MAIN_WINDOW_VITE_NAME}/index.html`));
   }
+  // Open the DevTools.
+  mainWindow.webContents.openDevTools();
   try {
     // Dynamically import the ESM module
     const { createServer, resolveOptions } = await import('@slidev/cli' as unknown as string);
-    const options = await resolveOptions({ entry: path.resolve(process.cwd(), 'slides.md') },'dev');
+    const options = await resolveOptions({ entry: path.resolve(process.cwd(), 'slidev/slides.md') }, 'dev');
     // Start Slidev server
     const server = await createServer(options, {
       server: {
@@ -40,8 +44,7 @@ const createWindow =  async () => {
     console.error('Failed to start Slidev server:', error);
   }
 
-  // Open the DevTools.
-  mainWindow.webContents.openDevTools();
+
 };
 
 // This method will be called when Electron has finished
