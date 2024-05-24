@@ -6,8 +6,9 @@
   "main": ".vite/build/main.js",
   "scripts": {
     "dev": "electron-forge start",
+    "dev:prod": "cross-env NODE_ENV=production electron-forge start",
     "package": "electron-forge package",
-    "make": "DEBUG=electron-packager electron-forge make",
+    "make": "electron-forge make",
     "publish": "electron-forge publish",
     "lint": "eslint --ext .ts,.tsx ."
   },
@@ -32,13 +33,15 @@
     "ts-node": "^10.9.2",
     "typescript": "~4.5.4"
   },
-  "resolutions": {
-    "typescript": "4.5.4",
-    "fs-extra": "10.1.0"
-  },
   "keywords": [],
+  "author": {
+    "name": "Zhang Manyi",
+    "email": "ll526e@163.com"
+  },
   "license": "MIT",
   "dependencies": {
+    "@slidev/cli": "^0.49.3",
+    "@slidev/theme-default": "^0.25.0",
     "electron-squirrel-startup": "^1.0.1",
     "vite": "^5.2.11",
     "vue": "^3.4.27"

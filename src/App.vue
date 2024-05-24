@@ -5,8 +5,12 @@
 </template>
 
 <script setup>
+import { onMounted } from 'vue';
 import SlidevEmbed from './slidev.vue'
-console.log('👋 This message is being logged by "App.vue", included via Vite');
+
+onMounted(() => {
+  console.log('🚀 The Vue app is mounted');
+});
 </script>
 
 <style lang="scss" scoped>
