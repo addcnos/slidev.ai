@@ -1,9 +1,9 @@
 import path from 'path';
-
+import { createServer, resolveOptions } from '@slidev/cli';
 export const createSlidevDev = async () => {
       try {
       // Dynamically import the ESM module
-      const { createServer, resolveOptions } = await import('@slidev/cli' as string);
+      // const { createServer, resolveOptions } = await import('@slidev/cli' as string);
       const options = await resolveOptions({ entry: path.resolve(process.cwd(), 'slidev/slides.md') }, 'dev');
       // Start Slidev server
       const server = await createServer(options, {
