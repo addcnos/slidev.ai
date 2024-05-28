@@ -26,7 +26,7 @@ const createPackageJson = async () => {
 
 const getResourcesPath = ()=> {
   const isDev = process.env.NODE_ENV === 'development';
-  const resourcesPath = isDev ? path.join(__dirname, 'slidev-temp') : path.join(process.resourcesPath, 'slidev-temp');
+  const resourcesPath = isDev ? path.join(__dirname, '../../slidev-temp') : path.join(process.resourcesPath, 'slidev-temp');
   return resourcesPath;
 }
 
@@ -69,6 +69,8 @@ export const createSlidevServer = async () => {
   // 读取临时目录内的版本信息，如果版本信息不一致，删除临时目录，重新下载，如果一致，直接启动 Slidev 服务
   // HACK 由于 Slidev 服务启动后会占用端口，导致无法重新启动，所以这里每次启动服务前都会删除临时目录
   // HACK 考虑版本检查，如果版本不一致，删除临时目录，重新下载
+  console.log(getResourcesPath());
+  
   if (fs.existsSync(path.resolve(TEMP_DIR, 'node_modules/@slidev/cli'))) {
     console.log('Slidev already installed.');
     startSlidev();
