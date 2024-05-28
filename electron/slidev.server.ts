@@ -7,7 +7,7 @@ const TEMP_DIR = path.join(app.getPath('userData'), 'slidev-local-service');
 const LOG_FILE_PATH = path.join(app.getPath('userData'), 'logs');
 
 // 创建日志文件
-const writeLog = (message:string) => {
+const writeLog = (message: string) => {
   const logFilePath = path.join(LOG_FILE_PATH, 'app.log')
   // 确保日志目录存在
   if (!fs.existsSync(LOG_FILE_PATH)) {
@@ -42,12 +42,12 @@ const createPackageJson = async () => {
     "dependencies": {
       "@slidev/cli": "^0.49.3",
       "@slidev/theme-default": "^0.25.0"
-    }, 
+    },
   }
   await fs.writeFileSync(path.join(TEMP_DIR, 'package.json'), JSON.stringify(packageJson, null, 2));
 }
 
-const getResourcesPath = ()=> {
+const getResourcesPath = () => {
   const isDev = process.env.NODE_ENV === 'development';
   const resourcesPath = isDev ? path.join(__dirname, '../../slidev-temp') : path.join(process.resourcesPath, 'slidev-temp');
   return resourcesPath;
@@ -61,13 +61,13 @@ const copyFils = async () => {
     await fs.copy(resourcesPath, TEMP_DIR, { overwrite: true });
     writeLog('拷贝完成');
   } catch (err) {
-    writeLog('拷贝过程中发生错误'+JSON.stringify(err));
+    writeLog('拷贝过程中发生错误' + JSON.stringify(err));
   }
 }
 
 const startSlidev = () => {
   // 启动 Slidev 服务
-  const slidevProcess = exec(`npx slidev`, { cwd: TEMP_DIR });
+  const slidevProcess = exec('npx slidev', { cwd: TEMP_DIR });
 
   slidevProcess.stdout.on('data', (data) => {
     writeLog(`Slidev: ${data}`);
@@ -88,6 +88,7 @@ export const createSlidevServer = async () => {
   if (!fs.existsSync(TEMP_DIR)) {
     fs.mkdirSync(TEMP_DIR);
   }
+
   // 读取临时目录内的版本信息，如果版本信息不一致，删除临时目录，重新下载，如果一致，直接启动 Slidev 服务
   // HACK 由于 Slidev 服务启动后会占用端口，导致无法重新启动，所以这里每次启动服务前都会删除临时目录
   // HACK 考虑版本检查，如果版本不一致，删除临时目录，重新下载
@@ -96,14 +97,18 @@ export const createSlidevServer = async () => {
     startSlidev();
   } else {
     await copyFils()
-    const yarnPath = path.join(TEMP_DIR, 'scripts', 'yarn.cjs');
-    
-    exec(`node "${yarnPath}" install`, { cwd: TEMP_DIR, env: process.env}, (err, stdout, stderr) => {
-      if (err) {
-        writeLog(`Error installing Slidev: ${stderr}`);
-        return;
-      }
-      writeLog('Slidev installed successfully.');
+    const child = exec(`yarn install`, { cwd: TEMP_DIR });
+
+    child.stdout.on('data', (data) => {
+      console.log(`stdout: ${data}`);
+    });
+
+    child.stderr.on('data', (data) => {
+      writeLog(`Error installing Slidev: ${data}`);
+    });
+
+    child.on('close', (code) => {
+      writeLog(`Slidev installed successfully: ${code}`);
       startSlidev();
     });
   }
