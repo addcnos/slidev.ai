@@ -67,6 +67,8 @@ export const createSlidevServer = async () => {
     fs.mkdirSync(TEMP_DIR);
   }
   // 读取临时目录内的版本信息，如果版本信息不一致，删除临时目录，重新下载，如果一致，直接启动 Slidev 服务
+  // HACK 由于 Slidev 服务启动后会占用端口，导致无法重新启动，所以这里每次启动服务前都会删除临时目录
+  // HACK 考虑版本检查，如果版本不一致，删除临时目录，重新下载
   if (fs.existsSync(path.resolve(TEMP_DIR, 'node_modules/@slidev/cli'))) {
     console.log('Slidev already installed.');
     startSlidev();
