@@ -1,6 +1,6 @@
 import { app, BrowserWindow } from 'electron';
 import path from 'path';
-import { createSlidev} from './slidev'
+import { createSlidevServer} from './slidev.server'
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {
   app.quit();
@@ -28,8 +28,7 @@ const createWindow = async () => {
   // Open the DevTools.
   mainWindow.webContents.openDevTools();
   // Create Slidev server
-  const isProd = process.env.NODE_ENV === 'production';
-  await createSlidev(isProd);
+  await createSlidevServer();
 };
 
 // This method will be called when Electron has finished
