@@ -1,9 +1,11 @@
 import path from 'path';
 import fs from 'fs-extra';
 import { exec } from 'child_process';
-import os from 'os';
+import { app } from 'electron';
+// import os from 'os';
 import pkg from '../package.json'
-const TEMP_DIR = path.join(os.tmpdir(), 'slidev-build-service');
+// const TEMP_DIR = path.join(os.tmpdir(), 'slidev-local-service');
+const TEMP_DIR = path.join(app.getPath('userData'), 'slidev-local-service');
 
 // 构建一个package.json文件，用于安装Slidev
 const createPackageJson = async () => {
