@@ -97,20 +97,15 @@ export const createSlidevServer = async () => {
     startSlidev();
   } else {
     await copyFils()
-    const yarnPath = path.join(process.resourcesPath, 'yarn', 'bin', 'yarn.js');
-    const child = exec(`node ${yarnPath} install`, { cwd: TEMP_DIR });
-
-    child.stdout.on('data', (data) => {
-      console.log(`stdout: ${data}`);
-    });
-
-    child.stderr.on('data', (data) => {
-      writeLog(`Error installing Slidev: ${data}`);
-    });
-
-    child.on('close', (code) => {
-      writeLog(`Slidev installed successfully: ${code}`);
+    const yarnPath = path.join(TEMP_DIR, 'scripts/yarn.cjs');
+    exec(`node "${yarnPath}" install`, { cwd: TEMP_DIR }, (error, stdout) => {
+      if (error) {
+        writeLog(`Error installing Slidev: ${error}`);
+        return;
+      }
+      writeLog(`Slidev installed successfully: ${stdout}`);
       startSlidev();
-    });
+    }
+    );
   }
 }
