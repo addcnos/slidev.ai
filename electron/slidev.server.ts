@@ -67,7 +67,8 @@ const copyFils = async () => {
 
 const startSlidev = () => {
   // 启动 Slidev 服务
-  const slidevProcess = exec('yarn dev', { cwd: TEMP_DIR });
+  const yarnPath = path.join(TEMP_DIR, 'scripts/yarn.cjs');
+  const slidevProcess = exec(`node ${yarnPath} dev`, { cwd: TEMP_DIR });
 
   slidevProcess.stdout.on('data', (data) => {
     writeLog(`Slidev: ${data}`);
