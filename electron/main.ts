@@ -6,6 +6,9 @@ if (require('electron-squirrel-startup')) {
   app.quit();
 }
 // const isProd = process.env.NODE_ENV === 'production';
+// 设置语言环境
+process.env.LANG = 'zh_CN.UTF-8';
+process.env.LANGUAGE = 'zh_CN';
 
 const createWindow = async () => {
   // Create the browser window.
