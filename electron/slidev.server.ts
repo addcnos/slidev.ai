@@ -35,7 +35,7 @@ const createPackageJson = async () => {
     "version": pkg.version,
     "description": 'Slidev temp project',
     "scripts": {
-      "start": 'slidev',
+      "dev": 'slidev',
     },
     "keywords": ['slidev', 'slidev-temp'],
     "type": 'module',
@@ -67,7 +67,7 @@ const copyFils = async () => {
 
 const startSlidev = () => {
   // 启动 Slidev 服务
-  const slidevProcess = exec('npx slidev', { cwd: TEMP_DIR });
+  const slidevProcess = exec('yarn dev', { cwd: TEMP_DIR });
 
   slidevProcess.stdout.on('data', (data) => {
     writeLog(`Slidev: ${data}`);
@@ -97,7 +97,8 @@ export const createSlidevServer = async () => {
     startSlidev();
   } else {
     await copyFils()
-    const child = exec(`yarn install`, { cwd: TEMP_DIR });
+    const yarnPath = path.join(process.resourcesPath, 'yarn', 'bin', 'yarn.js');
+    const child = exec(`node ${yarnPath} install`, { cwd: TEMP_DIR });
 
     child.stdout.on('data', (data) => {
       console.log(`stdout: ${data}`);
