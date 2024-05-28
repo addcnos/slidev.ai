@@ -24,8 +24,6 @@ const createPackageJson = async () => {
   await fs.writeFileSync(path.join(TEMP_DIR, 'package.json'), JSON.stringify(packageJson, null, 2));
 }
 
-
-
 const getResourcesPath = ()=> {
   const isDev = process.env.NODE_ENV === 'development';
   const resourcesPath = isDev ? path.join(__dirname, 'slidev-temp') : path.join(process.resourcesPath, 'slidev-temp');
