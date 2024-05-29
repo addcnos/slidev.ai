@@ -67,8 +67,7 @@ const copyFils = async () => {
 
 const startSlidev = () => {
   // 启动 Slidev 服务
-  const yarnPath = path.join(TEMP_DIR, 'scripts/yarn.cjs');
-  const slidevProcess = exec(`node ${yarnPath} dev`, { cwd: TEMP_DIR });
+  const slidevProcess = exec(`yarn dev`, { cwd: TEMP_DIR });
 
   slidevProcess.stdout.on('data', (data) => {
     writeLog(`Slidev: ${data}`);
@@ -98,8 +97,7 @@ export const createSlidevServer = async () => {
     startSlidev();
   } else {
     await copyFils()
-    const yarnPath = path.join(TEMP_DIR, 'scripts/yarn.cjs');
-    exec(`node "${yarnPath}" install`, { cwd: TEMP_DIR }, (error, stdout) => {
+    exec(`yarn install`, { cwd: TEMP_DIR }, (error, stdout) => {
       if (error) {
         writeLog(`Error installing Slidev: ${error}`);
         return;
