@@ -4,19 +4,7 @@ import { exec } from 'child_process';
 import { app } from 'electron';
 import pkg from '../package.json'
 const TEMP_DIR = path.join(app.getPath('userData'), 'slidev-local-service');
-const LOG_FILE_PATH = path.join(app.getPath('userData'), 'logs');
-
-// 创建日志文件
-const writeLog = (message: string) => {
-  const logFilePath = path.join(LOG_FILE_PATH, 'app.log')
-  // 确保日志目录存在
-  if (!fs.existsSync(LOG_FILE_PATH)) {
-    fs.mkdirSync(LOG_FILE_PATH);
-  }
-  // 写入日志信息
-  const logMessage = `${new Date().toISOString()} - ${message}\n`;
-  fs.appendFileSync(logFilePath, logMessage, 'utf8');
-}
+import { writeLog } from './logs';
 
 // 测试写一个30秒更新一次slides.md的内容
 const updateSlides = () => {

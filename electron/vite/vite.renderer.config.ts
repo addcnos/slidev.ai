@@ -1,7 +1,8 @@
 import type { ConfigEnv, UserConfig } from 'vite';
 import { defineConfig } from 'vite';
-import { pluginExposeRenderer } from './vite.base.config';
+import { pluginExposeRenderer ,alias} from './vite.base.config';
 import vue from '@vitejs/plugin-vue';
+
 // https://vitejs.dev/config
 export default defineConfig((env) => {
   const forgeEnv = env as ConfigEnv<'renderer'>;
@@ -18,6 +19,13 @@ export default defineConfig((env) => {
     plugins: [vue(),pluginExposeRenderer(name)],
     resolve: {
       preserveSymlinks: true,
+      alias,
+    },
+    server: {
+      headers: {
+        'Cross-Origin-Embedder-Policy': 'require-corp',
+        'Cross-Origin-Opener-Policy': 'same-origin',
+      },
     },
     clearScreen: false,
   } as UserConfig;
