@@ -10,6 +10,11 @@ const writeFile = async (filename: string, content: string) => {
   await webcontainerInstance.value.fs.writeFile(filename, content);
 }
 
+const getInitalContent = async () => {
+  const content =  await webcontainerInstance.value.fs.readFile('slides.md', 'utf-8');
+  return content;
+}
+
 const installDependencies = async () => {
   // Install dependencies
   const installProcess = await webcontainerInstance.value.spawn('npm', ['install']);
@@ -48,5 +53,6 @@ export {
   mount,
   iframeSrc,
   webcontainerInstance,
-  writeFile
+  writeFile,
+  getInitalContent
 }

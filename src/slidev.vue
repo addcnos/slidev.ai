@@ -3,7 +3,10 @@
     <iframe class="slidev-container" :src="iframeSrc" sandbox="allow-same-origin allow-scripts" />
     <div class="write-card">
       <textarea class="content" v-model="writeContent"></textarea>
-      <button class="btn" @click="onConfrim">确认更改</button>
+      <div class="btns">
+        <button class="sync" @click="syncContent">同步内容</button>
+        <button class="submit" @click="onConfrim">确认更改</button>
+      </div>
     </div>
   </div>
 </template>
@@ -11,12 +14,15 @@
 <script setup>
 import { ref, watch } from 'vue'
 const writeContent = ref('')
-import { iframeSrc, writeFile } from '@main/webcontainer'
-watch(iframeSrc, (url) => {
+import { iframeSrc, writeFile, getInitalContent} from '@main/webcontainer'
+watch(iframeSrc, async (url) => {
   console.log('🚀 iframeUrl changed', url);
 });
-const onConfrim = () => {
-  writeFile('slides.md',writeContent.value)
+const syncContent = async () => {
+  writeContent.value = await getInitalContent()
+}
+const onConfrim =async() => {
+  await writeFile('slides.md',writeContent.value)
 }
 </script>
 
@@ -40,8 +46,10 @@ const onConfrim = () => {
       flex: 1;
     }
 
-    .btn {
+    .btns {
       margin: 10px 0;
+      display: flex;
+      justify-content: space-around;
     }
   }
 }
