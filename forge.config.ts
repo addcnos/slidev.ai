@@ -10,6 +10,7 @@ import { FuseV1Options, FuseVersion } from '@electron/fuses';
 const config: ForgeConfig = {
   packagerConfig: {
     asar: true,
+    appBundleId: 'com.slidev.ai.app',
     extraResource: ['./slidev-temp',"node_modules/@webcontainer"],
   },
   rebuildConfig: {},
