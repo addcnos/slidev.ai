@@ -1,14 +1,15 @@
-import { app, BrowserWindow } from 'electron';
+import { app, BrowserWindow, ipcMain, session } from 'electron';
 import path from 'path';
-import { createExpress } from '@main/server'
+import { createExpress, slidevTempFiles, createModel } from '@main/composables'
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {
   app.quit();
 }
 
+let mainWindow: BrowserWindow | null = null;
 const createWindow = async () => {
   // Create the browser window.
-  const mainWindow = new BrowserWindow({
+  mainWindow = new BrowserWindow({
     width: 1440,
     height: 960,
     webPreferences: {
@@ -18,14 +19,18 @@ const createWindow = async () => {
       preload: path.join(__dirname, 'preload.js')
     },
   });
-  // const entryHtml = path.join(__dirname,`../renderer/${MAIN_WINDOW_VITE_NAME}/index.html`)
-  // and load the index.html of the app.
+
+  // 拦截请求并添加CORS头
+  session.defaultSession.webRequest.onBeforeSendHeaders((details, callback) => {
+    details.requestHeaders['Cross-Origin-Resource-Policy'] = 'cross-origin';
+    callback({ cancel: false, requestHeaders: details.requestHeaders });
+  });
+
   if (MAIN_WINDOW_VITE_DEV_SERVER_URL) {
     mainWindow.loadURL(MAIN_WINDOW_VITE_DEV_SERVER_URL);
   } else {
     mainWindow.loadURL('http://localhost:3030/index.html');
   }
-
   // Open the DevTools.
   mainWindow.webContents.openDevTools();
 };
@@ -34,7 +39,17 @@ const createWindow = async () => {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 // app.on('ready', createWindow);
-app.whenReady().then(createExpress).then(createWindow);
+app.whenReady().then(() => {
+  createExpress();
+  ipcMain.handle('read-files', async () => {
+    const files = await slidevTempFiles();
+    return files;
+  })
+  ipcMain.handle('create-model', async (event, option) => {
+    createModel(mainWindow, option);
+  })
+
+}).then(createWindow);
 
 // Quit when all windows are closed, except on macOS. There, it's common
 // for applications and their menu bar to stay active until the user quits

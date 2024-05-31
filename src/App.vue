@@ -7,9 +7,11 @@
 import { onMounted } from 'vue';
 import SlidevEmbed from './slidev.vue'
 import { mount } from '@main/webcontainer';
-onMounted(() => {
+
+onMounted(async () => {
   console.log('🚀 The Vue app is mounted');
-  mount();
+  const files = await window.ipcRenderer.readFiles();
+  mount(files);
 });
 </script>
 

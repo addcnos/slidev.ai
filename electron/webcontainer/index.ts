@@ -1,5 +1,4 @@
-import type { WebContainer as WebContainerInstance } from '@webcontainer/api';
-import { slidevFiles } from './files';
+import type { WebContainer as WebContainerInstance, FileSystemTree } from '@webcontainer/api';
 import { ref } from 'vue'
 
 // let webcontainerInstance: WebContainerInstance;
@@ -11,7 +10,7 @@ const writeFile = async (filename: string, content: string) => {
 }
 
 const getInitalContent = async () => {
-  const content =  await webcontainerInstance.value.fs.readFile('slides.md', 'utf-8');
+  const content = await webcontainerInstance.value.fs.readFile('slides.md', 'utf-8');
   return content;
 }
 
@@ -28,7 +27,7 @@ const installDependencies = async () => {
 }
 const startDevServer = async () => {
   // Run `npm run start` to start the Express app
-  await webcontainerInstance.value.spawn('npm', ['run', 'start']);
+  await webcontainerInstance.value.spawn('npm', ['run', 'dev']);
   // Wait for `server-ready` event
   webcontainerInstance.value.on('server-ready', (port, url) => {
     iframeSrc.value = url;
@@ -36,17 +35,16 @@ const startDevServer = async () => {
 }
 
 
-const mount = () => {
-  window.addEventListener('load', async () => {
-    // Call only once
-    webcontainerInstance.value = await import('@webcontainer/api').then(({ WebContainer }) => WebContainer.boot());
-    await webcontainerInstance.value.mount(slidevFiles);
-    const exitCode = await installDependencies();
-    if (exitCode !== 0) {
-      throw new Error('Installation failed');
-    }
-    startDevServer();
-  });
+const mount = async (file: FileSystemTree) => {
+  // Call only once
+  webcontainerInstance.value = await import('@webcontainer/api').then(({ WebContainer }) => WebContainer.boot());
+  console.log(file);
+  await webcontainerInstance.value.mount(file);
+  const exitCode = await installDependencies();
+  if (exitCode !== 0) {
+    throw new Error('Installation failed');
+  }
+  startDevServer();
 }
 
 export {

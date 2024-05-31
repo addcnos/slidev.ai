@@ -2,9 +2,9 @@ import path from 'path';
 import fs from 'fs-extra';
 import { exec } from 'child_process';
 import { app } from 'electron';
-import pkg from '../package.json'
+import pkg from '../../package.json'
 const TEMP_DIR = path.join(app.getPath('userData'), 'slidev-local-service');
-import { writeLog } from './logs';
+import { writeLog } from './index';
 
 // 测试写一个30秒更新一次slides.md的内容
 const updateSlides = () => {

@@ -1,6 +1,6 @@
 <template>
   <div class="slidev-wrap">
-    <iframe class="slidev-container" :src="iframeSrc" sandbox="allow-same-origin allow-scripts" />
+    <iframe class="slidev-container" :src="iframeSrc" allow="cross-origin-isolated" />
     <div class="write-card">
       <textarea class="content" v-model="writeContent"></textarea>
       <div class="btns">
@@ -12,17 +12,17 @@
 </template>
 
 <script setup>
-import { ref, watch } from 'vue'
+import { nextTick, ref, watch } from 'vue'
 const writeContent = ref('')
-import { iframeSrc, writeFile, getInitalContent} from '@main/webcontainer'
+import { iframeSrc, writeFile, getInitalContent } from '@main/webcontainer'
 watch(iframeSrc, async (url) => {
   console.log('🚀 iframeUrl changed', url);
 });
 const syncContent = async () => {
   writeContent.value = await getInitalContent()
 }
-const onConfrim =async() => {
-  await writeFile('slides.md',writeContent.value)
+const onConfrim = async () => {
+  await writeFile('slides.md', writeContent.value)
 }
 </script>
 
