@@ -1,5 +1,6 @@
-import type { WebContainer as WebContainerInstance, FileSystemTree } from '@webcontainer/api';
 import { ref } from 'vue'
+import { WebContainer } from '@webcontainer/api'
+import type { WebContainer as WebContainerInstance, FileSystemTree } from '@webcontainer/api';
 
 // let webcontainerInstance: WebContainerInstance;
 const webcontainerInstance = ref<WebContainerInstance>(null);
@@ -37,8 +38,12 @@ const startDevServer = async () => {
 
 const mount = async (file: FileSystemTree) => {
   // Call only once
-  webcontainerInstance.value = await import('@webcontainer/api').then(({ WebContainer }) => WebContainer.boot());
+  webcontainerInstance.value = await WebContainer.boot({
+    coep: 'credentialless'
+  });
+
   console.log(file);
+
   await webcontainerInstance.value.mount(file);
   const exitCode = await installDependencies();
   if (exitCode !== 0) {
