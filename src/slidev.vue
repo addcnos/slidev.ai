@@ -2,7 +2,10 @@
   <div class="slidev-wrap">
     <iframe class="slidev-container" :src="iframeSrc" allow="cross-origin-isolated" />
     <div class="write-card">
-      <textarea class="content" v-model="writeContent"></textarea>
+      <div class="write-card-ctn">
+        <textarea class="content" v-model="writeContent"></textarea>
+        <OutLine />
+      </div>
       <div class="btns">
         <button class="sync" @click="syncContent">同步内容</button>
         <button class="submit" @click="onConfrim">确认更改</button>
@@ -13,8 +16,11 @@
 
 <script setup>
 import { nextTick, ref, watch } from 'vue'
-const writeContent = ref('')
 import { iframeSrc, writeFile, getInitalContent } from '@main/webcontainer'
+import OutLine from './components/outline/index.vue'
+
+const writeContent = ref('')
+
 watch(iframeSrc, async (url) => {
   console.log('🚀 iframeUrl changed', url);
 });
@@ -41,6 +47,13 @@ const onConfrim = async () => {
     flex-shrink: 0;
     display: flex;
     flex-direction: column;
+
+    &-ctn {
+      position: relative;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
 
     .content {
       flex: 1;
