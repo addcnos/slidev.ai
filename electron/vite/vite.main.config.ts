@@ -23,7 +23,19 @@ export default defineConfig((env) => {
       // Load the Node.js entry.
       mainFields: ['module', 'jsnext:main', 'jsnext'],
       alias
-    }
+    },
+    server: {
+      proxy: {
+        'http://api.com': {
+          target: 'https://one-api.system.addcn.com',
+          changeOrigin: true,
+          rewrite: (path) => {
+            console.log(1)
+            return path.replace(/^http:\/\/api\.com/, '')
+          },
+        },
+      }
+    },
   };
 
   return mergeConfig(getBuildConfig(forgeEnv), config);

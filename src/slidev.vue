@@ -16,6 +16,7 @@
 
 <script setup>
 import { nextTick, ref, watch } from 'vue'
+// import { useAiStore } from './store/ai'
 import { iframeSrc, writeFile, getInitalContent } from '@main/webcontainer'
 import OutLine from './components/outline/index.vue'
 
@@ -30,6 +31,7 @@ const syncContent = async () => {
 const onConfrim = async () => {
   await writeFile('slides.md', writeContent.value)
 }
+// useAiStore()
 </script>
 
 <style lang="scss" scoped>

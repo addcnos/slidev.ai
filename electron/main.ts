@@ -25,6 +25,21 @@ const createWindow = async () => {
     details.requestHeaders['Cross-Origin-Resource-Policy'] = 'cross-origin';
     callback({ cancel: false, requestHeaders: details.requestHeaders });
   });
+  // 拦截响应并添加CORS头
+  session.defaultSession.webRequest.onBeforeSendHeaders((details, callback) => {
+    if (details.url.startsWith('https://one-api.system.addcn.com')) {
+      details.requestHeaders['Origin'] = 'http://localhost:5173';
+    }
+    callback({ requestHeaders: details.requestHeaders });
+  });
+  session.defaultSession.webRequest.onHeadersReceived((details, callback) => {
+    if (details.url.startsWith('https://one-api.system.addcn.com')) {
+      details.responseHeaders['Access-Control-Allow-Origin'] = ['*'];
+      details.responseHeaders['Access-Control-Allow-Methods'] = ['GET, POST, PUT, DELETE, OPTIONS'];
+      details.responseHeaders['Access-Control-Allow-Headers'] = ['Content-Type, Authorization'];
+    }
+    callback({ responseHeaders: details.responseHeaders });
+  });
 
   if (MAIN_WINDOW_VITE_DEV_SERVER_URL) {
     mainWindow.loadURL(MAIN_WINDOW_VITE_DEV_SERVER_URL);

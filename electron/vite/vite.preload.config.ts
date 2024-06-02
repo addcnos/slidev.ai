@@ -25,7 +25,7 @@ export default defineConfig((env) => {
     plugins: [pluginHotRestart('reload')],
     resolve:{
       alias
-    }
+    },
   };
 
   return mergeConfig(getBuildConfig(forgeEnv), config);

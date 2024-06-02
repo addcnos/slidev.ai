@@ -71,6 +71,7 @@ export const createModel = async (main: BrowserWindow, option: ModelOption) => {
     show: false,
     webPreferences: {
       devTools: false,
+      webSecurity: false,
     }
   });
   view.webContents.loadURL(option.url)
