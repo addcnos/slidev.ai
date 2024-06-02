@@ -1,6 +1,6 @@
 <template>
   <div class="slidev-wrap">
-    <iframe class="slidev-container" :src="iframeSrc" allow="cross-origin-isolated" />
+    <iframe class="slidev-container" :src="iframeSrc" allow="fullscreen" />
     <div class="write-card">
       <div class="write-card-ctn">
         <textarea class="content" v-model="writeContent"></textarea>
