@@ -11,7 +11,7 @@ const config: ForgeConfig = {
   packagerConfig: {
     asar: true,
     appBundleId: 'com.slidev.ai.app',
-    extraResource: ['./slidev-temp', "node_modules/@webcontainer", '.env'],
+    extraResource: ['./slidev-temp', "node_modules/@webcontainer"],
   },
   rebuildConfig: {},
   makers: [new MakerSquirrel({}), new MakerZIP({}, ['darwin']), new MakerRpm({}), new MakerDeb({})],

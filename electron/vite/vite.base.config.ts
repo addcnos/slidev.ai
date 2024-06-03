@@ -54,6 +54,7 @@ export function getBuildDefine(env: ConfigEnv<'build'>) {
     const def = {
       [VITE_DEV_SERVER_URL]: command === 'serve' ? JSON.stringify(process.env[VITE_DEV_SERVER_URL]) : undefined,
       [VITE_NAME]: JSON.stringify(name),
+      OPENAI_API_KEY: JSON.stringify(process.env.OPENAI_API_KEY),
     };
     return { ...acc, ...def };
   }, {} as Record<string, string>);
