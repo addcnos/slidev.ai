@@ -6,7 +6,7 @@ export const useCrossMessage = createSharedComposable(() => {
 
   function subscribe() {
     window.addEventListener('message', (value) => {
-      console.log('123', value)
+      // todo: handle message
     })
   }
 
