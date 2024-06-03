@@ -1,7 +1,8 @@
 import OpenAI from "openai";
+
 export const openai = new OpenAI({
   dangerouslyAllowBrowser: true,
-  baseURL: 'https://one-api.system.addcn.com'
+  baseURL: 'https://one-api.system.addcn.com/v1'
 });
 
 export const openaiProxy = async () => {
