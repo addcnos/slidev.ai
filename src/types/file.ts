@@ -1,3 +1,4 @@
+import { Message } from "./chat"
 import { Outline } from "./outline"
 import { SlidevBlock } from "./slidev"
 
@@ -30,4 +31,6 @@ export interface JsonFile {
   session: Record<Partial<SessionName>, string>,
   /** Slidev 内容 */
   content: SlidevBlock[],
+  /** Chat */
+  chat: Message[]
 }
