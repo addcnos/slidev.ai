@@ -44,9 +44,10 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@vueuse/core": "^10.10.0",
     "@he-tree/vue": "^2.8.2",
+    "@vueuse/core": "^10.10.0",
     "@webcontainer/api": "^1.1.9",
+    "axios": "^1.7.2",
     "diff": "^5.2.0",
     "electron-squirrel-startup": "^1.0.1",
     "eslint-import-resolver-alias": "^1.1.2",

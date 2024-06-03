@@ -2,14 +2,15 @@
   <div class="slidev-wrap">
     <iframe class="slidev-container" :src="iframeSrc" allow="fullscreen" />
     <div class="write-card">
-      <div class="write-card-ctn">
+      <Message />
+      <!-- <div class="write-card-ctn">
         <textarea class="content" v-model="writeContent"></textarea>
         <OutLine />
       </div>
       <div class="btns">
         <button class="sync" @click="syncContent">同步内容</button>
         <button class="submit" @click="onConfrim">确认更改</button>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
@@ -19,6 +20,7 @@ import { nextTick, ref, watch } from 'vue'
 // import { useAiStore } from './store/ai'
 import { iframeSrc, writeFile, getInitalContent } from '@main/webcontainer'
 import OutLine from './components/outline/index.vue'
+import Message from './components/message/index.vue'
 
 const writeContent = ref('')
 

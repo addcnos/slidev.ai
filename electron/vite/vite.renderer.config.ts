@@ -26,16 +26,6 @@ export default defineConfig((env) => {
         'Cross-Origin-Embedder-Policy': 'require-corp',
         'Cross-Origin-Opener-Policy': 'same-origin',
         'Cross-Origin-Resource-Policy': 'cross-origin',
-      },
-      proxy: {
-        'http://api.com': {
-          target: 'https://one-api.system.addcn.com',
-          changeOrigin: true,
-          rewrite: (path) => {
-            console.log(1)
-            return path.replace(/^http:\/\/api\.com/, '')
-          },
-        },
       }
     },
     clearScreen: false,
