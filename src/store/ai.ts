@@ -6,7 +6,7 @@ import { genOutlineBySubjectPrompt } from '../utils/prompt/outline'
 
 export const useAiStore = createSharedComposable(() => {
   const currentCtx = ref<string>('')
-  
+
   async function initOutlineContent(subject: string) {
     const completion = await openai.chat.completions.create({
       model: 'gpt-4o',
