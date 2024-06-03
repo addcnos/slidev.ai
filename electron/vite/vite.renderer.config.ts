@@ -2,6 +2,8 @@ import type { ConfigEnv, UserConfig } from 'vite';
 import { defineConfig } from 'vite';
 import { pluginExposeRenderer, alias } from './vite.base.config';
 import vue from '@vitejs/plugin-vue';
+import dotenv from "dotenv";
+dotenv.config();
 
 // https://vitejs.dev/config
 export default defineConfig((env) => {
@@ -29,5 +31,8 @@ export default defineConfig((env) => {
       }
     },
     clearScreen: false,
+    define: {
+      OPENAI_API_KEY: `"${process.env.OPENAI_API_KEY}"`,
+    }
   } as UserConfig;
 });

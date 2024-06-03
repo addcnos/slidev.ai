@@ -9,11 +9,11 @@ export const useAiStore = createSharedComposable(() => {
   const currentCtx = ref<string>('')
 
   async function initOutlineContent(subject: string) {
-    // const completion = await openai.chat.completions.create({
-    //   model: 'gpt-4o',
-    //   messages: [{ role: 'user', content: genOutlineBySubjectPrompt(subject) }],
-    // });
-    const completion = await axios.post('/proxy/openai')
+    const completion = await openai.chat.completions.create({
+      model: 'gpt-4o',
+      messages: [{ role: 'user', content: genOutlineBySubjectPrompt(subject) }],
+    });
+    // const completion = await axios.post('/proxy/openai')
     console.log(completion);
   }
 
