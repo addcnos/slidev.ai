@@ -1,6 +1,6 @@
 <template>
   <div class="slidev-wrap">
-    <iframe class="slidev-container" :src="iframeSrc" allow="fullscreen" />
+    <iframe class="slidev-container" :src="iframeSrc" allow="fullscreen"  ref="iframeRef" />
     <div class="write-card">
       <Message />
       <!-- <div class="write-card-ctn">
@@ -21,8 +21,12 @@ import { useAiStore } from './store/ai'
 import { iframeSrc, writeFile, getInitalContent } from '@main/webcontainer'
 import OutLine from './components/outline/index.vue'
 import Message from './components/message/index.vue'
+import { useCrossMessage } from './composables/cross-message'
 
 const writeContent = ref('')
+const { iframeRef, subscribe } = useCrossMessage()
+
+subscribe()
 
 watch(iframeSrc, async (url) => {
   console.log('🚀 iframeUrl changed', url);

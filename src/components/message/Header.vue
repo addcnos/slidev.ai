@@ -1,10 +1,21 @@
 <template>
   <div class="header">
     <div class="title">聊天框</div>
+    <button @click="handleChangePageNo">切换页签</button>
   </div>
 </template>
 
 <script setup lang="ts">
+import { useCrossMessage } from './../../composables/cross-message'
+
+const { messageToIframe } = useCrossMessage()
+
+function handleChangePageNo() {
+  messageToIframe({
+    type: 'changePageNo',
+    data: 4
+  })
+}
 
 </script>
 

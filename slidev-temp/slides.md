@@ -23,6 +23,7 @@ transition: slide-left
 # enable MDC Syntax: https://sli.dev/guide/syntax#mdc-syntax
 mdc: true
 ---
+<CrossMessage />
 
 # Welcome to Slidev
 
@@ -273,13 +274,6 @@ const author = {
 You can use Vue components directly inside your slides.
 
 We have provided a few built-in components like `<Tweet/>` and `<Youtube/>` that you can use directly. And adding your custom components is also super easy.
-
-```html
-<Counter :count="10" />
-```
-
-<!-- ./components/Counter.vue -->
-<Counter :count="10" m="t-4" />
 
 Check out [the guides](https://sli.dev/builtin/components.html) for more.
 
