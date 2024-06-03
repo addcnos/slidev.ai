@@ -9,6 +9,8 @@ export enum Role {
 }
 
 export enum FlowOperate {
+  /** 初始化 */
+  Init,
   /** 样式 */
   Style,
   /** 翻译 */
