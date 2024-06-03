@@ -1,7 +1,7 @@
 export enum SlidevBlockType {
   Header,
   Block,
-  CrossComponent = 'cross-component'
+  CrossComponent
 }
 
 export interface SlidevBlock {
