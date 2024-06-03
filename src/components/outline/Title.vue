@@ -18,7 +18,6 @@ const theme = ref('学习英语');
 // 编辑主题的函数
 const editTheme = () => {
   // TODO: 弹出输入框，输入新的主题
-  console.log('编辑主题')
   // const newTheme = prompt('请输入新的主题:', theme.value);
   // if (newTheme) {
   //   theme.value = newTheme;
