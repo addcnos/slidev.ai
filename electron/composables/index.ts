@@ -2,6 +2,7 @@ import { app, BrowserWindow } from 'electron';
 import express from 'express';
 import path from 'path';
 import fs from 'fs-extra';
+import { openaiProxy } from './openai'
 
 const LOG_FILE_PATH = path.join(app.getPath('userData'), 'logs');
 // 创建日志文件
@@ -17,7 +18,7 @@ export const writeLog = (message: string) => {
 }
 
 export const createExpress = async () => {
-  if (!app.isPackaged) return
+  // if (!app.isPackaged) return
   const server = express();
   // 设置跨域隔离头
   server.use((req, res, next) => {
@@ -25,6 +26,13 @@ export const createExpress = async () => {
     res.setHeader('Cross-Origin-Embedder-Policy', 'require-corp');
     res.setHeader('Cross-Origin-Resource-Policy', 'cross-origin');
     next();
+  });
+  // 设置代理
+  server.use('/proxy/openai', async (req, res) => {
+    // 允许跨域
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    const data = await openaiProxy();
+    res.send(data);
   });
   server.use(express.static(path.join(__dirname, `../renderer/${MAIN_WINDOW_VITE_NAME}/`)));
   server.listen(3030, () => {
