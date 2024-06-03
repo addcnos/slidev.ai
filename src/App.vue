@@ -1,5 +1,4 @@
 <template>
-  <h1> 🚀 Hello Slidev Ai!</h1>
   <SlidevEmbed></SlidevEmbed>
 </template>
 
