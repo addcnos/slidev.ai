@@ -1,0 +1,82 @@
+<template>
+  <div class="prompt">
+    <div class="prompt-title">
+      <!-- 主题 -->
+      <span class="title">主题：</span>
+      <!-- 页数 -->
+      <InputNumber
+        v-model="count"
+        inputId="minmax-buttons"
+        mode="decimal"
+        showButtons
+        :min="1"
+        :max="100"
+        :allowEmpty="false"
+        size="small"
+        suffix="页"
+        @update:modelValue="onChangeCount"
+      />
+    </div>
+
+    <div class="prompt-ctn">
+      <!-- 主题 -->
+      <InputText  v-model="theme" />
+      <!-- 初始化 -->
+      <Button icon="pi pi-sync" aria-label="Submit" @click="initOutline" />
+    </div>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { unref } from 'vue';
+import { useOutlineStore, useAiStore } from '@renderer/store';
+
+const { count, theme } = useOutlineStore();
+const { initOutlineContent, outline } = useAiStore();
+
+/**
+ * @description 修改页数
+ */
+function onChangeCount(value: number) {
+  console.log('onChangeCount', value);
+}
+
+/**
+ * @description 初始化大纲
+ */
+function initOutline() {
+  initOutlineContent(unref(theme))
+}
+</script>
+
+<style lang="scss" scoped>
+.prompt {
+  &-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 4px;
+    background: #fff;
+
+    .title {
+      margin-right: 10px;
+    }
+
+    :deep() {
+      .p-inputtext {
+        width: 100px;
+        height: 32px;
+      }
+    }
+  }
+
+  &-ctn {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+  }
+}
+</style>

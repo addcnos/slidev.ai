@@ -15,7 +15,7 @@
 
 <script setup lang="ts">
 import { ref, computed, watch, nextTick } from 'vue'
-import { useAiStore } from './../../store/ai'
+import { useAiStore } from '../../store/useAIStore'
 import dayjs from 'dayjs'
 
 const el = ref<HTMLElement | null>(null)
@@ -26,7 +26,7 @@ const chatList = computed(() => chat.value?.session || [])
 watch(() => chatList.value, () => {
   nextTick(() => {
     el.value.scrollTop = el.value.scrollHeight
-  })  
+  })
 }, {
   deep: true,
   immediate: true
@@ -35,15 +35,15 @@ watch(() => chatList.value, () => {
 
 <style lang="scss" scoped>
 .list {
+  position: relative;
+  height: 800px;
+  padding: 20px 20px 40px;
   overflow: auto;
   overflow-x: hidden;
-  padding: 20px 20px 40px;
-  position: relative;
   overscroll-behavior: none;
-  height: 800px;
   scroll-behavior: smooth;
 
-  &::-webkit-scrollbar{
+  &::-webkit-scrollbar {
     width: 6px;
   }
 
@@ -62,10 +62,10 @@ watch(() => chatList.value, () => {
   }
 
   .container {
-    flex: 1 1;
-    overflow-x: hidden;
-    overflow-y: auto;
     position: relative;
+    flex: 1 1;
+    overflow: hidden auto;
+
     // overscroll-behavior: none;
 
     .item {
@@ -77,31 +77,31 @@ watch(() => chatList.value, () => {
         align-items: flex-start;
 
         .content {
+          position: relative;
           box-sizing: border-box;
           max-width: 100%;
-          margin-top: 10px;
-          border-radius: 10px;
-          background-color: rgba(0, 0, 0, .05);
           padding: 10px;
+          margin-top: 10px;
           font-size: 14px;
-          user-select: text;
           word-break: break-word;
+          user-select: text;
+          background-color: rgb(0 0 0 / 5%);
           border: 1px solid #dedede;
-          position: relative;
-          transition: all .3s ease;
+          border-radius: 10px;
+          transition: all 0.3s ease;
         }
 
         .date {
+          z-index: 1;
+          box-sizing: border-box;
+          width: 100%;
           font-size: 12px;
-          opacity: .2;
-          white-space: nowrap;
-          transition: all .6s ease;
           color: #303030;
           text-align: left;
-          width: 100%;
-          box-sizing: border-box;
+          white-space: nowrap;
           pointer-events: none;
-          z-index: 1;
+          opacity: 0.2;
+          transition: all 0.6s ease;
         }
       }
     }
@@ -113,8 +113,8 @@ watch(() => chatList.value, () => {
         align-items: flex-end;
 
         .content {
-          background-color: #007aff;
           color: #fff;
+          background-color: #007aff;
           border-color: #007aff;
         }
 

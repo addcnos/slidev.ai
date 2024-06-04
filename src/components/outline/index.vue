@@ -1,41 +1,43 @@
 <template>
-  <Dialog v-model:visible="visible" modal header="Edit Profile" :style="{ width: '25rem' }">
+  <Dialog
+    v-model:visible="visible"
+    modal
+    header="生成 Slide 大纲"
+    :style="{ width: '800px' }"
+  >
     <div class="outline">
-      <!-- 头部 -->
-      <Header />
       <!-- 标题 -->
-      <Title />
+      <Theme />
       <!-- 大纲内容 -->
-      <Tree />
+      <Outline />
     </div>
+
+    <!-- 底部确认区 -->
     <div class="flex justify-content-end gap-2">
-        <Button type="button" label="Cancel" severity="secondary" @click="visible = false"></Button>
-        <Button type="button" label="Save" @click="visible = false"></Button>
+        <Button type="button" label="Cancel" severity="secondary" @click="onCancel"></Button>
+        <Button type="button" label="Save" @click="onSave"></Button>
     </div>
   </Dialog>
 </template>
 
 <script setup lang="ts">
 import { useOutlineStore } from '@renderer/store';
-import Header from './Header.vue'
-import Title from './Title.vue'
-import Tree from './Tree.vue'
+import Theme from './Theme.vue'
+import Outline from './Outline.vue'
 
 const { visible } = useOutlineStore();
+
+function onSave() {
+  console.log('onSave');
+  visible.value = false;
+}
+
+function onCancel() {
+  console.log('onCancel')
+  visible.value = false;
+}
 </script>
 
 <style lang="scss" scoped>
-.outline {
-  position: absolute;
-  bottom: 4px;
-  width: calc(100% - 4px);
-  height: 500px;
-  margin: 0 2px;
-  overflow: auto;
-  background-color: rgb(0 0 0 / 50%);
 
-  &.expand {
-    height: 100%;
-  }
-}
 </style>

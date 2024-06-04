@@ -15,7 +15,7 @@
 
 <script setup lang="ts">
 import { ref, watch } from 'vue'
-import { useAiStore } from './../../store/ai'
+import { useAiStore } from '../../store/useAIStore'
 import { useMagicKeys } from '@vueuse/core'
 
 const message = ref('')
@@ -40,58 +40,58 @@ watch(enter, (v: string) => {
 <style lang="scss" scoped>
 .editor {
   position: relative;
+  box-sizing: border-box;
   width: 100%;
   padding: 10px 12px 12px;
-  box-sizing: border-box;
   border-top: 1px solid #dedede;
-  box-shadow: 0px 2px 4px 0px rgba(0,0,0,.05);
+  box-shadow: 0 2px 4px 0 rgb(0 0 0 / 5%);
 
   .actions {
     display: flex;
     flex-wrap: wrap;
 
     .action {
+      display: inline-flex;
+      align-items: center;
+      width: 12px;
+      height: 12px;
+      padding: 4px 10px;
       margin-right: 5px;
       margin-bottom: 10px;
-      display: inline-flex;
-      border-radius: 20px;
-      font-size: 12px;
-      background-color: #fff;
-      color: #303030;
-      border: 1px solid #dedede;
-      padding: 4px 10px;
-      animation: icon-transform .3s ease;
-      box-shadow: 0px 2px 4px 0px rgba(0,0,0,.05);
-      align-items: center;
-      height: 12px;
-      width: 12px;
       overflow: hidden;
+      font-size: 12px;
+      color: #303030;
       cursor: pointer;
+      background-color: #fff;
+      border: 1px solid #dedede;
+      border-radius: 20px;
+      box-shadow: 0 2px 4px 0 rgb(0 0 0 / 5%);
+      animation: icon-transform 0.3s ease;
     }
   }
 
   .input-panel {
-    cursor: text;
+    position: relative;
     display: flex;
     flex: 1 1;
-    border-radius: 10px;
+    cursor: text;
     border: 1px solid #dedede;
-    position: relative;
+    border-radius: 10px;
 
     textarea {
-      font-size: 14px;
-      height: 100%;
-      width: 100%;
-      border-radius: 10px;
-      border: none;
-      box-shadow: 0 -2px 5px rgba(0, 0, 0, .03);
-      color: #303030;
-      font-family: inherit;
-      padding: 10px 80px 10px 14px;
-      resize: none;
-      outline: none;
       box-sizing: border-box;
+      width: 100%;
+      height: 100%;
       min-height: 68px;
+      padding: 10px 80px 10px 14px;
+      font-family: inherit;
+      font-size: 14px;
+      color: #303030;
+      resize: none;
+      border: none;
+      border-radius: 10px;
+      outline: none;
+      box-shadow: 0 -2px 5px rgb(0 0 0 / 3%);
 
       &::-webkit-scrollbar {
         width: 2px;
@@ -113,22 +113,22 @@ watch(enter, (v: string) => {
     :deep() {
       .p-button {
         width: 100px;
-        margin: 12px 4px 0 0;
         height: 40px;
+        margin: 12px 4px 0 0;
       }
     }
   }
 }
 
 @keyframes icon-transform {
-    0% {
-      opacity: 0;
-      transform: translateY(20px)
-    }
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
 
-    to {
-      opacity: 1;
-      transform: translateY(0)
-    }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 </style>

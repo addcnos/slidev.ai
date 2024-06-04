@@ -1,4 +1,12 @@
 <template>
+  <div class="outline">
+    <!-- 标题 -->
+    <div class="outline-title">
+      <span class="title">大纲</span>
+    </div>
+
+    <!-- 大纲内容 -->
+  </div>
   <Draggable class="mtl-tree" v-model="treeData" treeLine>
     <template #default="{ node, stat }">
       <OpenIcon
@@ -13,7 +21,8 @@
         v-model="stat.checked"
       /> -->
       <!-- TODO: change components -->
-      <input class="mtl-ml" v-model="node.text" @input="changeInput"/>
+      <!-- <input class="mtl-ml" v-model="node.text" @input="changeInput"/> -->
+      <span>{{ node.text }}</span>
     </template>
   </Draggable>
 </template>
@@ -62,7 +71,7 @@ const treeData = ref([
 ]);
 
 function changeInput(value: string) {
-  console.log('[ changeInput ] >', value)
+
 }
 </script>
 
@@ -70,9 +79,11 @@ function changeInput(value: string) {
 .mtl-tree {
   margin-top: 20px;
 }
+
 .mtl-mr {
   margin-right: 10px;
 }
+
 .mtl-ml {
   margin-left: 10px;
 }
