@@ -32,11 +32,25 @@ export const slidevTempFiles = async () => {
 }
 
 export interface UserFileOptions {
+  /**
+   * 文件名称 - 包含后缀
+   */
   fileName?: string;
+  /**
+   * 文件内容 - 字符串
+   */
   content?: string;
+  /**
+   * 文件目录 默认为userData，可选值：appData、userData、temp、desktop、documents、downloads、music、pictures、videos
+   */
   appDir?: AppPath;
+  /**
+   * 目录名称 - 默认自定义为user-files
+   */
   dirName?: string;
-  // 是否增量写入
+  /**
+   * 是否追加写入
+   */
   append?: boolean;
 }
 
