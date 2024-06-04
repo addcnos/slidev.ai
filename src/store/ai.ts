@@ -38,6 +38,7 @@ export const useAiStore = createSharedComposable(() => {
       role: Role.Gpt,
       timestamp: +Date.now(),
       content: completion.choices[0].message.content,
+      source: completion.choices[0],
     })
     outline.value.content = normalizeGpt2Outline(completion.choices[0].message.content)
   }
@@ -57,26 +58,27 @@ export const useAiStore = createSharedComposable(() => {
       role: Role.Gpt,
       timestamp: +Date.now(),
       content: completion.choices[0].message.content,
+      source: completion.choices[0],
     })
     outline.value.content = normalizeGpt2Outline(completion.choices[0].message.content)
   }
 
   async function freeSession(message: string) {
-    const completion = await openai.chat.completions.create({
-      model: 'gpt-4o',
-      messages: [{ role: 'user', content: message }],
-    });
-    chat.value.session.push({
+    chat.value.session = [{
       role: Role.User,
       timestamp: +Date.now(),
       content: message,
-    })
+    }]
+    const completion = await openai.chat.completions.create({
+      model: 'gpt-4o',
+      messages:  normalizeSession2Gpt(chat.value.session),
+    });
     chat.value.session.push({
       role: Role.Gpt,
       timestamp: +Date.now(),
       content: completion.choices[0].message.content,
+      source: completion.choices[0],
     })
-    chat.value.content = completion.choices[0].message.content
   }
 
   async function continueFreeSession(message: string) {
@@ -93,8 +95,8 @@ export const useAiStore = createSharedComposable(() => {
       role: Role.Gpt,
       timestamp: +Date.now(),
       content: completion.choices[0].message.content,
+      source: completion.choices[0],
     })
-    chat.value.content = completion.choices[0].message.content
   }
 
 
