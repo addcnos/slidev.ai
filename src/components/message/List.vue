@@ -1,12 +1,12 @@
 <template>
-  <div class="list">
-    <div class="container" ref="el">
-      <div v-for="item in dataList" :key="item.id" class="item" :class="{'me': item.fromMe}">
+  <div class="list" ref="el">
+    <div class="container" >
+      <div v-for="item in chatList" :key="item.id" class="item" :class="{'me': item.role === 'user'}">
         <div class="container">
           <div class="content">
             {{ item.content }}
           </div>
-          <div class="date">2024/6/3 09:55:40</div>
+          <div class="date">{{ dayjs(item.timestamp).format('YYYY-MM-DD HH:mm:ss') }}</div>
         </div>
       </div>
     </div>
@@ -14,55 +14,23 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed, watch, nextTick } from 'vue'
+import { useAiStore } from './../../store/ai'
+import dayjs from 'dayjs'
 
 const el = ref<HTMLElement | null>(null)
-// 帮我生成5条这样的数据
+const { chat } = useAiStore()
+const chatList = computed(() => chat.value?.session || [])
 
-const dataList = ref([{
-  id: 1,
-  fromMe: 1,
-  content: 'Hello',
-  type: 'text',
-},{
-  id: 2,
-  fromMe: 1,
-  content: 'electorn在控制台修改样式之后怎么恢复初始值 就是类似网站的刷新',
-  type: 'text',
-},{
-  id: 3,
-  fromMe: 0,
-  content: '在 Electron 应用中，如果你在开发者工具（DevTools）中修改了样式并希望恢复初始值，可以通过以下几种方式实现：在 Electron 应用中，如果你在开发者工具（DevTools）中修改了样式并希望恢复初始值，可以通过以下几种方式实现：',
-  type: 'text',
-},{
-  id: 4,
-  fromMe: 0,
-  content: 'Hello',
-  type: 'text',
-},{
-  id: 5,
-  fromMe: 1,
-  content: 'Hello',
-  type: 'text',
-},{
-  id: 6,
-  fromMe: 1,
-  content: 'Hello',
-  type: 'text',
-},{
-  id: 7,
-  fromMe: 1,
-  content: 'electorn在控制台修改样式之后怎么恢复初始值electorn在控制台修改样式之后怎么恢复初始值electorn在控制台修改样式之后怎么恢复初始值',
-  type: 'text',
-}])
 
-// useInfiniteScroll(
-//   el,
-//   () => {
-//     dataList.value.push(...moreData)
-//   },
-//   { distance: 10 }
-// )
+watch(() => chatList.value, () => {
+  nextTick(() => {
+    el.value.scrollTop = el.value.scrollHeight
+  })  
+}, {
+  deep: true,
+  immediate: true
+})
 </script>
 
 <style lang="scss" scoped>
@@ -72,6 +40,8 @@ const dataList = ref([{
   padding: 20px 20px 40px;
   position: relative;
   overscroll-behavior: none;
+  height: 800px;
+  scroll-behavior: smooth;
 
   &::-webkit-scrollbar{
     width: 6px;
@@ -93,10 +63,10 @@ const dataList = ref([{
 
   .container {
     flex: 1 1;
-    overflow: auto;
     overflow-x: hidden;
+    overflow-y: auto;
     position: relative;
-    overscroll-behavior: none;
+    // overscroll-behavior: none;
 
     .item {
       display: flex;

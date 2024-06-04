@@ -17,6 +17,7 @@ export function genOutlineBySubjectPrompt(subject: string,) {
     '3. 主题一定不要当作最顶级，当成其中的一个章节即可！！！！',
     '4. 回复需要使用中文',
     '5. 你的输出不需要带上 <!-- 扩写 --> 这个标识',
+    '6. 不需要带上 ```json 这种',
     '',
     `我的主题是: "${subject}"`,
   ].join('\n')

@@ -1,3 +1,5 @@
+import { GptSessionContext } from "./chat";
+
 export interface Outline {
   /** 标题 */
   title: string;
@@ -8,3 +10,10 @@ export interface Outline {
   /** 子节点 */
   children: Outline[];
 }
+
+export interface OutlineStore {
+  version: number
+  session: GptSessionContext[],
+  content: Outline[],
+}
+
