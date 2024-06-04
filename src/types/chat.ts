@@ -21,6 +21,10 @@ export interface GptSessionContext {
   content: string
   /** 源内容 */
   source?: ChatCompletion.Choice
+  /** ID */
+  id: string
+  /** 加载中 */
+  loading?: boolean
 }
 
 export enum FlowOperate {

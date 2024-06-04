@@ -4,13 +4,33 @@
       <div v-for="item, index in 7" :key="index" class="action"></div>
     </div>
     <div class="input-panel">
-      <textarea placeholder="请输入内容" rows="2"></textarea>
-      <button><div>Send</div></button>
+      <textarea v-model="message" placeholder="请输入内容" rows="2"></textarea>
+      <button @click="send"><div>Send</div></button>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import { ref, watch } from 'vue'
+import { useAiStore } from './../../store/ai'
+import { useMagicKeys } from '@vueuse/core'
+
+const message = ref('')
+const { enter } = useMagicKeys()
+
+async function send() {
+  if (!message.value) return
+  useAiStore().freeSession(message.value)
+  message.value = ''
+}
+
+watch(enter, (v: string) => {
+  if (v) {
+    send()
+  } else {
+    message.value = ''
+  }
+})
 
 </script>
 
