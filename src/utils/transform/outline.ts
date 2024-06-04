@@ -17,6 +17,6 @@ export function stringifyOutline(outline: Outline[]): string {
  * @param outline 
  */
 export function normalizeGpt2Outline(outline: string): Outline[] {
-  return JSON.parse(outline);
+  return JSON.parse(outline.replace('\n', ''));
 }
 

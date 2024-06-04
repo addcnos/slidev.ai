@@ -1,11 +1,26 @@
+import { ChatCompletion } from "openai/resources/chat/completions"
+
 /**
  * 对话角色
  */
 export enum Role {
+  /** 系统 */
+  System = 'system',
   /** 用户 */
-  User,
+  User = 'user',
   /** GPT */
-  Gpt,
+  Gpt = 'assistant',
+}
+
+export interface GptSessionContext {
+  /** 角色 */
+  role: Role
+  /** 时间戳 */
+  timestamp: number
+  /** 内容 */
+  content: string
+  /** 源内容 */
+  source?: ChatCompletion.Choice
 }
 
 export enum FlowOperate {
@@ -27,13 +42,13 @@ export enum FlowOperate {
   Interaction,
 }
 
-export interface Message {
-  /** 角色 */
-  role: Role
-  /** 时间戳 */
-  timestamp: number
-  /** 内容 */
-  content: string
+export interface ChatSessionContext extends GptSessionContext {
   /** 操作 */
   operate?: FlowOperate
+}
+
+export interface ChatStore {
+  version: number
+  session: ChatSessionContext[]
+  content: string
 }
