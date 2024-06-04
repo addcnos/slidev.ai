@@ -1,5 +1,7 @@
 import type { ConfigEnv, UserConfig } from 'vite';
 import { defineConfig } from 'vite';
+import Components from 'unplugin-vue-components/vite';
+import {PrimeVueResolver} from 'unplugin-vue-components/resolvers';
 import { pluginExposeRenderer, alias } from './vite.base.config';
 import vue from '@vitejs/plugin-vue';
 import dotenv from "dotenv";
@@ -18,7 +20,15 @@ export default defineConfig((env) => {
     build: {
       outDir: `.vite/renderer/${name}`,
     },
-    plugins: [vue(), pluginExposeRenderer(name)],
+    plugins: [
+      vue(),
+      pluginExposeRenderer(name),
+      Components({
+        resolvers: [
+          PrimeVueResolver()
+        ]
+      })
+    ],
     resolve: {
       preserveSymlinks: true,
       alias,

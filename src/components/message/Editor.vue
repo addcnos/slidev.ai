@@ -5,7 +5,10 @@
     </div>
     <div class="input-panel">
       <textarea placeholder="请输入内容" rows="2"></textarea>
-      <button><div>Send</div></button>
+      <!-- <button><div>Send</div></button> -->
+      <Button
+        label="Submit"
+      >Send</Button>
     </div>
   </div>
 </template>
@@ -69,38 +72,30 @@
       outline: none;
       box-sizing: border-box;
       min-height: 68px;
+
+      &::-webkit-scrollbar {
+        width: 2px;
+      }
+
+      &::-webkit-scrollbar-track {
+        background: #dedede;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        background: #dedede;
+      }
+
+      &::-webkit-scrollbar-thumb:hover {
+        background: #dedede;
+      }
     }
 
-    textarea::-webkit-scrollbar {
-      width: 2px;
-    }
-
-    textarea::-webkit-scrollbar-track {
-      background: #dedede;
-    }
-
-    textarea::-webkit-scrollbar-thumb {
-      background: #dedede;
-    }
-
-    textarea::-webkit-scrollbar-thumb:hover {
-      background: #dedede;
-    }
-
-    button {
-      background-color: #007aff;
-      color: #fff;
-      bottom: 10px;
-      position: absolute;
-      right: 10px;
-      padding: 16px;
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      outline: none;
-      border: none;
+    :deep() {
+      .p-button {
+        width: 100px;
+        margin: 12px 4px 0 0;
+        height: 40px;
+      }
     }
   }
 }
