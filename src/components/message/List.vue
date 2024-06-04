@@ -6,7 +6,7 @@
           <div class="content">
             {{ item.content }}
           </div>
-          <div class="date">{{ dayjs(item.timestamp).format('YYYY-MM-DD') }}</div>
+          <div class="date">{{ dayjs(item.timestamp).format('YYYY-MM-DD HH:mm:ss') }}</div>
         </div>
       </div>
     </div>
