@@ -1,6 +1,7 @@
-import { app, BrowserWindow, ipcMain, session } from 'electron';
+import { app, BrowserWindow, session } from 'electron';
 import path from 'path';
-import { createExpress, slidevTempFiles, createModel } from '@main/composables'
+import { createExpress, ipcHandle } from '@main/composables'
+
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {
   app.quit();
@@ -25,21 +26,6 @@ const createWindow = async () => {
     details.requestHeaders['Cross-Origin-Resource-Policy'] = 'cross-origin';
     callback({ cancel: false, requestHeaders: details.requestHeaders });
   });
-  // 拦截响应并添加CORS头
-  session.defaultSession.webRequest.onBeforeSendHeaders((details, callback) => {
-    if (details.url.startsWith('https://one-api.system.addcn.com')) {
-      details.requestHeaders['Origin'] = 'http://localhost:5173';
-    }
-    callback({ requestHeaders: details.requestHeaders });
-  });
-  session.defaultSession.webRequest.onHeadersReceived((details, callback) => {
-    if (details.url.startsWith('https://one-api.system.addcn.com')) {
-      details.responseHeaders['Access-Control-Allow-Origin'] = ['*'];
-      details.responseHeaders['Access-Control-Allow-Methods'] = ['GET, POST, PUT, DELETE, OPTIONS'];
-      details.responseHeaders['Access-Control-Allow-Headers'] = ['Content-Type, Authorization'];
-    }
-    callback({ responseHeaders: details.responseHeaders });
-  });
 
   if (MAIN_WINDOW_VITE_DEV_SERVER_URL) {
     mainWindow.loadURL(MAIN_WINDOW_VITE_DEV_SERVER_URL);
@@ -53,17 +39,10 @@ const createWindow = async () => {
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
-// app.on('ready', createWindow);
+
 app.whenReady().then(() => {
   createExpress();
-  ipcMain.handle('read-files', async () => {
-    const files = await slidevTempFiles();
-    return files;
-  })
-  ipcMain.handle('create-model', async (event, option) => {
-    createModel(mainWindow, option);
-  })
-
+  ipcHandle(mainWindow)
 }).then(createWindow);
 
 // Quit when all windows are closed, except on macOS. There, it's common
