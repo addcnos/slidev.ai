@@ -2,7 +2,6 @@ import { app, BrowserWindow } from 'electron';
 import express from 'express';
 import path from 'path';
 import fs from 'fs-extra';
-import { openaiProxy } from './openai'
 import { createProxyMiddleware } from 'http-proxy-middleware'
 import cors from 'cors'
 
