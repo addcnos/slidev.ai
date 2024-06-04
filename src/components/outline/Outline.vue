@@ -7,7 +7,9 @@
 
     <!-- 大纲内容 -->
     <div class="outline-ctn">
+      <!-- 骨架屏 -->
       <OutlineSkeleton v-if="loading && !treeData?.length" :length="count" />
+      <!-- 大纲内容 -->
       <Draggable class="mtl-tree" v-model="treeData" treeLine>
         <template #default="{ node, stat }">
           <OpenIcon
@@ -34,43 +36,6 @@ import OutlineSkeleton from './OutlineSkeleton.vue';
 const { outline, loading } = useAiStore();
 const { count } = useOutlineStore();
 const treeData = computed(() => unref(outline).content);
-
-// const treeData = ref([
-//   {
-//     text: 'Projects',
-//     children: [
-//       {
-//         text: 'Frontend',
-//         children: [
-//           {
-//             text: 'Vue',
-//             children: [
-//               {
-//                 text: 'Nuxt',
-//               },
-//             ],
-//           },
-//           {
-//             text: 'React',
-//             children: [
-//               {
-//                 text: 'Next',
-//               },
-//             ],
-//           },
-//           {
-//             text: 'Angular',
-//           },
-//         ],
-//       },
-//       {
-//         text: 'Backend',
-//       },
-//     ],
-//   },
-//   { text: 'Photos' },
-//   { text: 'Videos' },
-// ]);
 
 function changeInput(value: string) {
 

@@ -23,8 +23,17 @@ export const useAiStore = createSharedComposable(() => {
     content: '',
   })
 
+  function resetOutline() {
+    outline.value = {
+      version: 1,
+      session: [],
+      content: [],
+    }
+  }
+
   async function initOutlineContent(subject: string) {
     const prompt = genOutlineBySubjectPrompt(subject)
+    resetOutline()
     outline.value.session.push({
       role: Role.System,
       timestamp: +Date.now(),
@@ -99,8 +108,6 @@ export const useAiStore = createSharedComposable(() => {
       return item
     })
   }
-
-  freeSession('你好呀')
 
   return {
     initOutlineContent,

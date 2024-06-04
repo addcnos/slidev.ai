@@ -1,5 +1,7 @@
+import { Outline } from "@renderer/types/outline"
+import { stringifyOutline } from "../transform/outline"
 
-export function genSlidevByContentPrompt() {
+export function genSlidevByContentPrompt(outline: Outline[]) {
   return [
     '我希望你充当 Slidev 代码生成器，我会将大纲发送给你，你需要根据大纲生成对应的 slidev markdown 代码。',
     '',
@@ -18,6 +20,9 @@ export function genSlidevByContentPrompt() {
     '1. 我需要你直接输出 markdown，并且严格按照 slidev 的格式。',
     '2. 不允许在 markdown 外有其他文字',
     '3. 回复需要使用中文',
+    '',
+    '我的大纲是：',
+    stringifyOutline(outline)
   ].join('\n')
 }
 

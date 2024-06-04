@@ -22,7 +22,7 @@
       <!-- 主题 -->
       <InputText  v-model="theme" />
       <!-- 初始化 -->
-      <Button icon="pi pi-sync" aria-label="Submit" @click="initOutline" />
+      <Button :disabled="loading" icon="pi pi-sync" aria-label="Submit" @click="initOutline" />
     </div>
   </div>
 </template>
@@ -32,7 +32,7 @@ import { unref } from 'vue';
 import { useOutlineStore, useAiStore } from '@renderer/store';
 
 const { count, theme } = useOutlineStore();
-const { initOutlineContent, outline } = useAiStore();
+const { initOutlineContent, outline, loading } = useAiStore();
 
 /**
  * @description 修改页数
