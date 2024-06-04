@@ -14,6 +14,7 @@ export interface Outline {
 export interface OutlineStore {
   version: number
   session: GptSessionContext[],
+  title: string,
   content: Outline[],
 }
 

@@ -15,6 +15,7 @@ export const useAiStore = createSharedComposable(() => {
   const outline = ref<OutlineStore>({
     version: 1,
     session: [],
+    title: '',
     content: [],
   })
   const chat = ref<ChatStore>({
@@ -27,6 +28,7 @@ export const useAiStore = createSharedComposable(() => {
     outline.value = {
       version: 1,
       session: [],
+      title: '',
       content: [],
     }
   }

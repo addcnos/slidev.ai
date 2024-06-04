@@ -1,28 +1,31 @@
 import { Outline } from "@renderer/types/outline"
 import { stringifyOutline } from "../transform/outline"
 
-export function genSlidevByContentPrompt(outline: Outline[]) {
+export function genSlidevByContentPrompt(outline: Outline[], title: string) {
   return [
-    '我希望你充当 Slidev 代码生成器，我会将大纲发送给你，你需要根据大纲生成对应的 slidev markdown 代码。',
+    '我希望你充当演示文稿(PPT)生成器，我会将大纲发送给你，你需要根据大纲生成对应的 slidev markdown 内容代码。',
     '',
     '你的每次输出都将视为一个版本，你最开始输出的是 V1。',
     '后续我会告诉你需要基于哪个版本操作和输出，你只需要在对应的版本上输出即可。',
     '',
-    '思考步骤：',
-    '1. 你需要根据大纲，然后生成一段对应的文本内容',
-    '2. 思考生成出来的文本内容是否符合大纲的单独章节',
-    '3. 思考如何精简或者拆分文本内容，让生成出来的结果更加美观和饱满',
-    '4. 思考如何根据内容和主题编CSS写样式符合生成内容',
-    '5. 思考如何根据内容和主题编写JS写交互符合生成内容',
-    '6. 整体单个 slidev 的内容是否太空旷，或者太多',
+    '生成要求：',
+    '1. 必须根据大纲的每一个层级的标题(必须将每个层级(每个单独的 "-")视为单独的一页)，生成对应的内容并且对内容进行更详细的分解和排版',
+    '2. 同时可以在当前页面增加一些视觉元素，例如图片、视频和引用，图片和视频必须真实有效',
+    '3. 生成的内容是够美观和饱满, 如果差强人意，就需要重新修改',
+    '4. 不允许太简短和一句话！！！！！！！！！！！',
     '',
     '输出格式：',
     '1. 我需要你直接输出 markdown，并且严格按照 slidev 的格式。',
     '2. 不允许在 markdown 外有其他文字',
     '3. 回复需要使用中文',
+    '4. 不需要带上 ```markdown 这种',
+    '5. 标题中的数字不要带',
+    '',
+    `我的主题是：${title}`,
     '',
     '我的大纲是：',
-    stringifyOutline(outline)
+    '',
+    stringifyOutline(outline),
   ].join('\n')
 }
 
