@@ -32,7 +32,7 @@ export const useAiStore = createSharedComposable(() => {
     ]
     const completion = await openai.chat.completions.create({
       model: 'gpt-4o',
-      messages: [{ role: 'user', content: genOutlineBySubjectPrompt(subject) }],
+      messages: normalizeSession2Gpt(outline.value.session),
     });
     outline.value.session.push({
       role: Role.Gpt,
