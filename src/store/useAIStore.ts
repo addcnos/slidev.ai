@@ -11,6 +11,7 @@ import { nanoid } from 'nanoid'
 axios.defaults.baseURL = 'http://localhost:3030'
 
 export const useAiStore = createSharedComposable(() => {
+  const loading = ref<boolean>(false)
   const outline = ref<OutlineStore>({
     version: 1,
     session: [],
@@ -30,10 +31,12 @@ export const useAiStore = createSharedComposable(() => {
       content: prompt,
       id: nanoid(),
     })
+    loading.value = true
     const completion = await openai.chat.completions.create({
       model: 'gpt-4o',
       messages: normalizeSession2Gpt(outline.value.session),
     });
+    loading.value = false
     outline.value.session.push({
       role: Role.Gpt,
       timestamp: +Date.now(),
@@ -42,7 +45,6 @@ export const useAiStore = createSharedComposable(() => {
       id: nanoid(),
     })
     outline.value.content = normalizeGpt2Outline(completion.choices[0].message.content)
-    console.log(completion);
   }
 
   async function modifyOutlineContent(modify: Outline[]) {
@@ -106,6 +108,7 @@ export const useAiStore = createSharedComposable(() => {
     modifyOutlineContent,
     freeSession,
     chat,
+    loading
   }
 })
 
