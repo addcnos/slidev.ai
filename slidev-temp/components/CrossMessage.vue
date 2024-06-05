@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { watchDebounced  } from '@vueuse/core'
 import { MESSAGE_TYPE } from './constants'
-
 const MESSAGE_TYPE = {
   update: 'update',
   changePageNo: 'changePageNo',
@@ -29,6 +28,9 @@ watchDebounced (() => $slidev, (value) => {
   deep: true,
   debounce: 1000
 })
+
+messageToParentClient({}, 'loaded')
+
 </script>
 
 <template>

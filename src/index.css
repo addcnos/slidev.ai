@@ -21,6 +21,5 @@ body {
 #electron-app {
   display: flex;
   flex-direction: column;
-  height: calc(100% - 28px);
-  padding: 14px;
+  height: 100%;
 }
