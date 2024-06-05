@@ -9,7 +9,7 @@
           <span class="txt">{{ content }}</span>
         </div>
       </div>
-      <iframe v-if="iframeSrc" v-show="loaded" class="wrap" :src="iframeSrc" allow="fullscreen" ref="iframeRef" />
+      <iframe v-if="iframeSrc" v-show="loaded" class="wrap" :src="iframeSrc" :allow="iframeAllow" ref="iframeRef" />
     </div>
     <div class="write-card" :class="{'hide': !extend}">
       <div class="toggle-btn" v-if="!extend" @click="extend = true">
@@ -31,7 +31,7 @@ import Message from './components/message/index.vue'
 import { useCrossMessage } from '@renderer/composables'
 import { useDebounceFn } from '@vueuse/core'
 import { useMessage } from './composables/message';
-
+const iframeAllow = 'fullscreen; geolocation; encrypted-media;'
 const { extend } = useMessage()
 const loaded = ref(false)
 const { iframeRef, subscribe } = useCrossMessage()
