@@ -53,9 +53,7 @@ window.addEventListener('message', (event) => {
       if (count.value === 0) onLoad()
       count.value++
     }
-  } catch (error) {
-    console.log('🚀 ~ file: slidev.vue ~ line 86 ~ window.addEventListener ~ error', error)
-  }
+  } catch {}
 })
 
 </script>
