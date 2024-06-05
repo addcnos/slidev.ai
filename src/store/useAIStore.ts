@@ -8,7 +8,6 @@ import { ref } from "vue";
 import { ChatStore, Role } from "@renderer/types/chat";
 import { normalizeSession2Gpt } from "@renderer/utils/transform/common";
 import { nanoid } from 'nanoid'
-axios.defaults.baseURL = 'http://localhost:3030'
 
 export const useAiStore = createSharedComposable(() => {
   const loading = ref<boolean>(false)

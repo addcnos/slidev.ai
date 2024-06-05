@@ -1,5 +1,7 @@
 import { Outline } from "@renderer/types/outline"
 import { stringifyOutline } from "../transform/outline"
+import { ChatCompletion } from "openai/resources/chat/completions"
+import { Role } from "@renderer/types/chat"
 
 export function genSlidevByContentPrompt(outline: Outline[], title: string) {
   return [
@@ -38,4 +40,10 @@ export function iterationModifySlidevPrompt(version: number) {
     '',
     `以下是我修改后的 Slidev 代码：`,
   ].join('\n')
+}
+
+export function presetSliveSyntaxPrompt() {
+  return [
+    { role: Role.System, content: '' },
+  ] as unknown as ChatCompletion.Choice['message'][]
 }
