@@ -19,6 +19,7 @@ const createWindow = async () => {
       webSecurity: true,
       preload: path.join(__dirname, 'preload.js')
     },
+    icon: path.join(__dirname, '../../icons/icon.png')
   });
 
   // 拦截请求并添加CORS头
@@ -43,6 +44,10 @@ const createWindow = async () => {
 app.whenReady().then(() => {
   createExpress();
   ipcHandle(mainWindow)
+  // 设置 macOS 任务栏图标
+  if (process.platform === 'darwin') {
+    app.dock.setIcon(path.join(__dirname, '../../icons/icon.png'));
+  }
 }).then(createWindow);
 
 // Quit when all windows are closed, except on macOS. There, it's common

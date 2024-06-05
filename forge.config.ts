@@ -12,6 +12,7 @@ const config: ForgeConfig = {
     asar: true,
     appBundleId: 'com.slidev.ai.app',
     extraResource: ['./slidev-temp', "node_modules/@webcontainer"],
+    icon: './icons/icon'
   },
   rebuildConfig: {},
   makers: [new MakerSquirrel({}), new MakerZIP({}, ['darwin']), new MakerRpm({}), new MakerDeb({})],
