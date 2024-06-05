@@ -13,6 +13,14 @@ export const createExpress = async () => {
     credentials: true, // 如果需要发送凭证（如 cookies）
   }));
 
+  // 设置 COOP 和 COEP 头
+  server.use((req, res, next) => {
+    res.setHeader('Cross-Origin-Opener-Policy', 'same-origin');
+    res.setHeader('Cross-Origin-Embedder-Policy', 'require-corp');
+    next();
+  });
+
+
   // 配置代理中间件
   server.use('/api', createProxyMiddleware({
     target: 'https://one-api.system.addcn.com/v1',
