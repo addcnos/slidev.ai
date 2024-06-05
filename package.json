@@ -63,6 +63,7 @@
     "eslint-import-resolver-alias": "^1.1.2",
     "express": "4.19.2",
     "fs-extra": "^11.2.0",
+    "get-port": "^7.1.0",
     "http-proxy-middleware": "^3.0.0",
     "nanoid": "^4.0.1",
     "openai": "^4.47.3",

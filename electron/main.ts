@@ -8,8 +8,9 @@ if (require('electron-squirrel-startup')) {
 }
 
 const ICON_PATH = path.join(__dirname, '../../icons/icon.png');
-
 let mainWindow: BrowserWindow | null = null;
+let serverPort: number;
+
 const createWindow = async () => {
   // Create the browser window.
   mainWindow = new BrowserWindow({
@@ -33,7 +34,7 @@ const createWindow = async () => {
   if (MAIN_WINDOW_VITE_DEV_SERVER_URL) {
     mainWindow.loadURL(MAIN_WINDOW_VITE_DEV_SERVER_URL);
   } else {
-    mainWindow.loadURL('http://localhost:3030/index.html');
+    mainWindow.loadURL(`http://localhost:${serverPort}/index.html`);
   }
 
   // Open the DevTools.
@@ -44,14 +45,17 @@ const createWindow = async () => {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 
-app.whenReady().then(() => {
-  createExpress();
-  ipcHandle(mainWindow)
+app.whenReady().then(async () => {
+  const { port } = await createExpress();
+  serverPort = port;
   // dev环境 设置 macOS 任务栏图标
   if (process.platform === 'darwin' && !app.isPackaged) {
     app.dock.setIcon(ICON_PATH);
   }
-}).then(createWindow);
+}).then(createWindow).then(() => {
+  ipcHandle(mainWindow)
+
+});
 
 // Quit when all windows are closed, except on macOS. There, it's common
 // for applications and their menu bar to stay active until the user quits

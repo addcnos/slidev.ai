@@ -4,8 +4,9 @@ import { createProxyMiddleware } from 'http-proxy-middleware'
 import cors from 'cors'
 
 export const createExpress = async () => {
-  // if (!app.isPackaged) return
   const server = express();
+  const getPort = await import('get-port').then((m) => m.default);
+  const port = await getPort({ port: 3030 });
 
   server.use(cors({
     origin: 'http://localhost:5173', // 允许的来源
@@ -28,7 +29,8 @@ export const createExpress = async () => {
   }));
 
   server.use(express.static(path.join(__dirname, `../renderer/${MAIN_WINDOW_VITE_NAME}/`)));
-  server.listen(3030, () => {
-    console.log(`Server running at http://localhost:${3030}/`);
+  server.listen(port, () => {
+    console.log(`Server running at http://localhost:${port}/`);
   });
+  return { port }
 }
