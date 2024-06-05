@@ -2,13 +2,16 @@
   <div class="header">
     <div class="title">聊天框</div>
     <button @click="handleChangePageNo">切换页签</button>
+    <i @click="extend = false" class="pi pi-angle-right" style="font-size: 20px;cursor: pointer;"></i>
   </div>
 </template>
 
 <script setup lang="ts">
 import { useCrossMessage } from './../../composables/cross-message'
+import { useMessage } from './../../composables/message';
 
 const { messageToIframe } = useCrossMessage()
+const { extend } = useMessage()
 
 function handleChangePageNo() {
   messageToIframe({
@@ -21,12 +24,12 @@ function handleChangePageNo() {
 
 <style lang="scss" scoped>
 .header {
-  padding: 14px 20px;
-  border-bottom: 1px solid rgba(0, 0, 0, .1);
   position: relative;
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
+  padding: 14px 20px;
   text-align: center;
+  border-bottom: 1px solid rgb(0 0 0 / 10%);
 }
 </style>

@@ -11,13 +11,11 @@
       </div>
       <iframe v-if="iframeSrc" v-show="loaded" class="wrap" :src="iframeSrc" allow="fullscreen" ref="iframeRef" />
     </div>
-    <div class="write-card">
+    <div class="write-card" :class="{'hide': !extend}">
+      <div class="toggle-btn" v-if="!extend" @click="extend = true">
+        <i class="pi pi-angle-left" style="font-size: 20px;"></i>
+      </div>
       <Message />
-      <!-- <div class="btns">
-        <button class="sync" @click="onWrite">写入文件</button>
-        <button class="submit" @click="onRead">读取文件</button>
-        <Button @click="visible = true">展示大纲</Button>
-      </div> -->
     </div>
 
     <OutLine />
@@ -26,13 +24,15 @@
 
 <script setup>
 import { nextTick, ref } from 'vue'
-import { useAiStore, useOutlineStore } from '@renderer/store'
+import { useAiStore } from '@renderer/store'
 import { iframeSrc, serverProcess, serverProcessMap } from '@main/webcontainer'
 import OutLine from './components/outline/index.vue'
 import Message from './components/message/index.vue'
 import { useCrossMessage } from '@renderer/composables'
 import { useDebounceFn } from '@vueuse/core'
-const { visible } = useOutlineStore()
+import { useMessage } from './composables/message';
+
+const { extend } = useMessage()
 const loaded = ref(false)
 const { iframeRef, subscribe } = useCrossMessage()
 subscribe()
@@ -65,7 +65,6 @@ window.addEventListener('message', (event) => {
 
   .slidev-container {
     flex: 1;
-    margin-right: 12px;
     background: linear-gradient(90deg, rgb(36 36 62 / 100%) 0%, rgb(69 62 141 / 100%) 50%, rgb(15 12 41 / 100%) 100%);
     /* stylelint-disable-next-line max-line-length */
     // background: linear-gradient(90deg, rgb(240 172 247 / 100%) 0%, rgb(172 247 240 / 100%) 50%, rgb(247 240 172 / 100%) 100%);
@@ -93,11 +92,13 @@ window.addEventListener('message', (event) => {
   }
 
   .write-card {
+    position: relative;
     display: flex;
     flex-direction: column;
     flex-shrink: 0;
     width: 300px;
     height: 100%;
+    transition: 0.5s;
 
     &-ctn {
       position: relative;
@@ -115,6 +116,34 @@ window.addEventListener('message', (event) => {
       justify-content: space-around;
       margin: 10px 0;
     }
+
+    .toggle-btn {
+      position: absolute;
+      top: 50%;
+      right: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 76px;
+      font-size: 20px;
+      text-align: center;
+      cursor: pointer;
+      background: #fff;
+      border: 1.5px solid #e0e0e0;
+      border-radius: 8px 0 0 8px;
+      box-shadow: -16px 2px 20px #0000001a;
+      transform: translateY(-50%);
+
+      &:hover {
+        background: #f0f0f0;
+      }
+    }
+  }
+
+  .hide {
+    width: 0;
+    transform: translate(100%);
   }
 }
 </style>

@@ -10,15 +10,14 @@
 import Header from './Header.vue';
 import List from './List.vue';
 import Editor from './Editor.vue';
-
 </script>
 
 <style lang="scss" scoped>
 .message-container {
-  height: 100%;
-  width: 100%;
+  position: relative;
   display: flex;
   flex-direction: column;
-  position: relative;
+  width: 100%;
+  height: 100%;
 }
 </style>
