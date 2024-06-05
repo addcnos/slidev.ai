@@ -7,6 +7,8 @@ if (require('electron-squirrel-startup')) {
   app.quit();
 }
 
+const ICON_PATH = path.join(__dirname, '../../icons/icon.png');
+
 let mainWindow: BrowserWindow | null = null;
 const createWindow = async () => {
   // Create the browser window.
@@ -19,7 +21,7 @@ const createWindow = async () => {
       webSecurity: true,
       preload: path.join(__dirname, 'preload.js')
     },
-    icon: path.join(__dirname, '../../icons/icon.png')
+    icon: app.isPackaged ? '' : ICON_PATH
   });
 
   // 拦截请求并添加CORS头
@@ -33,6 +35,7 @@ const createWindow = async () => {
   } else {
     mainWindow.loadURL('http://localhost:3030/index.html');
   }
+
   // Open the DevTools.
   mainWindow.webContents.openDevTools();
 };
@@ -44,9 +47,9 @@ const createWindow = async () => {
 app.whenReady().then(() => {
   createExpress();
   ipcHandle(mainWindow)
-  // 设置 macOS 任务栏图标
-  if (process.platform === 'darwin') {
-    app.dock.setIcon(path.join(__dirname, '../../icons/icon.png'));
+  // dev环境 设置 macOS 任务栏图标
+  if (process.platform === 'darwin' && !app.isPackaged) {
+    app.dock.setIcon(ICON_PATH);
   }
 }).then(createWindow);
 
