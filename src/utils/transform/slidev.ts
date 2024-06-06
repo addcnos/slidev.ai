@@ -1,14 +1,13 @@
-import { SlidevBlock, SlidevBlockType } from "@renderer/types/slidev"
-import { parse } from "../parser/slidev"
+import { parse, stringifySlide } from "../parser/slidev"
+import { SourceSlideInfo } from "@slidev/types"
 
 const CROSS_COMPONENT = '<CrossMessage />'
 
-// TODO 解析 Markdown 为 JSON
 export async function normalizeSlidev2Json(code: string) {
+  code = code.replace(new RegExp(CROSS_COMPONENT, 'g'), '')
   return (await parse(code, '11')).slides
 }
 
-export function normalizeSlidev2Markdown(slides: SlidevBlock[]) {
-  const filter = slides.filter(slide => slide.type !== SlidevBlockType.CrossComponent)
-  return `${filter.map(slide => slide.content).join('\n---\n')}${CROSS_COMPONENT}`
+export function normalizeSlidev2Markdown(slides: SourceSlideInfo[]) {
+  return `${slides.map(stringifySlide).join('\n').trim()}\n ${CROSS_COMPONENT}\n`
 }
