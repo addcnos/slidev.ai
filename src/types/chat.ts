@@ -28,6 +28,8 @@ export interface GptSessionContext {
 }
 
 export enum FlowOperate {
+  /** 预设模板 */
+  Preset,
   /** 初始化 */
   Init,
   /** 样式 */

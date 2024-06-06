@@ -33,7 +33,7 @@ const { freeSession, outline, loading } = useAiStore();
 function onSave() {
   console.log('onSave');
   visible.value = false;
-  freeSession(genSlidevByContentPrompt(unref(outline)?.content));
+  freeSession(genSlidevByContentPrompt(unref(outline)?.content, unref(outline)?.title));
 }
 
 function onCancel() {

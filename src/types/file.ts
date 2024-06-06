@@ -1,6 +1,6 @@
-import { Message } from "./chat"
+import { SourceSlideInfo } from "@slidev/types"
 import { Outline } from "./outline"
-import { SlidevBlock } from "./slidev"
+import { ChatSessionContext } from "./chat"
 
 /**
  * 流程步骤
@@ -30,7 +30,7 @@ export interface JsonFile {
   /** 会话相关状态 ID */
   session: Record<Partial<SessionName>, string>,
   /** Slidev 内容 */
-  content: SlidevBlock[],
+  content: SourceSlideInfo[],
   /** Chat */
-  chat: Message[]
+  chat: ChatSessionContext[]
 }

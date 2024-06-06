@@ -1,7 +1,6 @@
 import { createSharedComposable } from "@vueuse/core";
 import { openai } from "../api/openai";
 import { genOutlineBySubjectPrompt, iterationModifyOutlinePrompt } from '../utils/prompt/outline'
-import axios from "axios";
 import { normalizeGpt2Outline } from "@renderer/utils/transform/outline";
 import { Outline, OutlineStore } from "@renderer/types/outline";
 import { ref } from "vue";
@@ -110,13 +109,27 @@ export const useAiStore = createSharedComposable(() => {
     })
   }
 
+  async function usePreset() {
+    const files = import.meta.glob('/src/assets/preset/*.md', {
+      query: '?raw',
+      import: 'default',
+    })
+    const keys = Object.keys(files)
+    const key = keys[Math.floor(Math.random() * keys.length)]
+    const content = await files[key]()
+    return content
+  }
+
+  usePreset()
+
   return {
     initOutlineContent,
     outline,
     modifyOutlineContent,
     freeSession,
     chat,
-    loading
+    loading,
+    usePreset
   }
 })
 
