@@ -7,6 +7,7 @@ import { ref } from "vue";
 import { ChatStore, Role } from "@renderer/types/chat";
 import { normalizeSession2Gpt } from "@renderer/utils/transform/common";
 import { nanoid } from 'nanoid'
+import { normalizeSlidev2Json } from "@renderer/utils/transform/slidev";
 
 export const useAiStore = createSharedComposable(() => {
   const loading = ref<boolean>(false)
@@ -99,17 +100,19 @@ export const useAiStore = createSharedComposable(() => {
       model: 'gpt-4o',
       messages: normalizeSession2Gpt(chat.value.session),
     });
-    chat.value.session.map((item) => {
+    chat.value.session.map(async (item) => {
       if (item.id === gptChatId) {
         item.loading = false
         item.content = completion.choices[0].message.content
         item.source = completion.choices[0]
+        console.log(await normalizeSlidev2Json(completion.choices[0].message.content))
       }
       return item
     })
   }
 
   async function usePreset() {
+    // eslint-disable-next-line no-undef
     const files = import.meta.glob('/src/assets/preset/*.md', {
       query: '?raw',
       import: 'default',
@@ -120,7 +123,6 @@ export const useAiStore = createSharedComposable(() => {
     return content
   }
 
-  usePreset()
 
   return {
     initOutlineContent,

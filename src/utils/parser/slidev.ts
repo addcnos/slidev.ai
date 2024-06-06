@@ -113,7 +113,7 @@ export function parseSlide(raw: string): Omit<SourceSlideInfo, 'filepath' | 'ind
 
 export async function parse(
   markdown: string,
-  filepath: string,
+  filepath?: string,
   extensions?: SlidevPreparserExtension[],
 ): Promise<SlidevMarkdown> {
   const lines = markdown.split(/\r?\n/g)

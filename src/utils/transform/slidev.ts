@@ -5,7 +5,7 @@ const CROSS_COMPONENT = '<CrossMessage />'
 
 export async function normalizeSlidev2Json(code: string) {
   code = code.replace(new RegExp(CROSS_COMPONENT, 'g'), '')
-  return (await parse(code, '11')).slides
+  return (await parse(code)).slides
 }
 
 export function normalizeSlidev2Markdown(slides: SourceSlideInfo[]) {

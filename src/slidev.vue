@@ -19,12 +19,13 @@
     </div>
 
     <OutLine />
+    <button @click="visible = true">打开</button>
   </div>
 </template>
 
 <script setup>
 import { nextTick, ref } from 'vue'
-import { useAiStore } from '@renderer/store'
+import { useAiStore, useOutlineStore } from '@renderer/store'
 import { iframeSrc, serverProcess, serverProcessMap } from '@main/webcontainer'
 import OutLine from './components/outline/index.vue'
 import Message from './components/message/index.vue'
@@ -38,6 +39,7 @@ const { iframeRef, subscribe } = useCrossMessage()
 subscribe()
 useAiStore()
 
+const { visible } = useOutlineStore()
 const count = ref(0)
 const onLoad = useDebounceFn(() => {
   nextTick(() => {

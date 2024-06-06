@@ -6,7 +6,7 @@ export function stringifyOutline(outline: Outline[]): string {
   let result = '';
   function dfs(outline: Outline, level: number) {
     result += `${'  '.repeat(level)}- ${outline.order} ${outline.title}${outline.expanded ? ' <!-- 扩写 -->' : ''}\n`;
-    outline.children.forEach(child => dfs(child, level + 1));
+    outline.children?.forEach(child => dfs(child, level + 1));
   }
   outline.forEach(item => dfs(item, 0));
   return result;
