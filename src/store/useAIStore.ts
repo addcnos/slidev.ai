@@ -11,6 +11,7 @@ import { normalizeSlidev2Json } from "@renderer/utils/transform/slidev";
 
 export const useAiStore = createSharedComposable(() => {
   const loading = ref<boolean>(false)
+  const preset = ref<string[]>([])
   const outline = ref<OutlineStore>({
     version: 1,
     session: [],
@@ -118,11 +119,13 @@ export const useAiStore = createSharedComposable(() => {
       import: 'default',
     })
     const keys = Object.keys(files)
-    const key = keys[Math.floor(Math.random() * keys.length)]
-    const content = await files[key]()
-    return content
+    for (const key of keys) {
+      const content = await files[key]() as string
+      preset.value.push(content)
+    }
   }
 
+  usePreset()
 
   return {
     initOutlineContent,
@@ -131,7 +134,8 @@ export const useAiStore = createSharedComposable(() => {
     freeSession,
     chat,
     loading,
-    usePreset
+    usePreset,
+    preset
   }
 })
 

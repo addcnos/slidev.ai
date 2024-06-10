@@ -3,6 +3,14 @@ import { stringifyOutline } from "../transform/outline"
 import { ChatCompletion } from "openai/resources/chat/completions"
 import { Role } from "@renderer/types/chat"
 
+export function initUsePreset(preset: string) {
+  return [
+    '以下是预设模板，你可以参考这个模板来生成你的 Slidev 代码。',
+    `以下是预设的 Slidev 代码：`,
+    preset,
+  ].join('\n')
+}
+
 export function genSlidevByContentPrompt(outline: Outline[], title: string) {
   return [
     '我希望你充当演示文稿(PPT)生成器，我会将大纲发送给你，你需要根据大纲生成对应的 slidev markdown 内容代码。',
@@ -12,7 +20,7 @@ export function genSlidevByContentPrompt(outline: Outline[], title: string) {
     '',
     '生成要求：',
     '1. 必须根据大纲的每一个层级的标题(必须将每个层级(每个单独的 "-")视为单独的一页)，生成对应的内容并且对内容进行更详细的分解和排版',
-    '2. 同时可以在当前页面增加一些视觉元素，例如图片、视频和引用，图片和视频必须真实有效',
+    '2. 同时可以在当前页面增加一些视觉元素，例如图片、视频和引用',
     '3. 生成的内容是够美观和饱满, 如果差强人意，就需要重新修改',
     '4. 不允许太简短和一句话！！！！！！！！！！！',
     '',
