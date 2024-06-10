@@ -11,3 +11,11 @@ export async function normalizeSlidev2Json(code: string) {
 export function normalizeSlidev2Markdown(slides: SourceSlideInfo[]) {
   return `${slides.map(stringifySlide).join('\n').trim()}\n ${CROSS_COMPONENT}\n`
 }
+
+
+export async function refreshAfterComparison(pre: string, cur: string) {
+  const preSlides = await normalizeSlidev2Json(pre)
+  const curSlides = await normalizeSlidev2Json(cur)
+
+  return preSlides.length !== curSlides.length
+}

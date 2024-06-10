@@ -1,7 +1,5 @@
 import { Outline } from "@renderer/types/outline"
 import { stringifyOutline } from "../transform/outline"
-import { ChatCompletion } from "openai/resources/chat/completions"
-import { Role } from "@renderer/types/chat"
 
 export function initUsePreset(preset: string) {
   return [
@@ -39,7 +37,6 @@ export function genSlidevByContentPrompt(outline: Outline[], title: string) {
   ].join('\n')
 }
 
-
 export function iterationModifySlidevPrompt(version: number) {
   // 用户每次手动修改后的 Slidev 代码，不一定要喂给GPT，一般都是通过美化命令和辅助命令来修改的。所以这里需要拆分成多个 prompt
   return [
@@ -50,8 +47,3 @@ export function iterationModifySlidevPrompt(version: number) {
   ].join('\n')
 }
 
-export function presetSliveSyntaxPrompt() {
-  return [
-    { role: Role.System, content: '' },
-  ] as unknown as ChatCompletion.Choice['message'][]
-}
