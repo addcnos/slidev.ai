@@ -46,6 +46,9 @@ export const useAiStore = createSharedComposable(() => {
     const completion = await openai.chat.completions.create({
       model: 'gpt-4o',
       messages: normalizeSession2Gpt(outline.value.session),
+      response_format: {
+        type: 'json_object',
+      }
     });
     loading.value = false
     outline.value.session.push({

@@ -50,6 +50,7 @@ export async function toolSession(
   const result = await runner.finalChatCompletion();
 
   session.pop()
+  // TODO 可能要加一个工具消息进入
   session.push({
     role: Role.Gpt,
     timestamp: +Date.now(),
