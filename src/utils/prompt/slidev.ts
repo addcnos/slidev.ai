@@ -37,3 +37,41 @@ export function genSingleSlidevPrompt(title: string, process: string) {
     'Please generate the content of the current page according to the requirements',
   ].join('\n')
 }
+
+export function instertSlidevPrompt(
+  title: string,
+  position: string,
+  process: string
+) {
+  return [
+    'The current page is: ' + title,
+    'The current process in after inserting is: ' + process,
+    'The current page is the ' + position + ' page',
+    'Please insert the content of the current page according to the requirements',
+  ].join('\n')
+}
+
+export function beautifySlidevPrompt(title: string, process: string) {
+  return [
+    'The current page is: ' + title,
+    'The current process is: ' + process,
+    'I think the content here is not very satisfied, you can modify it again to make the content more rich'
+  ].join('\n')
+}
+
+export function expendSlidevPrompt(title: string, process: string) {
+  return [
+    'The current page is: ' + title,
+    'The current process is: ' + process,
+    'I think the content here is too little, you can expand it in more detail'
+  ].join('\n')
+}
+
+export function polishSlidevPrompt(title: string, process: string) {
+  return [
+    'The current page is: ' + title,
+    'The current process is: ' + process,
+    // 我觉得这里的内容太生硬了，你可以再修改一下，让内容更加通顺
+    'I think the content here is too stiff, you can modify it again to make the content smoother'
+  ].join('\n')
+}
