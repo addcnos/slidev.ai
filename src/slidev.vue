@@ -2,8 +2,10 @@
   <div class="slidev-wrap">
     <div class="slidev-container">
       <div class="spin-pane" v-show="!loaded">
-        <ProgressSpinner style="width: 30px; height: 30px;" strokeWidth="8" animationDuration="3s"
-          aria-label="Custom ProgressSpinner" />
+        <div class="toolbar">
+          <span class="item" :class="{ active: currentBg === key }" v-for="(item, key) in bgVideos" :key="key" @click="currentBg = key">{{ item.name }}</span>
+        </div>
+        <video class="bg" :src="currentBgVideo" autoplay loop muted playsinline></video>
         <div class="spin-pane-item" v-show="serverProcess === +key" v-for="(content, key) in serverProcessMap"
           :key="key">
           <span class="txt">{{ content }}</span>
@@ -11,7 +13,7 @@
       </div>
       <iframe v-if="iframeSrc" v-show="loaded" class="wrap" :src="iframeSrc" :allow="iframeAllow" ref="iframeRef" />
     </div>
-    <div class="write-card" :class="{'hide': !extend}">
+    <div class="write-card" :class="{ 'hide': !extend }">
       <div class="toggle-btn" v-if="!extend" @click="extend = true">
         <i class="pi pi-angle-left" style="font-size: 20px;"></i>
       </div>
@@ -24,7 +26,7 @@
 </template>
 
 <script setup>
-import { nextTick, ref } from 'vue'
+import { computed, nextTick, ref } from 'vue'
 import { useAiStore, useOutlineStore } from '@renderer/store'
 import { iframeSrc, serverProcess, serverProcessMap } from '@main/webcontainer'
 import OutLine from './components/outline/index.vue'
@@ -32,12 +34,32 @@ import Message from './components/message/index.vue'
 import { useCrossMessage } from '@renderer/composables'
 import { useDebounceFn } from '@vueuse/core'
 import { useMessage } from './composables/message';
+import WaveVideo from '@renderer/assets/videos/wave.mp4'
+import StarVideo from '@renderer/assets/videos/star.mp4'
+import SunVideo from '@renderer/assets/videos/sun.mp4'
+
 const iframeAllow = 'fullscreen; geolocation; encrypted-media;'
 const { extend } = useMessage()
 const loaded = ref(false)
 const { iframeRef, subscribe } = useCrossMessage()
 subscribe()
 useAiStore()
+const bgVideos = {
+  'wave': {
+    src: WaveVideo,
+    name: '海浪'
+  },
+  'star': {
+    src: StarVideo,
+    name: '星空'
+  },
+  'sun': {
+    src: SunVideo,
+    name: '落日'
+  }
+}
+const currentBg = ref('wave')
+const currentBgVideo = computed(() => bgVideos[currentBg.value].src)
 
 const { visible } = useOutlineStore()
 const count = ref(0)
@@ -55,7 +77,7 @@ window.addEventListener('message', (event) => {
       if (count.value === 0) onLoad()
       count.value++
     }
-  } catch {}
+  } catch { }
 })
 
 </script>
@@ -67,22 +89,61 @@ window.addEventListener('message', (event) => {
 
   .slidev-container {
     flex: 1;
-    background: linear-gradient(90deg, rgb(36 36 62 / 100%) 0%, rgb(69 62 141 / 100%) 50%, rgb(15 12 41 / 100%) 100%);
-    /* stylelint-disable-next-line max-line-length */
-    // background: linear-gradient(90deg, rgb(240 172 247 / 100%) 0%, rgb(172 247 240 / 100%) 50%, rgb(247 240 172 / 100%) 100%);
+    background: linear-gradient(90deg, rgb(127 127 213 / 100%) 0%, rgb(134 168 231 / 100%) 50%, rgb(145 234 228) 100%);
     border-radius: 0 4px 4px 0;
 
     .spin-pane {
+      position: relative;
       display: flex;
       flex-direction: column;
-      align-items: center;
-      justify-content: center;
       height: 100%;
-      font-size: 18px;
+      font-size: 20px;
       color: #fff;
 
+      .toolbar {
+        position: absolute;
+        top: 16px;
+        left: 16px;
+        z-index: 1;
+        display: flex;
+
+        .item {
+          padding: 2px 4px;
+          font-size: 16px;
+          color: #fff;
+          cursor: pointer;
+          border-radius: 4px;
+          box-shadow: 0 2px 4px #0000001a;
+          transition: 0.3s;
+
+          & + .item {
+            margin-left: 8px;
+          }
+
+          &.active {
+            color: #91eae4;
+          }
+
+          &:hover {
+            color: #91eae4;
+          }
+        }
+      }
+
+      .bg {
+        width: 100%;
+        height: calc(100% - 80px);
+        object-fit: cover;
+      }
+
       .spin-pane-item {
-        margin-top: 16px;
+        position: absolute;
+        bottom: 40px;
+        left: 20px;
+        background: linear-gradient(90deg, #ff7e5f, #feb47b);
+        background-clip: text;
+        transform: translateY(50%);
+        -webkit-text-fill-color: transparent;
       }
     }
 
