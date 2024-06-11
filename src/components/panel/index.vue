@@ -122,6 +122,7 @@ const historys = ref([
   .template {
     padding: 24px;
     background: #fff;
+    border-radius: 12px;
 
     .title {
       height: 25px;
@@ -199,6 +200,7 @@ const historys = ref([
     padding: 24px;
     margin-top: 16px;
     background: #fff;
+    border-radius: 12px;
 
     .title {
       height: 25px;
