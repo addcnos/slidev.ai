@@ -9,8 +9,9 @@ export async function generateImage({ prompt, size }: { prompt: string, size: Im
     prompt: prompt,
     n: 1,
     size,
+    response_format: 'b64_json',
   });
-  // TODO 保存到本地然后加入到slidev中
+  // TODO 保存到本地然后获取到本地地址然后返回
   return response.data[0].url;
 }
 
