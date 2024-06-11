@@ -1,12 +1,19 @@
 <template>
-  <SlidevEmbed></SlidevEmbed>
+  <div class="slidev-ai-container">
+    <Panel v-if="step === 1" />
+    <SlidevEmbed v-else />
+  </div>
 </template>
 
 <script setup>
-import { onMounted } from 'vue';
+import { onMounted, ref } from 'vue';
 import SlidevEmbed from './slidev.vue'
+import Panel from './components/panel/index.vue'
 import { mount } from '@main/webcontainer';
 import { useIpcEmit } from '@renderer/composables'
+
+const step = ref(1) 
+
 onMounted(async () => {
   console.log('🚀 The Vue app is mounted');
   const files = await useIpcEmit.readFiles();
@@ -15,7 +22,8 @@ onMounted(async () => {
 </script>
 
 <style lang="scss" scoped>
-h1 {
-  color: #3ab9d4;
+.slidev-ai-container {
+  width: 100%;
+  height: 100%;
 }
 </style>
