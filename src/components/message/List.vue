@@ -2,6 +2,7 @@
   <div class="list" ref="el">
     <div class="container" >
       <div v-for="item in chatList" :key="item.id" class="item" :class="{'me': item.role === 'user'}">
+
         <div class="container">
           <div class="content">
             {{ item.content }}
@@ -16,11 +17,12 @@
 <script setup lang="ts">
 import { ref, computed, watch, nextTick } from 'vue'
 import { useAiStore } from '../../store/useAIStore'
+import { Role } from "@renderer/types/chat";
 import dayjs from 'dayjs'
 
 const el = ref<HTMLElement | null>(null)
 const { chat } = useAiStore()
-const chatList = computed(() => chat.value?.session || [])
+const chatList = computed(() => (chat.value?.session || []).filter((item) => item.role !== Role.System))
 
 
 watch(() => chatList.value, () => {

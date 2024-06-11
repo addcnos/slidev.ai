@@ -14,7 +14,8 @@ export async function toolSession(
     init,
     initTitle, // 仅在 init 为 true 时生效
     preset, // 仅在 init 为 true 时生效
-  }: { tool?: boolean, init?: boolean, preset?: string, initTitle?: string } = {}
+    role,
+  }: { tool?: boolean, init?: boolean, preset?: string, initTitle?: string, role?: Role } = {}
 ) {
 
   if (init) {
@@ -33,7 +34,7 @@ export async function toolSession(
   }
 
   session.push({
-    role: Role.User,
+    role: role || Role.User,
     timestamp: +Date.now(),
     content: message,
     id: nanoid(),
@@ -60,7 +61,7 @@ export async function toolSession(
   session.push({
     role: Role.Gpt,
     timestamp: +Date.now(),
-    content: result.choices[0].message.content,
+    content: '好的，已经处理了！请查收！',
     id: nanoid(),
     source: result.choices[0],
     loading: false

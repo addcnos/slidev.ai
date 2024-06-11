@@ -105,6 +105,7 @@ export const useAiStore = createSharedComposable(() => {
         init,
         initTitle: outline.value.title,
         preset: preset.value[0],
+        role: Role.System,
       })
       init && (init = false)
       chat.value.content.push(...res)
