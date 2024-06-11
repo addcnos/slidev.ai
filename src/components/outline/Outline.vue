@@ -28,12 +28,12 @@
 <script setup lang="ts">
 import { computed, ref, unref } from 'vue';
 import { Draggable, OpenIcon } from '@he-tree/vue';
-import { useAiStore, useOutlineStore } from '@renderer/store';
+import { useOutlineStore } from '@renderer/store';
 import '@he-tree/vue/style/default.css';
 import '@he-tree/vue/style/material-design.css';
 import OutlineSkeleton from './OutlineSkeleton.vue';
 
-const { outline, loading } = useAiStore();
+const { outline, loading } = useOutlineStore();
 const { count } = useOutlineStore();
 const treeData = computed(() => unref(outline).content);
 

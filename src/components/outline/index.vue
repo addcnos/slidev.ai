@@ -21,19 +21,21 @@
 </template>
 
 <script setup lang="ts">
-import { unref } from 'vue';
-import { useOutlineStore, useAiStore } from '@renderer/store';
+import { ref } from 'vue';
+import { useOutlineStore,  } from '@renderer/store';
 import Theme from './Theme.vue'
 import Outline from './Outline.vue'
+import { useChatSession } from '@renderer/store/useChatSession';
 
 const { visible, theme} = useOutlineStore();
-const { genContent, outline, loading } = useAiStore();
+const { outline, loading } = useOutlineStore();
+const { initSlidevContent } = useChatSession();
 
 function onSave() {
   console.log('onSave');
   visible.value = false;
   outline.value.title = theme.value
-  genContent()
+  initSlidevContent()
 }
 
 function onCancel() {

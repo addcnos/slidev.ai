@@ -29,10 +29,10 @@
 
 <script setup lang="ts">
 import { unref } from 'vue';
-import { useOutlineStore, useAiStore } from '@renderer/store';
+import { useOutlineStore } from '@renderer/store';
 
 const { count, theme } = useOutlineStore();
-const { initOutlineContent, outline, loading } = useAiStore();
+const { initOutlineContent, loading } = useOutlineStore();
 
 /**
  * @description 修改页数

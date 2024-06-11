@@ -15,15 +15,15 @@
 
 <script setup lang="ts">
 import { ref, watch } from 'vue'
-import { useAiStore } from '../../store/useAIStore'
 import { useMagicKeys } from '@vueuse/core'
+import { useChatSession } from '@renderer/store/useChatSession';
 
 const message = ref('')
 const { enter } = useMagicKeys()
 
 async function send() {
   if (!message.value) return
-  useAiStore().sendToolSession(message.value)
+  useChatSession().sendSession(message.value)
   message.value = ''
 }
 

@@ -27,7 +27,7 @@
 
 <script setup>
 import { computed, nextTick, ref } from 'vue'
-import { useAiStore, useOutlineStore } from '@renderer/store'
+import { useOutlineStore } from '@renderer/store'
 import { iframeSrc, serverProcess, serverProcessMap } from '@main/webcontainer'
 import OutLine from './components/outline/index.vue'
 import Message from './components/message/index.vue'
@@ -43,7 +43,6 @@ const { extend } = useMessage()
 const loaded = ref(false)
 const { iframeRef, subscribe } = useCrossMessage()
 subscribe()
-useAiStore()
 const bgVideos = {
   'wave': {
     src: WaveVideo,

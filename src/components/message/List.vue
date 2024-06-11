@@ -16,12 +16,12 @@
 
 <script setup lang="ts">
 import { ref, computed, watch, nextTick } from 'vue'
-import { useAiStore } from '../../store/useAIStore'
 import { Role } from "@renderer/types/chat";
 import dayjs from 'dayjs'
+import { useChatSession } from '@renderer/store/useChatSession';
 
 const el = ref<HTMLElement | null>(null)
-const { chat } = useAiStore()
+const { chat } = useChatSession()
 const chatList = computed(() => (chat.value?.session || []).filter((item) => item.role !== Role.System))
 
 
