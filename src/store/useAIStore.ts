@@ -7,7 +7,7 @@ import { ref } from "vue";
 import { ChatStore, Role } from "@renderer/types/chat";
 import { normalizeSession2Gpt } from "@renderer/utils/transform/common";
 import { nanoid } from 'nanoid'
-import { normalizeSlidev2Json, refreshAfterComparison } from "@renderer/utils/transform/slidev";
+import { normalizeSlidev2Json } from "@renderer/utils/transform/slidev";
 import { toolSession } from "@renderer/utils/ai/session";
 import { genSingleSlidevPrompt } from "@renderer/utils/prompt/slidev";
 
@@ -109,19 +109,19 @@ export const useAiStore = createSharedComposable(() => {
     });
     chat.value.session.map(async (item) => {
       if (item.id === gptChatId) {
-        let isSync = false
+        // let isSync = false
         item.loading = false
-        const preContent = item.content
+        // const preContent = item.content
         item.content = completion.choices[0].message.content
         item.source = completion.choices[0]
-        if (await refreshAfterComparison(preContent, item.content)) {
-          isSync = true
-        }
+        // if (await refreshAfterComparison(preContent, item.content)) {
+        //   isSync = true
+        // }
         console.log(await normalizeSlidev2Json(completion.choices[0].message.content))
-        // 同步数据
-        if (isSync) {
-          // TODO
-        }
+        // 同步数据 参考 genContent
+        // if (isSync) {
+        //   // TODO
+        // }
       }
       return item
     })
