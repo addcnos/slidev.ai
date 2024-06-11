@@ -99,8 +99,9 @@ export const useAiStore = createSharedComposable(() => {
   async function genContent() {
     let init = true
     let count = 0
+    const len = outline.value.content
     for (const item of outline.value.content) {
-      const res = await toolSession(genSingleSlidevPrompt(item.title), chat.value.session, {
+      const res = await toolSession(genSingleSlidevPrompt(item.title, `${count + 1}/${len}`), chat.value.session, {
         tool: true,
         init,
         initTitle: outline.value.title,
@@ -158,27 +159,3 @@ export const useAiStore = createSharedComposable(() => {
     genContent
   }
 })
-
-// {
-//   "id": "chatcmpl-9WKdj3Y0oyQSPMAzLJGoJPybZ4UM3",
-//   "object": "chat.completion",
-//   "created": 1717492863,
-//   "model": "gpt-4o-2024-05-13",
-//   "choices": [
-//       {
-//           "index": 0,
-//           "message": {
-//               "role": "assistant",
-//               "content": "[\n    {\n        \"title\": \"前言\",\n        \"order\": \"1\",\n        \"children\": []\n    },\n    {\n        \"title\": \"如何学日语\",\n        \"order\": \"2\",\n        \"children\": [\n            {\n                \"title\": \"基础阶段\",\n                \"order\": \"2.1\",\n                \"children\": [\n                    {\n                        \"title\": \"学习五十音图\",\n                        \"order\": \"2.1.1\",\n                        \"children\": []\n                    },\n                    {\n                        \"title\": \"掌握基本语法\",\n                        \"order\": \"2.1.2\",\n                        \"children\": []\n                    },\n                    {\n                        \"title\": \"常用单词和短语\",\n                        \"order\": \"2.1.3\",\n                        \"children\": []\n                    }\n                ]\n            },\n            {\n                \"title\": \"进阶阶段\",\n                \"order\": \"2.2\",\n                \"children\": [\n                    {\n                        \"title\": \"日常会话\",\n                        \"order\": \"2.2.1\",\n                        \"children\": []\n                    },\n                    {\n                        \"title\": \"听力训练\",\n                        \"order\": \"2.2.2\",\n                        \"children\": []\n                    },\n                    {\n                        \"title\": \"阅读练习\",\n                        \"order\": \"2.2.3\",\n                        \"children\": []\n                    }\n                ]\n            },\n            {\n                \"title\": \"高级阶段\",\n                \"order\": \"2.3\",\n                \"children\": [\n                    {\n                        \"title\": \"流利表达\",\n                        \"order\": \"2.3.1\",\n                        \"children\": []\n                    },\n                    {\n                        \"title\": \"商务日语\",\n                        \"order\": \"2.3.2\",\n                        \"children\": []\n                    },\n                    {\n                        \"title\": \"日本文化学习\",\n                        \"order\": \"2.3.3\",\n                        \"children\": []\n                    }\n                ]\n            },\n            {\n                \"title\": \"实践与应用\",\n                \"order\": \"2.4\",\n                \"children\": [\n                    {\n                        \"title\": \"参加语言交流活动\",\n                        \"order\": \"2.4.1\",\n                        \"children\": []\n                    },\n                    {\n                        \"title\": \"观看日语影视作品\",\n                        \"order\": \"2.4.2\",\n                        \"children\": []\n                    },\n                    {\n                        \"title\": \"旅游或居住在日本\",\n                        \"order\": \"2.4.3\",\n                        \"children\": []\n                    }\n                ]\n            }\n        ]\n    },\n    {\n        \"title\": \"结论\",\n        \"order\": \"3\",\n        \"children\": []\n    }\n]"
-//           },
-//           "logprobs": null,
-//           "finish_reason": "stop"
-//       }
-//   ],
-//   "usage": {
-//       "prompt_tokens": 461,
-//       "completion_tokens": 555,
-//       "total_tokens": 1016
-//   },
-//   "system_fingerprint": "fp_319be4768e"
-// }

@@ -39,7 +39,7 @@ export interface UserFileOptions {
   /**
    * 文件内容 - 字符串
    */
-  content?: string;
+  content?: string | NodeJS.ArrayBufferView;
   /**
    * 文件目录 默认为userData，可选值：appData、userData、temp、desktop、documents、downloads、music、pictures、videos
    */

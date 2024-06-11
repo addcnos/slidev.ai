@@ -25,15 +25,15 @@ export function initSlidevPrompt(theme: string) {
     '4. Do not need to bring ```markdown',
     '5. Do not bring the numbers in the title',
     '6. You only need to generate the content of the current page, and you do not need to generate the content of the entire slidev',
-
     '',
     'The current theme is: ' + theme,
   ].join('\n')
 }
 
-export function genSingleSlidevPrompt(title: string) {
+export function genSingleSlidevPrompt(title: string, process: string) {
   return [
     'The current page is: ' + title,
+    'The current process is: ' + process,
     'Please generate the content of the current page according to the requirements',
   ].join('\n')
 }

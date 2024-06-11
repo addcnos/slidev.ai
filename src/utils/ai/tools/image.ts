@@ -1,6 +1,20 @@
 import { openai } from "@renderer/api/openai";
+import { useIpcEmit } from "@renderer/composables";
+import { nanoid } from "nanoid";
 import { RunnableToolFunction } from "openai/lib/RunnableFunction";
 import { ImageGenerateParams } from "openai/resources/images";
+
+export async function saveImage2File(base64: string) {
+  const base64Data = base64.replace(/^data:image\/\w+;base64,/, "");
+  const buffer = Buffer.from(base64Data, 'base64');
+  const filename = `${nanoid()}.png`
+  await useIpcEmit.fileManager('write', {
+    fileName: filename,
+    content: buffer,
+    dirName: 'assets',
+  })
+  return `/assets/${filename}`
+}
 
 export async function generateImage({ prompt, size }: { prompt: string, size: ImageGenerateParams['size'] }) {
   console.log('generateImage', prompt, size)
@@ -11,8 +25,8 @@ export async function generateImage({ prompt, size }: { prompt: string, size: Im
     size,
     response_format: 'b64_json',
   });
-  // TODO 保存到本地然后获取到本地地址然后返回
-  return response.data[0].url;
+
+  return saveImage2File(response.data[0].b64_json)
 }
 
 const config: RunnableToolFunction<object>[] = [
