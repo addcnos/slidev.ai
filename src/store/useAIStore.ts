@@ -7,7 +7,7 @@ import { ref } from "vue";
 import { ChatStore, Role } from "@renderer/types/chat";
 import { normalizeSession2Gpt } from "@renderer/utils/transform/common";
 import { nanoid } from 'nanoid'
-import { normalizeSlidev2Json, normalizeSlidev2Markdown } from "@renderer/utils/transform/slidev";
+import { normalizeSlidev2Markdown } from "@renderer/utils/transform/slidev";
 import { toolSession } from "@renderer/utils/ai/session";
 import { genSingleSlidevPrompt } from "@renderer/utils/prompt/slidev";
 import { useIpcEmit } from "@renderer/composables";
@@ -88,46 +88,7 @@ export const useAiStore = createSharedComposable(() => {
     outline.value.content = normalizeGpt2Outline(completion.choices[0].message.content)
   }
 
-  async function freeSession(message: string) {
-    const gptChatId = nanoid()
-    const userChatId = nanoid()
-    chat.value.session.push({
-      role: Role.User,
-      timestamp: +Date.now(),
-      content: message,
-      id: userChatId,
-      loading: false
-    })
-    chat.value.session.push({
-      role: Role.Gpt,
-      timestamp: +Date.now(),
-      content: '处理中...',
-      id: gptChatId,
-      loading: true
-    })
-    const completion = await openai.chat.completions.create({
-      model: 'gpt-4o',
-      messages: normalizeSession2Gpt(chat.value.session),
-    });
-    chat.value.session.map(async (item) => {
-      if (item.id === gptChatId) {
-        // let isSync = false
-        item.loading = false
-        // const preContent = item.content
-        item.content = completion.choices[0].message.content
-        item.source = completion.choices[0]
-        // if (await refreshAfterComparison(preContent, item.content)) {
-        //   isSync = true
-        // }
-        console.log(await normalizeSlidev2Json(completion.choices[0].message.content))
-        // 同步数据 参考 genContent
-        // if (isSync) {
-        //   // TODO
-        // }
-      }
-      return item
-    })
-  }
+
   async function sendToolSession(message: string) {
     await toolSession(message, chat.value.session, {
       tool: true,
@@ -188,7 +149,6 @@ export const useAiStore = createSharedComposable(() => {
     initOutlineContent,
     outline,
     modifyOutlineContent,
-    freeSession,
     chat,
     loading,
     usePreset,
