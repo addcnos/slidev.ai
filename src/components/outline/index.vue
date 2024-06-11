@@ -25,15 +25,15 @@ import { unref } from 'vue';
 import { useOutlineStore, useAiStore } from '@renderer/store';
 import Theme from './Theme.vue'
 import Outline from './Outline.vue'
-import { genSlidevByContentPrompt } from '@renderer/utils/prompt/slidev';
 
-const { visible } = useOutlineStore();
-const { freeSession, outline, loading } = useAiStore();
+const { visible, theme} = useOutlineStore();
+const { genContent, outline, loading } = useAiStore();
 
 function onSave() {
   console.log('onSave');
   visible.value = false;
-  freeSession(genSlidevByContentPrompt(unref(outline)?.content, unref(outline)?.title));
+  outline.value.title = theme.value
+  genContent()
 }
 
 function onCancel() {
@@ -43,5 +43,5 @@ function onCancel() {
 </script>
 
 <style lang="scss" scoped>
-
+// TODO
 </style>

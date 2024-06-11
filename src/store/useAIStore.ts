@@ -1,4 +1,4 @@
-import { createSharedComposable } from "@vueuse/core";
+import { createSharedComposable, useLocalStorage } from "@vueuse/core";
 import { openai } from "../api/openai";
 import { genOutlineBySubjectPrompt, iterationModifyOutlinePrompt } from '../utils/prompt/outline'
 import { normalizeGpt2Outline } from "@renderer/utils/transform/outline";
@@ -8,11 +8,13 @@ import { ChatStore, Role } from "@renderer/types/chat";
 import { normalizeSession2Gpt } from "@renderer/utils/transform/common";
 import { nanoid } from 'nanoid'
 import { normalizeSlidev2Json, refreshAfterComparison } from "@renderer/utils/transform/slidev";
+import { toolSession } from "@renderer/utils/ai/session";
+import { genSingleSlidevPrompt } from "@renderer/utils/prompt/slidev";
 
 export const useAiStore = createSharedComposable(() => {
   const loading = ref<boolean>(false)
   const preset = ref<string[]>([])
-  const outline = ref<OutlineStore>({
+  const outline = useLocalStorage<OutlineStore>('outline', {
     version: 1,
     session: [],
     title: '',
@@ -22,6 +24,7 @@ export const useAiStore = createSharedComposable(() => {
     version: 1,
     session: [],
     content: '',
+    realContent: []
   })
 
   function resetOutline() {
@@ -123,6 +126,32 @@ export const useAiStore = createSharedComposable(() => {
       return item
     })
   }
+  async function sendToolSession(message: string) {
+    console.log(await toolSession(message, chat.value.session, {
+      tool: true,
+    }))
+    console.log(chat.value.session)
+  }
+
+  async function genContent() {
+    let init = true
+    let count = 0
+    for (const item of outline.value.content) {
+      await toolSession(genSingleSlidevPrompt(item.title), chat.value.session, {
+        tool: true,
+        init,
+        initTitle: outline.value.title,
+        preset: preset.value[0],
+      })
+      init && (init = false)
+      chat.value.realContent.push(chat.value.session[chat.value.session.length - 1].content)
+      count++
+      // 不建议放开超过3，消耗 token 太大
+      if (count > 3)
+        break
+    }
+    console.log(chat.value.realContent.join('\n'))
+  }
 
   async function usePreset() {
     // eslint-disable-next-line no-undef
@@ -147,7 +176,9 @@ export const useAiStore = createSharedComposable(() => {
     chat,
     loading,
     usePreset,
-    preset
+    preset,
+    sendToolSession,
+    genContent
   }
 })
 

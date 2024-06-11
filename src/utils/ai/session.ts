@@ -4,7 +4,7 @@ import { nanoid } from "nanoid";
 import { normalizeSession2Gpt } from "../transform/common";
 import { normalizeSlidev2Json } from "../transform/slidev";
 import { tools } from "./tools";
-import { initUsePreset } from "../prompt/slidev";
+import { initSlidevPrompt, initUsePreset } from "../prompt/slidev";
 
 export async function toolSession(
   message: string,
@@ -12,12 +12,18 @@ export async function toolSession(
   {
     tool,
     init,
+    initTitle, // 仅在 init 为 true 时生效
     preset, // 仅在 init 为 true 时生效
-  }: { tool?: boolean, init?: boolean, preset?: string } = {}
+  }: { tool?: boolean, init?: boolean, preset?: string, initTitle?: string } = {}
 ) {
 
   if (init) {
-    session.splice(0, session.length)
+    session.splice(0, session.length, {
+      role: Role.System,
+      timestamp: +Date.now(),
+      content: initSlidevPrompt(initTitle),
+      id: nanoid(),
+    })
     preset && session.push({
       role: Role.System,
       timestamp: +Date.now(),

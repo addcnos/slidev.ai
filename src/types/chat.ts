@@ -59,4 +59,5 @@ export interface ChatStore {
   version: number
   session: ChatSessionContext[]
   content: string
+  realContent?: string[]
 }

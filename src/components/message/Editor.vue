@@ -23,11 +23,11 @@ const { enter } = useMagicKeys()
 
 async function send() {
   if (!message.value) return
-  useAiStore().freeSession(message.value)
+  useAiStore().sendToolSession(message.value)
   message.value = ''
 }
 
-watch(enter, (v: string) => {
+watch(() => enter.value, (v: boolean) => {
   if (v) {
     send()
   } else {

@@ -8,7 +8,7 @@ export function stringifyOutline(outline: Outline[]): string {
     result += `${'  '.repeat(level)}- ${outline.order} ${outline.title}${outline.expanded ? ' <!-- 扩写 -->' : ''}\n`;
     outline.children?.forEach(child => dfs(child, level + 1));
   }
-  outline.forEach(item => dfs(item, 0));
+  outline?.forEach?.(item => dfs(item, 0));
   return result;
 }
 
@@ -17,6 +17,7 @@ export function stringifyOutline(outline: Outline[]): string {
  * @param outline 
  */
 export function normalizeGpt2Outline(outline: string): Outline[] {
-  return JSON.parse(outline.replace('\n', ''));
+  const result = JSON.parse(outline.replace('\n', ''))
+  return result.root;
 }
 

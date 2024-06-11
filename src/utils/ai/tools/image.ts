@@ -3,7 +3,9 @@ import { RunnableToolFunction } from "openai/lib/RunnableFunction";
 import { ImageGenerateParams } from "openai/resources/images";
 
 export async function generateImage({ prompt, size }: { prompt: string, size: ImageGenerateParams['size'] }) {
+  console.log('generateImage', prompt, size)
   const response = await openai.images.generate({
+    model: 'dall-e-3',
     prompt: prompt,
     n: 1,
     size,
@@ -23,7 +25,7 @@ const config: RunnableToolFunction<object>[] = [
         type: 'object',
         properties: {
           prompt: { type: 'string' },
-          size: { type: 'string', enum: ["256x256", "512x512", "1024x1024", "1792x1024", "1024x1792"] },
+          size: { type: 'string', enum: ["1024x1024", "1792x1024", "1024x1792"] },
         },
       },
       function: generateImage,
