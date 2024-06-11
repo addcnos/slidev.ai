@@ -3,7 +3,7 @@
     <div class="template">
       <div class="title">新建空白页</div>
       <div class="card-wrapper">
-        <div class="card">
+        <div class="card" @click="emit('create')">
           <div class="wrapper">
             <img :src="createIcon" />
           </div>
@@ -29,6 +29,7 @@ import { ref } from 'vue'
 import Card from './Card.vue'
 import createIcon from '../../assets/image/create-icon.png'
 
+const emit = defineEmits(['create'])
 const templates = ref([
   {
     title: 'Slidev功能介绍',

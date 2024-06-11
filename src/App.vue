@@ -1,7 +1,7 @@
 <template>
   <div class="slidev-ai-container">
-    <Panel v-if="step === 1" />
-    <SlidevEmbed v-else />
+    <Panel v-show="step === 1" @create="step = 2" />
+    <SlidevEmbed v-show="step === 2" />
   </div>
 </template>
 
