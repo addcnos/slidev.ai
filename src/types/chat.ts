@@ -57,7 +57,6 @@ export interface ChatSessionContext extends GptSessionContext {
 }
 
 export interface ChatStore {
-  version: number
   session: ChatSessionContext[]
   content: SourceSlideInfo[]
 }

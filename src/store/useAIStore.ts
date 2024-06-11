@@ -1,4 +1,4 @@
-import { createSharedComposable, useLocalStorage } from "@vueuse/core";
+import { createSharedComposable } from "@vueuse/core";
 import { ref } from "vue";
 import { nanoid } from 'nanoid'
 import { normalizeSlidev2Markdown } from "@renderer/utils/transform/slidev";

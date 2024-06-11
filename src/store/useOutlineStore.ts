@@ -16,7 +16,6 @@ export const useOutlineStore = createSharedComposable(() => {
   const loading = ref(false)
 
   const outline = useLocalStorage<OutlineStore>('outline', {
-    version: 1,
     session: [],
     title: '',
     content: [],
@@ -24,7 +23,6 @@ export const useOutlineStore = createSharedComposable(() => {
 
   function resetOutline() {
     outline.value = {
-      version: 1,
       session: [],
       title: '',
       content: [],
@@ -58,7 +56,7 @@ export const useOutlineStore = createSharedComposable(() => {
   }
 
   async function modifyOutlineContent(modify: Outline[]) {
-    const prompt = iterationModifyOutlinePrompt(modify, outline.value.version + 1)
+    const prompt = iterationModifyOutlinePrompt(modify, outline.value.session.filter(i => i.role === Role.Gpt).length + 1)
     outline.value.session.push({
       role: Role.System,
       timestamp: +Date.now(),

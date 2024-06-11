@@ -13,7 +13,6 @@ import { useOutlineStore } from './useOutlineStore';
 export const useChatSession = createSharedComposable(() => {
   const preset = ref<string[]>([])
   const chat = ref<ChatStore>({
-    version: 1,
     session: [],
     content: [],
   })
