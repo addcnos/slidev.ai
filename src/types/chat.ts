@@ -1,3 +1,4 @@
+import { SourceSlideInfo } from "@slidev/types"
 import { ChatCompletion } from "openai/resources/chat/completions"
 
 /**
@@ -58,6 +59,5 @@ export interface ChatSessionContext extends GptSessionContext {
 export interface ChatStore {
   version: number
   session: ChatSessionContext[]
-  content: string
-  realContent?: string[]
+  content: SourceSlideInfo[]
 }

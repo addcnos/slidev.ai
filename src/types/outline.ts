@@ -12,7 +12,7 @@ export interface Outline {
 }
 
 export interface OutlineStore {
-  version: number
+  version: number// 由ai 对话 中的ai返回次数决定
   session: GptSessionContext[],
   title: string,
   content: Outline[],

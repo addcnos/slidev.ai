@@ -7,13 +7,16 @@ import { ref } from "vue";
 import { ChatStore, Role } from "@renderer/types/chat";
 import { normalizeSession2Gpt } from "@renderer/utils/transform/common";
 import { nanoid } from 'nanoid'
-import { normalizeSlidev2Json } from "@renderer/utils/transform/slidev";
+import { normalizeSlidev2Json, normalizeSlidev2Markdown } from "@renderer/utils/transform/slidev";
 import { toolSession } from "@renderer/utils/ai/session";
 import { genSingleSlidevPrompt } from "@renderer/utils/prompt/slidev";
+import { useIpcEmit } from "@renderer/composables";
+import { webcontainerFs } from "@main/webcontainer";
 
 export const useAiStore = createSharedComposable(() => {
   const loading = ref<boolean>(false)
   const preset = ref<string[]>([])
+  const activityId = ref<string>(nanoid())
   const outline = useLocalStorage<OutlineStore>('outline', {
     version: 1,
     session: [],
@@ -23,8 +26,7 @@ export const useAiStore = createSharedComposable(() => {
   const chat = ref<ChatStore>({
     version: 1,
     session: [],
-    content: '',
-    realContent: []
+    content: [],
   })
 
   function resetOutline() {
@@ -127,30 +129,30 @@ export const useAiStore = createSharedComposable(() => {
     })
   }
   async function sendToolSession(message: string) {
-    console.log(await toolSession(message, chat.value.session, {
+    await toolSession(message, chat.value.session, {
       tool: true,
-    }))
-    console.log(chat.value.session)
+    })
+    save()
   }
 
   async function genContent() {
     let init = true
     let count = 0
     for (const item of outline.value.content) {
-      await toolSession(genSingleSlidevPrompt(item.title), chat.value.session, {
+      const res = await toolSession(genSingleSlidevPrompt(item.title), chat.value.session, {
         tool: true,
         init,
         initTitle: outline.value.title,
         preset: preset.value[0],
       })
       init && (init = false)
-      chat.value.realContent.push(chat.value.session[chat.value.session.length - 1].content)
+      chat.value.content.push(...res)
       count++
       // 不建议放开超过3，消耗 token 太大
-      if (count > 3)
+      if (count >= 2)
         break
     }
-    console.log(chat.value.realContent.join('\n'))
+    save()
   }
 
   async function usePreset() {
@@ -166,9 +168,23 @@ export const useAiStore = createSharedComposable(() => {
     }
   }
 
+
+  async function save() {
+    await useIpcEmit.fileManager('write', {
+      fileName: activityId.value + '.json',
+      content: JSON.stringify({
+        ...outline.value,
+        ...chat.value,
+      }),
+      dirName: 'json',
+    })
+    await webcontainerFs().writeFile('slides.md', normalizeSlidev2Markdown(chat.value.content), { encoding: 'utf-8' })
+  }
+
   usePreset()
 
   return {
+    activityId,
     initOutlineContent,
     outline,
     modifyOutlineContent,

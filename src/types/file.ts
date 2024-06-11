@@ -33,4 +33,5 @@ export interface JsonFile {
   content: SourceSlideInfo[],
   /** Chat */
   chat: ChatSessionContext[]
+  realContent: string[]
 }
