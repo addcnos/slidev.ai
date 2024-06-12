@@ -6,11 +6,9 @@ import { ImageGenerateParams } from "openai/resources/images";
 
 
 export async function saveImage2File(filename: string, base64: string) {
-  const base64Data = base64.replace(/^data:image\/\w+;base64,/, "");
-  const buffer = Buffer.from(base64Data, 'base64');
   await useIpcEmit.fileManager('write', {
     fileName: filename,
-    content: buffer,
+    content: Uint8Array.from(atob(base64), c => c.charCodeAt(0)),
     dirName: 'assets',
   })
 }

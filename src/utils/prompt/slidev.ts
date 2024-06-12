@@ -35,6 +35,7 @@ export function genSingleSlidevPrompt(title: string, process: string,) {
     'The current page is: ' + title,
     'The current process is: ' + process,
     'Please generate the content of the current page according to the requirements',
+    'Only need to generate the content of the current page, and do not need to generate the content of the entire slidev',
   ].join('\n')
 }
 
