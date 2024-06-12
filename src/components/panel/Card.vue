@@ -13,14 +13,12 @@
 </template>
 
 <script setup lang="ts">
-
-const props = defineProps({
+defineProps({
   data: {
     type: Object,
     default: () => []
   }
 })
-console.log(props.data.image, 'props')
 </script>
 
 <style lang="scss" scoped>

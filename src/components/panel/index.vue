@@ -63,7 +63,6 @@ const transImage = async (data: Uint8Array) => {
     // 使用 FileReader 对象读取 Blob 对象中的数据
     const reader = new FileReader();
     reader.readAsDataURL(blob);
-    let str = ''
     // 当读取完成时触发的事件
     reader.onload = function () {
       const base64String = reader.result.split(',')[1];
@@ -100,7 +99,6 @@ async function init() {
       image: img,
       id: item?.id || ''
     })
-    console.log(item, 'item')
   }
 
   historys.value = _historys
