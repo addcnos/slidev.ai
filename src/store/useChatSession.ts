@@ -2,7 +2,7 @@ import { ref } from 'vue'
 import { ChatSessionContext, ChatStore, Role } from '@renderer/types/chat'
 import { nanoid } from 'nanoid'
 import { genSingleSlidevPrompt, initSlidevPrompt, initUsePreset } from '@renderer/utils/prompt/slidev'
-import { createSharedComposable } from "@vueuse/core";
+import { createSharedComposable, useDebounceFn } from "@vueuse/core";
 import { openai } from "@renderer/api/openai";
 import { tools } from "@renderer/utils/ai/tools";
 import { normalizeSession2Gpt } from '@renderer/utils/transform/common';
@@ -15,29 +15,15 @@ import dayjs from 'dayjs'
 
 export const useChatSession = createSharedComposable(() => {
   const activityId = ref<string>(nanoid())
-  const preset = ref<string[]>([])
   const updateCapturePage = ref(false)
   const chat = ref<ChatStore>({
     session: [],
     content: [],
   })
 
-  async function initPreset() {
-    const files = import.meta.glob('/src/assets/preset/*.md', {
-      query: '?raw',
-      import: 'default',
-    })
-    const keys = Object.keys(files)
-    for (const key of keys) {
-      const content = await files[key]() as string
-      preset.value.push(content)
-    }
-  }
 
-  initPreset()
-
-  function initPrompt(theme: string, presetIdx?: number) {
-    preset !== undefined && pushSession({ content: initUsePreset(preset.value[presetIdx]) })
+  function initPrompt(theme: string) {
+    pushSession({ content: initUsePreset() })
     pushSession({ content: initSlidevPrompt(theme) })
   }
 
@@ -126,15 +112,19 @@ export const useChatSession = createSharedComposable(() => {
       dirName: 'json',
     })
 
+    syncMarkdown()
+
+    updateCapturePage.value = true
+
+    console.log(normalizeSlidev2Markdown(chat.value.content))
+  }
+
+  async function syncMarkdown() {
     await webcontainerFs().writeFile(
       'slides.md',
       normalizeSlidev2Markdown(chat.value.content),
       { encoding: 'utf-8' }
     )
-
-    updateCapturePage.value = true
-
-    console.log(normalizeSlidev2Markdown(chat.value.content))
   }
 
   return {
@@ -147,5 +137,6 @@ export const useChatSession = createSharedComposable(() => {
     activityId,
     updateCapturePage,
     updateJSONCache,
+    syncMarkdown: useDebounceFn(syncMarkdown, 1000),
   }
 })

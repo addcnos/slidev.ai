@@ -1,7 +1,6 @@
-export function initUsePreset(preset: string) {
+export function initUsePreset() {
   return [
-    'The following is the default template that you can use as a reference to generate your Slidev code: ',
-    preset,
+
   ].join('\n')
 }
 
@@ -11,12 +10,11 @@ export function initSlidevPrompt(theme: string) {
     '',
     'Generation requirements:',
     '1. Generate the corresponding content and further decompose and layout the content',
-    '2. The content should not be too much or too little. You can add some visual elements to the current page, such as pictures (remember that you can call the picture generation), code blocks, write HTML, etc.',
+    '2. You can add some visual elements to the current page, such as pictures (remember that you can call the picture generation), code blocks, write HTML, etc.',
     '3. Is the generated content beautiful and full? If it is barely satisfactory, you need to modify it again',
-    '4. Not too short and one sentence!!!!!!!!!!!!',
-    '5. Add animation for each page switch',
-    '6. You do not need to generate the conclusion',
-    '7. You need to provide a simple theme welcome page at the beginning',
+    '4. Add animation for each page switch',
+    '5. You do not need to generate the conclusion',
+    '6. You need to provide a simple theme welcome page at the beginning',
     '',
     'Output format:',
     '1. I need you to output markdown directly and strictly follow the format of slidev.',
@@ -26,6 +24,7 @@ export function initSlidevPrompt(theme: string) {
     '5. Do not bring the numbers in the title',
     '6. You only need to generate the content of the current page, and you do not need to generate the content of the entire slidev',
     '7. You never use any component',
+    '8. You are not allowed to use external pictures. If you want to use pictures, please call the picture generation',
     '',
     'The current theme is: ' + theme,
   ].join('\n')

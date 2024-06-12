@@ -4,18 +4,19 @@ import { nanoid } from "nanoid";
 import { RunnableToolFunction } from "openai/lib/RunnableFunction";
 import { ImageGenerateParams } from "openai/resources/images";
 import { webcontainerFs } from "@main/webcontainer";
+import { useChatSession } from "@renderer/store";
 
 export function saveImage2File(filename: string, base64: string) {
+  const { syncMarkdown } = useChatSession()
   const content = Uint8Array.from(atob(base64), c => c.charCodeAt(0))
   useIpcEmit.fileManager('write', {
     fileName: filename,
     content,
     dirName: 'assets',
   })
-  webcontainerFs().writeFile(
-    `public/images/${filename}`,
-    content
-  )
+  webcontainerFs()
+    .writeFile(`public/images/${filename}`, content)
+    .then(syncMarkdown)
 }
 
 export async function generateImage({ prompt, size }: { prompt: string, size: ImageGenerateParams['size'] }) {
