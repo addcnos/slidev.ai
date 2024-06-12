@@ -4,29 +4,29 @@ import { nanoid } from "nanoid";
 import { RunnableToolFunction } from "openai/lib/RunnableFunction";
 import { ImageGenerateParams } from "openai/resources/images";
 
-export async function saveImage2File(base64: string) {
+
+export async function saveImage2File(filename: string, base64: string) {
   const base64Data = base64.replace(/^data:image\/\w+;base64,/, "");
   const buffer = Buffer.from(base64Data, 'base64');
-  const filename = `${nanoid()}.png`
   await useIpcEmit.fileManager('write', {
     fileName: filename,
     content: buffer,
     dirName: 'assets',
   })
-  return `/assets/${filename}`
 }
 
 export async function generateImage({ prompt, size }: { prompt: string, size: ImageGenerateParams['size'] }) {
-  console.log('generateImage', prompt, size)
-  const response = await openai.images.generate({
+  const filename = `${nanoid()}.png`
+
+  openai.images.generate({
     model: 'dall-e-3',
     prompt: prompt,
     n: 1,
     size,
     response_format: 'b64_json',
-  });
+  }).then(async (res) => saveImage2File(filename, res.data[0].b64_json))
 
-  return saveImage2File(response.data[0].b64_json)
+  return `/assets/${filename}`
 }
 
 const config: RunnableToolFunction<object>[] = [

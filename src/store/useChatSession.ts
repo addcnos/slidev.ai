@@ -6,11 +6,14 @@ import { createSharedComposable } from "@vueuse/core";
 import { openai } from "@renderer/api/openai";
 import { tools } from "@renderer/utils/ai/tools";
 import { normalizeSession2Gpt } from '@renderer/utils/transform/common';
-import { normalizeSlidev2Json } from '@renderer/utils/transform/slidev';
+import { normalizeSlidev2Json, normalizeSlidev2Markdown } from '@renderer/utils/transform/slidev';
 import { useOutlineStore } from './useOutlineStore';
+import { useIpcEmit } from "@renderer/composables";
+import { webcontainerFs } from "@main/webcontainer";
 
 
 export const useChatSession = createSharedComposable(() => {
+  const activityId = ref<string>(nanoid())
   const preset = ref<string[]>([])
   const chat = ref<ChatStore>({
     session: [],
@@ -44,10 +47,14 @@ export const useChatSession = createSharedComposable(() => {
     for (let idx = 0; idx < len; idx++) {
       const item = outline.value.content[idx];
 
-      await sendSession(
+      const _json = await sendSession(
         genSingleSlidevPrompt(item.title, `${idx + 1}/${len}`),
         { completeText: idx + 1 === len ? '好的，已经处理了！请查收！' : `快好了，${idx + 1}/${len}...` }
       )
+
+      chat.value.content.push(..._json)
+
+      updateJSONCache()
 
       if (idx >= 2)
         break
@@ -56,12 +63,13 @@ export const useChatSession = createSharedComposable(() => {
   }
 
   function pushSession(context: Partial<ChatSessionContext>) {
-    return chat.value.session.push({
+    chat.value.session.push({
       timestamp: +Date.now(),
       id: nanoid(),
       role: Role.System,
       ...context,
     } as ChatSessionContext)
+    return chat.value.session.length - 1
   }
 
   function variableSession(context: Partial<ChatSessionContext>) {
@@ -71,7 +79,7 @@ export const useChatSession = createSharedComposable(() => {
     })
     return (context: Partial<ChatSessionContext>) => Object.assign(chat.value.session[idx], {
       loading: false,
-      context
+      ...context
     })
   }
 
@@ -99,6 +107,25 @@ export const useChatSession = createSharedComposable(() => {
     })
 
     return await normalizeSlidev2Json(result.choices[0].message.content)
+  }
+
+  async function updateJSONCache() {
+    const { outline } = useOutlineStore()
+
+    await useIpcEmit.fileManager('write', {
+      fileName: activityId.value + '.json',
+      content: JSON.stringify({
+        ...outline.value,
+        ...chat.value,
+      }),
+      dirName: 'json',
+    })
+    console.log(chat.value.content, activityId.value + '.json')
+    await webcontainerFs().writeFile(
+      'slides.md',
+      normalizeSlidev2Markdown(chat.value.content),
+      { encoding: 'utf-8' }
+    )
   }
 
   return {
