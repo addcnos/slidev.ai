@@ -31,9 +31,11 @@ import createIcon from '../../assets/image/create-icon.png'
 import { useIpcEmit } from "@renderer/composables";
 import { useChatSession } from '@renderer/store/useChatSession';
 import { nanoid } from 'nanoid'
+import { useOutlineStore } from '@renderer/store';
 
 const emit = defineEmits(['updateStep'])
-const { activityId } = useChatSession()
+const { activityId, chat, updateJSONCache } = useChatSession()
+const { outline }  = useOutlineStore()
 const templates = ref([
   {
     title: 'Slidev功能介绍',
@@ -107,11 +109,22 @@ async function init() {
 
 init()
 
-function handleClickHistory(item: { id?: string }) {
+async function handleClickHistory(item: { id?: string }) {
   if (!item?.id) return
-
-  activityId.value = item.id
   emit('updateStep', 2)
+  activityId.value = item.id
+
+  const jsonStr = await useIpcEmit.fileManager('read', {
+    dirName: 'json',
+    fileName: `${item?.id}.json`
+  })
+
+  const _json = JSON.parse(jsonStr as string)
+  console.log(_json)
+
+  Object.assign(chat.value, _json.chat)
+  Object.assign(outline.value, _json.outline)
+  await updateJSONCache(true)
 }
 
 function handleClickCreate() {

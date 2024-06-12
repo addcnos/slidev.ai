@@ -44,7 +44,7 @@ export const useChatSession = createSharedComposable(() => {
   async function initSlidevContent() {
     const { outline } = useOutlineStore()
 
-    initPrompt(outline.value.title, 0)
+    initPrompt(outline.value.title)
     const len = outline.value.content.length
 
     for (let idx = 0; idx < len; idx++) {
@@ -112,14 +112,14 @@ export const useChatSession = createSharedComposable(() => {
     return await normalizeSlidev2Json(result.choices[0].message.content)
   }
 
-  async function updateJSONCache() {
+  async function updateJSONCache(skip = false) {
     const { outline } = useOutlineStore()
 
-    await useIpcEmit.fileManager('write', {
+    !skip && await useIpcEmit.fileManager('write', {
       fileName: activityId.value + '.json',
       content: JSON.stringify({
-        ...outline.value,
-        ...chat.value,
+        outline: outline.value,
+        chat: chat.value,
         createTime: dayjs().format('YYYY-MM-DD HH:mm:ss'),
         id: activityId.value,
       }),
@@ -146,5 +146,6 @@ export const useChatSession = createSharedComposable(() => {
     initSlidevContent,
     activityId,
     updateCapturePage,
+    updateJSONCache,
   }
 })

@@ -25,6 +25,7 @@ export function initSlidevPrompt(theme: string) {
     '4. Do not need to bring ```markdown',
     '5. Do not bring the numbers in the title',
     '6. You only need to generate the content of the current page, and you do not need to generate the content of the entire slidev',
+    '7. You never use any component',
     '',
     'The current theme is: ' + theme,
   ].join('\n')

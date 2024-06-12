@@ -21,7 +21,6 @@
     </div>
 
     <OutLine />
-    <button @click="visible = true">打开</button>
   </div>
 </template>
 
@@ -68,6 +67,7 @@ const count = ref(0)
 const onLoad = useDebounceFn(() => {
   nextTick(() => {
     loaded.value = true
+    visible.value = true
   })
 }, 500)
 
