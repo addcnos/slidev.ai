@@ -3,17 +3,14 @@
     <div class="wrapper">+</div>
     <div class="desc">
       <div class="title">{{ data?.title }}</div>
-      <div class="subtitle" v-show="data?.user">
-        <img :src="userIcon" />
-        {{ data?.user }}
+      <div class="subtitle" v-show="data?.createTime">
+        {{ data?.createTime }}
       </div>
     </div>
-    <div class="ext" v-if="data?.createTime">创建日期：{{ data?.createTime }}</div>
   </div>
 </template>
 
 <script setup lang="ts">
-import userIcon from '../../assets/image/user-icon.png'
 
 defineProps({
   data: {
@@ -91,14 +88,6 @@ defineProps({
         margin-right: 2px;
       }
     }
-  }
-
-  .ext {
-    height: 17px;
-    font-size: 12px;
-    line-height: 17px;
-    color: #999;
-    text-align: left;
   }
 }
 </style>

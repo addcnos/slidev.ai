@@ -10,6 +10,7 @@ import { normalizeSlidev2Json, normalizeSlidev2Markdown } from '@renderer/utils/
 import { useOutlineStore } from './useOutlineStore';
 import { useIpcEmit } from "@renderer/composables";
 import { webcontainerFs } from "@main/webcontainer";
+import dayjs from 'dayjs'
 
 
 export const useChatSession = createSharedComposable(() => {
@@ -117,6 +118,7 @@ export const useChatSession = createSharedComposable(() => {
       content: JSON.stringify({
         ...outline.value,
         ...chat.value,
+        createTime: dayjs().format('YYYY-MM-DD HH:mm:ss'),
       }),
       dirName: 'json',
     })
