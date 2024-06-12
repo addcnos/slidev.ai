@@ -58,16 +58,27 @@ async function init() {
     createTime: string
     user: string
     image: string
+    id: string
   }[]
 
-  historys.value = files?.map(item => {
-    console.log(item)
-    return {
+  const _historys = []
+  for (const item of files) {
+    if (!item?.id) continue
+    const image = await useIpcEmit.fileManager('read', {
+      dirName: 'screenshot',
+      fileName: `${item?.id}.png`
+    })
+    
+    _historys.push({
       title: item.title,
       createTime: item.createTime,
-      image: item.image,
-    }
-  }) || []
+      image: image.toString('base64'),
+      id: item?.id || ''
+    })
+    console.log(item, 'item')
+  }
+
+  historys.value = _historys
 }
 
 init()

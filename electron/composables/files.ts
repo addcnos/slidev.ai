@@ -80,7 +80,7 @@ export const readTempFile = async (option: UserFileOptions) => {
   const { fileName } = option;
   const filePath = path.join(TEMP_DIR, fileName);
   if (fs.existsSync(filePath)) {
-    return fs.readFile(filePath, 'utf-8');
+    return fs.readFile(filePath);
   }
   return ''
 }

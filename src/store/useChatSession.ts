@@ -16,6 +16,7 @@ import dayjs from 'dayjs'
 export const useChatSession = createSharedComposable(() => {
   const activityId = ref<string>(nanoid())
   const preset = ref<string[]>([])
+  const updateCapturePage = ref(false)
   const chat = ref<ChatStore>({
     session: [],
     content: [],
@@ -113,6 +114,8 @@ export const useChatSession = createSharedComposable(() => {
   async function updateJSONCache() {
     const { outline } = useOutlineStore()
 
+    updateCapturePage.value = true
+
     await useIpcEmit.fileManager('write', {
       fileName: activityId.value + '.json',
       content: JSON.stringify({
@@ -123,12 +126,13 @@ export const useChatSession = createSharedComposable(() => {
       }),
       dirName: 'json',
     })
-    console.log(chat.value.content, activityId.value + '.json')
+
     await webcontainerFs().writeFile(
       'slides.md',
       normalizeSlidev2Markdown(chat.value.content),
       { encoding: 'utf-8' }
     )
+
   }
 
   return {
@@ -139,5 +143,6 @@ export const useChatSession = createSharedComposable(() => {
     sendSession,
     initSlidevContent,
     activityId,
+    updateCapturePage,
   }
 })

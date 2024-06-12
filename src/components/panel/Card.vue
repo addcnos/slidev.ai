@@ -1,6 +1,8 @@
 <template>
   <div class="card-container">
-    <div class="wrapper">+</div>
+    <div class="wrapper">
+      <img :src="`data:image/png;base64,${data?.image}`" alt="">
+    </div>
     <div class="desc">
       <div class="title">{{ data?.title }}</div>
       <div class="subtitle" v-show="data?.createTime">
@@ -12,12 +14,13 @@
 
 <script setup lang="ts">
 
-defineProps({
+const props = defineProps({
   data: {
     type: Object,
     default: () => []
   }
 })
+console.log(props.data.image, 'props')
 </script>
 
 <style lang="scss" scoped>
@@ -55,8 +58,8 @@ defineProps({
     }
 
     img {
-      width: 44px;
-      height: 44px;
+      width: 100%;
+      height: 100%;
     }
   }
 

@@ -22,12 +22,11 @@
 
     <OutLine />
     <button @click="visible = true">打开</button>
-    <button @click="onCapturePage">截图</button>
   </div>
 </template>
 
 <script setup>
-import { computed, nextTick, ref } from 'vue'
+import { computed, nextTick, ref, watch } from 'vue'
 import { useOutlineStore } from '@renderer/store'
 import { iframeSrc, serverProcess, serverProcessMap } from '@main/webcontainer'
 import OutLine from './components/outline/index.vue'
@@ -35,6 +34,7 @@ import Message from './components/message/index.vue'
 import { useCrossMessage, useIpcEmit } from '@renderer/composables'
 import { useDebounceFn, useElementBounding } from '@vueuse/core'
 import { useMessage } from './composables/message';
+import { useChatSession } from '@renderer/store/useChatSession';
 import WaveVideo from '@renderer/assets/videos/wave.mp4'
 import StarVideo from '@renderer/assets/videos/star.mp4'
 import SunVideo from '@renderer/assets/videos/sun.mp4'
@@ -43,6 +43,7 @@ const iframeAllow = 'fullscreen; geolocation; encrypted-media;'
 const { extend } = useMessage()
 const loaded = ref(false)
 const { iframeRef, subscribe } = useCrossMessage()
+const { updateCapturePage, activityId } = useChatSession()
 const {x ,y, width,height} = useElementBounding(iframeRef)
 subscribe()
 const bgVideos = {
@@ -81,15 +82,19 @@ window.addEventListener('message', (event) => {
   } catch { }
 })
 
-const onCapturePage = async () => {
+watch(() => updateCapturePage.value, async (value) =>{
+  if (!value) return
   await useIpcEmit.capturePage({
     x: x.value,
     y: y.value,
     width: width.value,
     height: height.value,
-    fileName: 'test.png'
+    fileName: `${activityId.value}.png`
   })
-}
+  updateCapturePage.value = false
+}, {
+  immediate: true
+})
 
 </script>
 
