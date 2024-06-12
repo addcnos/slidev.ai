@@ -28,6 +28,7 @@
 import { ref } from 'vue'
 import Card from './Card.vue'
 import createIcon from '../../assets/image/create-icon.png'
+import { useIpcEmit } from "@renderer/composables";
 
 const emit = defineEmits(['create'])
 const templates = ref([
@@ -92,6 +93,28 @@ const historys = ref([
     createTime: '2024年3月14日',
   },
 ])
+
+async function init() {
+  const files = await useIpcEmit.fileManager('readAllJsonFiles', {
+    dirName: 'json',
+  }) as {
+    title: string
+    createTime: string
+    user: string
+    image: string
+  }[]
+
+  historys.value = files?.map(item => {
+    return {
+      title: item.title,
+      user: item.user,
+      createTime: item.createTime,
+      image: item.image,
+    }
+  }) || []
+}
+
+init()
 </script>
 
 <style lang="scss" scoped>

@@ -10,7 +10,7 @@ export const ipcHandle = (main: BrowserWindow) => {
   ipcMain.handle('model:create', async (event, option) => {
     await createModel(main, option);
   })
-  const actionsMap: UserFilesActions[] = ['write', 'read', 'delete', 'clear']
+  const actionsMap: UserFilesActions[] = ['write', 'read', 'delete', 'clear', 'readAllJsonFiles']
   actionsMap.forEach(action => {
     ipcMain.handle(`user:${action}`, async (event, option: UserFileOptions) => {
       return useUserFiles[action](option);

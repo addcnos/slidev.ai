@@ -85,6 +85,30 @@ export const readTempFile = async (option: UserFileOptions) => {
   return ''
 }
 
+// 读取JSON目录内容
+async function readAllJsonFiles() {
+  try {
+    const JSON_DIR = getUserFileDir({
+      dirName: 'json'
+    })
+    const files = await fs.readdir(JSON_DIR);
+    // 过滤出所有的 .json 文件
+    const jsonFiles = files.filter(file => path.extname(file).toLowerCase() === '.json');
+
+    // 读取并解析所有的 .json 文件
+    const jsonContents = await Promise.all(jsonFiles.map(async (file) => {
+      const filePath = path.join(JSON_DIR, file);
+      const fileContent = await fs.readFile(filePath, 'utf-8');
+      return JSON.parse(fileContent);
+    }));
+
+    return jsonContents;
+  } catch (error) {
+    console.error('Error reading JSON files:', error);
+    throw error;
+  }
+}
+
 // 删除
 export const deleteTempFile = async (option: UserFileOptions) => {
   const TEMP_DIR = getUserFileDir(option)
@@ -108,7 +132,8 @@ export const useUserFiles = {
   write: writeTempFile,
   read: readTempFile,
   delete: deleteTempFile,
-  clear: clearTempFiles
+  clear: clearTempFiles,
+  readAllJsonFiles
 };
 
 export type UserFilesActions = keyof typeof useUserFiles;
