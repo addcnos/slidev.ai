@@ -52,7 +52,7 @@ export const useChatSession = createSharedComposable(() => {
 
       const _json = await sendSession(
         genSingleSlidevPrompt(item.title, `${idx + 1}/${len}`),
-        { completeText: idx + 1 === len ? '好的，已经处理了！请查收！' : `快好了，${idx + 1}/${len}...` }
+        { completeText: idx + 1 === len ? '好的，已经处理了！请查收！' : `快好了，${idx + 1}/${len}...`, role: Role.System }
       )
 
       chat.value.content.push(..._json)
