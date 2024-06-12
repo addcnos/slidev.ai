@@ -3,14 +3,19 @@ import { useIpcEmit } from "@renderer/composables";
 import { nanoid } from "nanoid";
 import { RunnableToolFunction } from "openai/lib/RunnableFunction";
 import { ImageGenerateParams } from "openai/resources/images";
+import { webcontainerFs } from "@main/webcontainer";
 
-
-export async function saveImage2File(filename: string, base64: string) {
-  await useIpcEmit.fileManager('write', {
+export function saveImage2File(filename: string, base64: string) {
+  const content = Uint8Array.from(atob(base64), c => c.charCodeAt(0))
+  useIpcEmit.fileManager('write', {
     fileName: filename,
-    content: Uint8Array.from(atob(base64), c => c.charCodeAt(0)),
+    content,
     dirName: 'assets',
   })
+  webcontainerFs().writeFile(
+    `public/images/${filename}`,
+    content
+  )
 }
 
 export async function generateImage({ prompt, size }: { prompt: string, size: ImageGenerateParams['size'] }) {
@@ -24,7 +29,7 @@ export async function generateImage({ prompt, size }: { prompt: string, size: Im
     response_format: 'b64_json',
   }).then(async (res) => saveImage2File(filename, res.data[0].b64_json))
 
-  return `/assets/${filename}`
+  return `public/images/${filename}`
 }
 
 const config: RunnableToolFunction<object>[] = [

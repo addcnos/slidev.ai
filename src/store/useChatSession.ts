@@ -44,6 +44,7 @@ export const useChatSession = createSharedComposable(() => {
   async function initSlidevContent() {
     const { outline } = useOutlineStore()
 
+    initPrompt(outline.value.title, 0)
     const len = outline.value.content.length
 
     for (let idx = 0; idx < len; idx++) {
@@ -133,6 +134,7 @@ export const useChatSession = createSharedComposable(() => {
       { encoding: 'utf-8' }
     )
 
+    console.log(normalizeSlidev2Markdown(chat.value.content))
   }
 
   return {
