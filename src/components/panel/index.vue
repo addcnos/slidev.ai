@@ -81,7 +81,7 @@ function handleClickHistory(item: {id?: string}) {
 
 function handleClickCreate() {
   activityId.value = nanoid()
-
+  
   emit('updateStep', 2)
 }
 </script>

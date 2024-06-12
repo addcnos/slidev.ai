@@ -1,12 +1,13 @@
 // See the Electron documentation for details on how to use preload scripts:
 // https://www.electronjs.org/docs/latest/tutorial/process-model#preload-scripts
 import { contextBridge, ipcRenderer } from 'electron';
-import type { ModelOption, UserFilesActions, UserFileOptions, UserFileResponse } from '@main/composables';
+import type { ModelOption, UserFilesActions, UserFileOptions, UserFileResponse, UserRectangle } from '@main/composables';
 interface IpcEmitter {
   setTitle: (title: string) => Promise<void>;
   readFiles: () => Promise<Record<string, unknown>>;
   createModel: (option: ModelOption) => Promise<void>;
   fileManager: (action: UserFilesActions, option: UserFileOptions) => UserFileResponse;
+  capturePage: (option: UserRectangle) => Promise<void>;
 }
 
 interface ContentListener {
@@ -25,6 +26,7 @@ contextBridge.exposeInMainWorld('ipcEmitter', {
   readFiles: () => ipcRenderer.invoke('temp:read'),
   createModel: (option: ModelOption) => ipcRenderer.invoke('model:create', option),
   fileManager: (action: UserFilesActions, option: UserFileOptions) => ipcRenderer.invoke(`user:${action}`, option),
+  capturePage: (option: UserRectangle) => ipcRenderer.invoke('app:capture-page', option),
 });
 
 // 渲染器进程 监听主进程事件 on-xxx

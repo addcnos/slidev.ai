@@ -1,7 +1,7 @@
 import { app } from 'electron';
 import fs from 'fs-extra';
 import path from 'path';
-type AppPath = Parameters<typeof app.getPath>[0];
+export type AppPath = Parameters<typeof app.getPath>[0];
 
 // 根据本地的slidev-temp目录，将其生成对应的数据
 export const slidevTempFiles = async () => {
@@ -68,7 +68,7 @@ export const writeTempFile = async (option: UserFileOptions) => {
   }
   const filePath = path.join(TEMP_DIR, fileName);
   if (append) {
-    await fs.appendFile(filePath, content);
+    await fs.appendFile(filePath, content as string | Uint8Array);
     return
   }
   await fs.writeFile(filePath, content);
@@ -91,6 +91,11 @@ async function readAllJsonFiles() {
     const JSON_DIR = getUserFileDir({
       dirName: 'json'
     })
+    // 判断目录是否存在
+    if (!fs.existsSync(JSON_DIR)) {
+      return [];
+    }
+
     const files = await fs.readdir(JSON_DIR);
     // 过滤出所有的 .json 文件
     const jsonFiles = files.filter(file => path.extname(file).toLowerCase() === '.json');

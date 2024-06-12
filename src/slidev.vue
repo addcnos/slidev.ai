@@ -22,6 +22,7 @@
 
     <OutLine />
     <button @click="visible = true">打开</button>
+    <button @click="onCapturePage">截图</button>
   </div>
 </template>
 
@@ -31,8 +32,8 @@ import { useOutlineStore } from '@renderer/store'
 import { iframeSrc, serverProcess, serverProcessMap } from '@main/webcontainer'
 import OutLine from './components/outline/index.vue'
 import Message from './components/message/index.vue'
-import { useCrossMessage } from '@renderer/composables'
-import { useDebounceFn } from '@vueuse/core'
+import { useCrossMessage, useIpcEmit } from '@renderer/composables'
+import { useDebounceFn, useElementBounding } from '@vueuse/core'
 import { useMessage } from './composables/message';
 import WaveVideo from '@renderer/assets/videos/wave.mp4'
 import StarVideo from '@renderer/assets/videos/star.mp4'
@@ -42,6 +43,7 @@ const iframeAllow = 'fullscreen; geolocation; encrypted-media;'
 const { extend } = useMessage()
 const loaded = ref(false)
 const { iframeRef, subscribe } = useCrossMessage()
+const {x ,y, width,height} = useElementBounding(iframeRef)
 subscribe()
 const bgVideos = {
   'wave': {
@@ -78,6 +80,16 @@ window.addEventListener('message', (event) => {
     }
   } catch { }
 })
+
+const onCapturePage = async () => {
+  await useIpcEmit.capturePage({
+    x: x.value,
+    y: y.value,
+    width: width.value,
+    height: height.value,
+    fileName: 'test.png'
+  })
+}
 
 </script>
 
