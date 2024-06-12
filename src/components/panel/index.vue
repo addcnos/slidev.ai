@@ -3,13 +3,12 @@
     <div class="template">
       <div class="title">新建空白页</div>
       <div class="card-wrapper">
-        <div class="card" @click="emit('create')">
+        <div class="card" @click="handleClickCreate">
           <div class="wrapper">
             <img :src="createIcon" />
           </div>
           <div class="desc">
             <div class="title">空白文稿</div>
-            <div class="subtitle"></div>
           </div>
         </div>
         <Card class="template-card" :data="item" v-for="item, index in templates" :key="index" />
@@ -18,7 +17,7 @@
     <div class="history" v-if="historys.length">
       <div class="title">近期文稿</div>
       <div class="card-wrapper">
-        <Card class="history-card" :data="item" v-for="item, index in historys" :key="index" />
+        <Card @click="handleClickHistory(item)" class="history-card" :data="item" v-for="item, index in historys" :key="index" />
       </div>
     </div>
   </div>
@@ -29,8 +28,11 @@ import { ref } from 'vue'
 import Card from './Card.vue'
 import createIcon from '../../assets/image/create-icon.png'
 import { useIpcEmit } from "@renderer/composables";
+import { useChatSession } from '@renderer/store/useChatSession';
+import { nanoid } from 'nanoid'
 
-const emit = defineEmits(['create'])
+const emit = defineEmits(['updateStep'])
+const { activityId } = useChatSession()
 const templates = ref([
   {
     title: 'Slidev功能介绍',
@@ -46,53 +48,7 @@ const templates = ref([
   },
 ])
 
-const historys = ref([
-  {
-    title: 'Slidev功能介绍',
-    user: '大奔',
-    createTime: '2024年3月14日',
-  },
-  {
-    title: 'Slidev功能介绍',
-    user: '大奔',
-    createTime: '2024年3月14日',
-  },
-  {
-    title: 'Slidev功能介绍',
-    user: '大奔',
-    createTime: '2024年3月14日',
-  },
-  {
-    title: 'Slidev功能介绍',
-    user: '大奔',
-    createTime: '2024年3月14日',
-  },
-  {
-    title: 'Slidev功能介绍',
-    user: '大奔',
-    createTime: '2024年3月14日',
-  },
-  {
-    title: 'Slidev功能介绍',
-    user: '大奔',
-    createTime: '2024年3月14日',
-  },
-  {
-    title: 'Slidev功能介绍',
-    user: '大奔',
-    createTime: '2024年3月14日',
-  },
-  {
-    title: 'Slidev功能介绍',
-    user: '大奔',
-    createTime: '2024年3月14日',
-  },
-  {
-    title: 'Slidev功能介绍',
-    user: '大奔',
-    createTime: '2024年3月14日',
-  },
-])
+const historys = ref([])
 
 async function init() {
   const files = await useIpcEmit.fileManager('readAllJsonFiles', {
@@ -105,9 +61,9 @@ async function init() {
   }[]
 
   historys.value = files?.map(item => {
+    console.log(item)
     return {
       title: item.title,
-      user: item.user,
       createTime: item.createTime,
       image: item.image,
     }
@@ -115,6 +71,19 @@ async function init() {
 }
 
 init()
+
+function handleClickHistory(item: {id?: string}) {
+  if (!item?.id) return
+
+  activityId.value = item.id
+  emit('updateStep', 2)
+}
+
+function handleClickCreate() {
+  activityId.value = nanoid()
+
+  emit('updateStep', 2)
+}
 </script>
 
 <style lang="scss" scoped>

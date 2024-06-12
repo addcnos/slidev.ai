@@ -119,6 +119,7 @@ export const useChatSession = createSharedComposable(() => {
         ...outline.value,
         ...chat.value,
         createTime: dayjs().format('YYYY-MM-DD HH:mm:ss'),
+        id: activityId.value,
       }),
       dirName: 'json',
     })
@@ -137,5 +138,6 @@ export const useChatSession = createSharedComposable(() => {
     initPrompt,
     sendSession,
     initSlidevContent,
+    activityId,
   }
 })

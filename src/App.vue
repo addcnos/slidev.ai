@@ -1,6 +1,6 @@
 <template>
   <div class="slidev-ai-container">
-    <Panel v-show="step === 1" @create="step = 2" />
+    <Panel v-show="step === 1" @updateStep="(step) => step = step" />
     <SlidevEmbed v-show="step === 2" />
   </div>
 </template>
