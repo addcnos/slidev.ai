@@ -53,21 +53,23 @@ const historys = ref([])
 
 const transImage = async (data: Uint8Array) => {
   return new Promise((resolve) => {
+    // 假设 data 是一个 ArrayBuffer 对象
     const uint8Array = new Uint8Array(data);
-    // 将 Uint8Array 转换为普通的 JavaScript 数组
-    const dataArray = Array.from(uint8Array);
-    // 将 JavaScript 数组转换为 Uint8Array 对象
-    const convertedUint8Array = new Uint8Array(dataArray);
     // 创建一个 Blob 对象
-    const blob = new Blob([convertedUint8Array], { type: 'application/octet-stream' });
+    const blob = new Blob([uint8Array], { type: 'application/octet-stream' });
     // 使用 FileReader 对象读取 Blob 对象中的数据
     const reader = new FileReader();
     reader.readAsDataURL(blob);
-    let str = ''
     // 当读取完成时触发的事件
     reader.onload = function () {
-      const base64String = reader.result.split(',')[1];
-      resolve(base64String)
+      let base64String = '';
+      if (typeof reader.result === 'string') {
+        base64String = reader.result.split(',')[1];
+      } else if (reader.result instanceof ArrayBuffer) {
+        const binary = new Uint8Array(reader.result);
+        base64String = btoa(String.fromCharCode.apply(null, binary));
+      }
+      resolve(base64String);
     };
   })
 
@@ -91,16 +93,13 @@ async function init() {
       dirName: 'screenshot',
       fileName: `${item?.id}.png`
     })
-
     const img = await transImage(image as Uint8Array)
-
     _historys.push({
       title: item.title,
       createTime: item.createTime,
       image: img,
       id: item?.id || ''
     })
-    console.log(item, 'item')
   }
 
   historys.value = _historys
