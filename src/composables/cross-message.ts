@@ -1,3 +1,4 @@
+import { useChatSession } from '@renderer/store'
 import { createSharedComposable } from '@vueuse/core'
 import { ref } from 'vue'
 
@@ -6,7 +7,7 @@ export const useCrossMessage = createSharedComposable(() => {
 
   function subscribe() {
     window.addEventListener('message', (value) => {
-      // todo: handle message
+      useChatSession().chat.value.page = JSON.parse(value.data).data
     })
   }
 

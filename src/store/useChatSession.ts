@@ -19,6 +19,7 @@ export const useChatSession = createSharedComposable(() => {
   const chat = ref<ChatStore>({
     session: [],
     content: [],
+    page: {},
   })
 
 
@@ -75,11 +76,15 @@ export const useChatSession = createSharedComposable(() => {
   async function sendSession(
     message: string,
     {
+      promptFunc,
       role,
       completeText,
-    }: { role?: Role, completeText?: string } = {}
+    }: { promptFunc?: any; role?: Role, completeText?: string } = {}
   ) {
-    pushSession({ role: role || Role.User, content: message })
+    pushSession({
+      role: role || Role.User,
+      content: promptFunc ? promptFunc(chat.value.page.nav.currentPage, message) : message
+    })
     const func = variableSession({ role: Role.Gpt, content: '处理中...' })
 
     const runner = await openai.beta.chat.completions.runTools({
@@ -94,6 +99,12 @@ export const useChatSession = createSharedComposable(() => {
       content: completeText || '好的，已经处理了！请查收！',
       source: result.choices[0],
     })
+
+    if (promptFunc) {
+      chat.value.content = chat.value.content.slice(0, chat.value.page.nav.currentPage)
+      updateJSONCache()
+      return
+    }
 
     return await normalizeSlidev2Json(result.choices[0].message.content)
   }
@@ -112,7 +123,7 @@ export const useChatSession = createSharedComposable(() => {
       dirName: 'json',
     })
 
-    syncMarkdown()
+    await syncMarkdown()
 
     updateCapturePage.value = true
 

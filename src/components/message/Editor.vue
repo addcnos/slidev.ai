@@ -17,13 +17,18 @@
 import { ref, watch } from 'vue'
 import { useMagicKeys } from '@vueuse/core'
 import { useChatSession } from '@renderer/store/useChatSession';
+import { beautifySlidevPrompt } from '@renderer/utils/prompt/slidev';
+import { Role } from '@renderer/types/chat';
 
 const message = ref('')
 const { enter } = useMagicKeys()
 
 async function send() {
   if (!message.value) return
-  useChatSession().sendSession(message.value)
+  useChatSession().sendSession(message.value, {
+    promptFunc: beautifySlidevPrompt,
+    role: Role.System
+  })
   message.value = ''
 }
 

@@ -59,4 +59,5 @@ export interface ChatSessionContext extends GptSessionContext {
 export interface ChatStore {
   session: ChatSessionContext[]
   content: SourceSlideInfo[]
+  page: any
 }
