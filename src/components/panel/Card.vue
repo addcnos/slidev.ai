@@ -1,7 +1,7 @@
 <template>
   <div class="card-container">
     <div class="wrapper">
-      <img :src="`data:image/png;base64,${data?.image}`" alt="">
+      <img v-if="data?.image" :src="`data:image/png;base64,${data?.image}`" alt="">
     </div>
     <div class="desc">
       <div class="title">{{ data?.title }}</div>
