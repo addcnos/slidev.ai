@@ -115,8 +115,6 @@ export const useChatSession = createSharedComposable(() => {
   async function updateJSONCache() {
     const { outline } = useOutlineStore()
 
-    updateCapturePage.value = true
-
     await useIpcEmit.fileManager('write', {
       fileName: activityId.value + '.json',
       content: JSON.stringify({
@@ -133,6 +131,8 @@ export const useChatSession = createSharedComposable(() => {
       normalizeSlidev2Markdown(chat.value.content),
       { encoding: 'utf-8' }
     )
+
+    updateCapturePage.value = true
 
     console.log(normalizeSlidev2Markdown(chat.value.content))
   }
