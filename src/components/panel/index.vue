@@ -17,7 +17,8 @@
     <div class="history" v-if="historys.length">
       <div class="title">近期文稿</div>
       <div class="card-wrapper">
-        <Card @click="handleClickHistory(item)" class="history-card" :data="item" v-for="item, index in historys" :key="index" />
+        <Card @click="handleClickHistory(item)" class="history-card" :data="item" v-for="item, index in historys"
+          :key="index" />
       </div>
     </div>
   </div>
@@ -50,6 +51,28 @@ const templates = ref([
 
 const historys = ref([])
 
+const transImage = async (data: Uint8Array) => {
+  return new Promise((resolve) => {
+    const uint8Array = new Uint8Array(data);
+    // 将 Uint8Array 转换为普通的 JavaScript 数组
+    const dataArray = Array.from(uint8Array);
+    // 将 JavaScript 数组转换为 Uint8Array 对象
+    const convertedUint8Array = new Uint8Array(dataArray);
+    // 创建一个 Blob 对象
+    const blob = new Blob([convertedUint8Array], { type: 'application/octet-stream' });
+    // 使用 FileReader 对象读取 Blob 对象中的数据
+    const reader = new FileReader();
+    reader.readAsDataURL(blob);
+    let str = ''
+    // 当读取完成时触发的事件
+    reader.onload = function () {
+      const base64String = reader.result.split(',')[1];
+      resolve(base64String)
+    };
+  })
+
+}
+
 async function init() {
   const files = await useIpcEmit.fileManager('readAllJsonFiles', {
     dirName: 'json',
@@ -68,11 +91,13 @@ async function init() {
       dirName: 'screenshot',
       fileName: `${item?.id}.png`
     })
-    
+
+    const img = await transImage(image as Uint8Array)
+
     _historys.push({
       title: item.title,
       createTime: item.createTime,
-      image: image.toString('base64'),
+      image: img,
       id: item?.id || ''
     })
     console.log(item, 'item')
@@ -83,7 +108,7 @@ async function init() {
 
 init()
 
-function handleClickHistory(item: {id?: string}) {
+function handleClickHistory(item: { id?: string }) {
   if (!item?.id) return
 
   activityId.value = item.id
@@ -92,7 +117,7 @@ function handleClickHistory(item: {id?: string}) {
 
 function handleClickCreate() {
   activityId.value = nanoid()
-  
+
   emit('updateStep', 2)
 }
 </script>

@@ -80,7 +80,12 @@ export const readTempFile = async (option: UserFileOptions) => {
   const { fileName } = option;
   const filePath = path.join(TEMP_DIR, fileName);
   if (fs.existsSync(filePath)) {
-    return fs.readFile(filePath);
+    // 判断文件是否是二进制文件 - 通过后缀判断
+    const isBinary = ['.png', '.jpg', '.jpeg', '.gif', '.webp', '.ico', '.bmp', '.tiff', '.tif', '.svg'].includes(path.extname(fileName).toLowerCase());
+    if (isBinary) {
+      return fs.readFileSync(filePath)
+    }
+    return fs.readFile(filePath, 'utf-8');
   }
   return ''
 }
