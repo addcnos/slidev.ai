@@ -46,6 +46,9 @@ function changeInput(value: string) {
 .outline {
   &-title {
     margin-top: 20px;
+    margin-right: 10px;
+    font-size: 18px;
+    font-weight: bold;
   }
 }
 </style>

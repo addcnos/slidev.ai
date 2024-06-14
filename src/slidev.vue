@@ -62,12 +62,10 @@ const bgVideos = {
 const currentBg = ref('wave')
 const currentBgVideo = computed(() => bgVideos[currentBg.value].src)
 
-const { visible } = useOutlineStore()
 const count = ref(0)
 const onLoad = useDebounceFn(() => {
   nextTick(() => {
     loaded.value = true
-    visible.value = true
   })
 }, 500)
 
