@@ -6,14 +6,14 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue';
+import { onMounted, provide, ref } from 'vue';
 import SlidevEmbed from './slidev.vue'
 import Panel from './components/panel/index.vue'
 import { mount } from '@main/webcontainer';
 import { useIpcEmit } from '@renderer/composables'
 
 const step = ref(1) 
-
+provide('toggleStep', (next) => step.value = next)
 onMounted(async () => {
   console.log('🚀 The Vue app is mounted');
   const files = await useIpcEmit.readFiles();

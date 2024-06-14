@@ -1,5 +1,10 @@
 <template>
   <div class="header">
+    <Button
+        @click="toggleStep(1)"
+        label="Submit"
+      > <i class="pi pi-arrow-left"></i>
+      </Button>
     <div class="title">聊天框</div>
     <button @click="handleChangePageNo">切换页签</button>
     <i @click="extend = false" class="pi pi-angle-right" style="font-size: 20px;cursor: pointer;"></i>
@@ -7,9 +12,10 @@
 </template>
 
 <script setup lang="ts">
+import { inject } from 'vue'
 import { useCrossMessage } from './../../composables/cross-message'
 import { useMessage } from './../../composables/message';
-
+const toggleStep = inject('toggleStep',(a:number)=>{})
 const { messageToIframe } = useCrossMessage()
 const { extend } = useMessage()
 
@@ -19,7 +25,6 @@ function handleChangePageNo() {
     data: 4
   })
 }
-
 </script>
 
 <style lang="scss" scoped>

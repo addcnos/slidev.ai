@@ -169,11 +169,10 @@ const actions = ref([
 
     :deep() {
       .p-button {
-        max-width: 100px;
+        min-width: 100px;
         height: 40px;
         padding: 0 16px;
         margin: 12px 4px 0 0;
-        background: #ff4a00;
         border: none;
       }
     }
