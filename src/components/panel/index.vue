@@ -25,6 +25,7 @@
 </template>
 
 <script setup lang="ts">
+import { until } from '@vueuse/core';
 import { ref } from 'vue'
 import Card from './Card.vue'
 import createIcon from '../../assets/image/create-icon.png'
@@ -35,7 +36,7 @@ import { useOutlineStore } from '@renderer/store';
 
 const emit = defineEmits(['updateStep'])
 const { activityId, chat, updateJSONCache } = useChatSession()
-const { outline }  = useOutlineStore()
+const { outline, visible }  = useOutlineStore()
 const templates = ref([
   {
     title: 'Slidev功能介绍',
@@ -127,8 +128,11 @@ async function handleClickHistory(item: { id?: string }) {
   await updateJSONCache(true)
 }
 
-function handleClickCreate() {
+async function handleClickCreate() {
   activityId.value = nanoid()
+
+  visible.value = true
+  await until(visible).toBe(false)
 
   emit('updateStep', 2)
 }

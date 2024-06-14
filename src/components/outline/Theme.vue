@@ -55,17 +55,23 @@ function initOutline() {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 4px;
-    background: #fff;
+    margin-bottom: px;
 
     .title {
       margin-right: 10px;
+      font-size: 18px;
+      font-weight: bold;
     }
 
     :deep() {
       .p-inputtext {
         width: 100px;
         height: 32px;
+        border: 1px solid #d0dddb;
+      }
+
+      .p-button:disabled {
+        background: #10b981a6;
       }
     }
   }
@@ -74,8 +80,9 @@ function initOutline() {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 10px;
-    border: 1px solid #e2e8f0;
+    padding: 6px 12px;
+    margin-top: 6px;
+    border: 1px solid #d0dddb;
     border-radius: 8px;
   }
 }
