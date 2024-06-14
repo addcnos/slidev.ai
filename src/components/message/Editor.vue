@@ -132,7 +132,7 @@ const actions = ref([
       }
 
       &:hover {
-        width: 102px;
+        width: 92px;
         background: #e5e5e5;
         transition-delay: 0.5s;
 
