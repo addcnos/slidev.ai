@@ -11,7 +11,7 @@
       <Button
         @click="send"
         label="Submit"
-      ><img src="@assets/images/send-icon.png" width="18" height="18">Send</Button>
+      ><img src="@assets/images/send-icon.png" width="18" height="18">发送</Button>
     </div>
   </div>
 </template>
@@ -21,12 +21,6 @@ import { ref, watch } from 'vue'
 import { useMagicKeys } from '@vueuse/core'
 import { useChatSession } from '@renderer/store/useChatSession';
 import { beautifySlidevPrompt } from '@renderer/utils/prompt/slidev';
-import settingIcon from '@assets/images/setting-icon.png';
-import sunIcon from '@assets/images/sun-icon.png';
-import magicIcon from '@assets/images/magic-icon.png';
-import maskIcon from '@assets/images/mask-icon.png';
-import clearIcon from '@assets/images/clear-icon.png';
-import robotIcon from '@assets/images/robot-icon.png';
 import { Role } from '@renderer/types/chat';
 
 const message = ref('')
