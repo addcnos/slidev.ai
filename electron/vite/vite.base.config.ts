@@ -10,7 +10,8 @@ export const external = [...builtins, ...Object.keys('dependencies' in pkg ? (pk
 export const alias: UserConfig['resolve']['alias'] = {
   '@main': path.join(process.cwd(), 'electron'),
   '@renderer': path.join(process.cwd(), 'src'),
-  '@temp': path.join(process.cwd(), 'slide-temp')
+  '@temp': path.join(process.cwd(), 'slide-temp'),
+  '@assets': path.join(process.cwd(), 'src/assets')
 }
 
 export function getBuildConfig(env: ConfigEnv<'build'>): UserConfig {

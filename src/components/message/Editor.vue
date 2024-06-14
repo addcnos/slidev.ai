@@ -1,14 +1,16 @@
 <template>
   <div class="editor">
     <div class="actions">
-      <div v-for="item, index in 7" :key="index" class="action"></div>
+      <div v-for="item, index in actions" :key="index" class="action" @click="item.actionHandle">
+        <img :src="item.icon" width="18" height="18">
+      </div>
     </div>
     <div class="input-panel">
       <textarea v-model="message" placeholder="请输入内容" rows="2"></textarea>
       <Button
         @click="send"
         label="Submit"
-      >Send</Button>
+      ><img src="@assets/images/send-icon.png" width="18" height="18">Send</Button>
     </div>
   </div>
 </template>
@@ -18,6 +20,12 @@ import { ref, watch } from 'vue'
 import { useMagicKeys } from '@vueuse/core'
 import { useChatSession } from '@renderer/store/useChatSession';
 import { beautifySlidevPrompt } from '@renderer/utils/prompt/slidev';
+import settingIcon from '@assets/images/setting-icon.png';
+import sunIcon from '@assets/images/sun-icon.png';
+import magicIcon from '@assets/images/magic-icon.png';
+import maskIcon from '@assets/images/mask-icon.png';
+import clearIcon from '@assets/images/clear-icon.png';
+import robotIcon from '@assets/images/robot-icon.png';
 import { Role } from '@renderer/types/chat';
 
 const message = ref('')
@@ -40,6 +48,50 @@ watch(() => enter.value, (v: boolean) => {
   }
 })
 
+const actions = ref([
+  {
+    name: 'setting',
+    icon:settingIcon,
+    actionHandle: () => {
+      // todo setting
+    }
+  },
+  {
+    name: 'sun',
+    icon:sunIcon,
+    actionHandle: () => {
+      // todo setting
+    }
+  },
+  {
+    name: 'magic',
+    icon:magicIcon,
+    actionHandle: () => {
+      // todo setting
+    }
+  },
+  {
+    name: 'mask',
+    icon:settingIcon,
+    actionHandle: () => {
+      // todo setting
+    }
+  },
+  {
+    name: 'clear',
+    icon:clearIcon,
+    actionHandle: () => {
+      // todo setting
+    }
+  },
+  {
+    name: 'robot',
+    icon:robotIcon,
+    actionHandle: () => {
+      // todo setting
+    }
+  },
+])
 </script>
 
 <style lang="scss" scoped>
@@ -54,24 +106,24 @@ watch(() => enter.value, (v: boolean) => {
   .actions {
     display: flex;
     flex-wrap: wrap;
+    padding: 6px 0;
 
     .action {
-      display: inline-flex;
+      display: flex;
       align-items: center;
-      width: 12px;
-      height: 12px;
-      padding: 4px 10px;
-      margin-right: 5px;
-      margin-bottom: 10px;
-      overflow: hidden;
-      font-size: 12px;
-      color: #303030;
-      cursor: pointer;
-      background-color: #fff;
-      border: 1px solid #dedede;
-      border-radius: 20px;
-      box-shadow: 0 2px 4px 0 rgb(0 0 0 / 5%);
-      animation: icon-transform 0.3s ease;
+      justify-content: center;
+      width: 36px;
+      height: 24px;
+      margin-right: 4px;
+      background: #fff;
+      border: 1px solid #e6e6e6;
+      border-radius: 13px;
+      box-shadow: 0 1px 4px 0 rgb(0 0 0 / 10%);
+
+      img {
+        width: 18px;
+        height: 18px;
+      }
     }
   }
 
@@ -117,9 +169,12 @@ watch(() => enter.value, (v: boolean) => {
 
     :deep() {
       .p-button {
-        width: 100px;
+        max-width: 100px;
         height: 40px;
+        padding: 0 16px;
         margin: 12px 4px 0 0;
+        background: #ff4a00;
+        border: none;
       }
     }
   }

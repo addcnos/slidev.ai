@@ -5,7 +5,7 @@
       <div class="card-wrapper">
         <div class="card" @click="handleClickCreate">
           <div class="wrapper">
-            <img :src="createIcon" />
+            <img src="@assets/images/create-icon.png" />
           </div>
           <div class="desc">
             <div class="title">空白文稿</div>
@@ -27,7 +27,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import Card from './Card.vue'
-import createIcon from '../../assets/image/create-icon.png'
 import { useIpcEmit } from "@renderer/composables";
 import { useChatSession } from '@renderer/store/useChatSession';
 import { nanoid } from 'nanoid'

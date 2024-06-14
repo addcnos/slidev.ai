@@ -2,7 +2,7 @@
   <Dialog
     v-model:visible="visible"
     modal
-    header="生成 Slide 大纲"
+    header="生成 Slide 大纲11"
     :style="{ width: '800px' }"
   >
     <div class="outline">
