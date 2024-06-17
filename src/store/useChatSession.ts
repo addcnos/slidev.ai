@@ -88,7 +88,7 @@ export const useChatSession = createSharedComposable(() => {
     const func = variableSession({ role: Role.Gpt, content: '处理中...' })
 
     const runner = await openai.beta.chat.completions.runTools({
-      model: 'gpt-4o',
+      model: 'gpt-3.5-turbo',
       tools,
       messages: normalizeSession2Gpt(chat.value.session),
     })

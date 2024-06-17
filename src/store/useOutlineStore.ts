@@ -39,7 +39,7 @@ export const useOutlineStore = createSharedComposable(() => {
       id: nanoid(),
     })
     const completion = await openai.chat.completions.create({
-      model: 'gpt-4o',
+      model: 'gpt-3.5-turbo',
       messages: normalizeSession2Gpt(outline.value.session),
       response_format: {
         type: 'json_object',
@@ -64,7 +64,7 @@ export const useOutlineStore = createSharedComposable(() => {
       id: nanoid(),
     })
     const completion = await openai.chat.completions.create({
-      model: 'gpt-4o',
+      model: 'gpt-3.5-turbo',
       messages: normalizeSession2Gpt(outline.value.session),
     });
     outline.value.session.push({
