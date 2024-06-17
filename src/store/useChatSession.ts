@@ -46,7 +46,7 @@ export const useChatSession = createSharedComposable(() => {
 
       updateJSONCache()
 
-      if (idx >= 2)
+      if (idx >= 1)
         break
 
     }

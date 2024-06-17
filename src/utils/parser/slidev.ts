@@ -49,7 +49,6 @@ function matter(code: string) {
         return ''
       })
   }
-  console.log(type)
   const doc = YAML.parseDocument(raw || '')
 
   return {

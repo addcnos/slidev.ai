@@ -2,7 +2,8 @@
   <div class="editor">
     <div class="actions">
       <div v-for="item, index in actions" :key="index" class="action" @click="item.actionHandle">
-        <img :src="item.icon" width="18" height="18">
+        <i class="pi" :class="item.icon" style="font-size: 16px;color: #4a4a4a;"></i>
+        <span>{{ item.title }}</span>
       </div>
     </div>
     <div class="input-panel">
@@ -10,7 +11,7 @@
       <Button
         @click="send"
         label="Submit"
-      ><img src="@assets/images/send-icon.png" width="18" height="18">Send</Button>
+      ><img src="@assets/images/send-icon.png" width="18" height="18">发送</Button>
     </div>
   </div>
 </template>
@@ -20,12 +21,6 @@ import { ref, watch } from 'vue'
 import { useMagicKeys } from '@vueuse/core'
 import { useChatSession } from '@renderer/store/useChatSession';
 import { beautifySlidevPrompt } from '@renderer/utils/prompt/slidev';
-import settingIcon from '@assets/images/setting-icon.png';
-import sunIcon from '@assets/images/sun-icon.png';
-import magicIcon from '@assets/images/magic-icon.png';
-import maskIcon from '@assets/images/mask-icon.png';
-import clearIcon from '@assets/images/clear-icon.png';
-import robotIcon from '@assets/images/robot-icon.png';
 import { Role } from '@renderer/types/chat';
 
 const message = ref('')
@@ -50,43 +45,41 @@ watch(() => enter.value, (v: boolean) => {
 
 const actions = ref([
   {
-    name: 'setting',
-    icon:settingIcon,
+    name: 'insertImg',
+    icon:'pi-image',
+    title:'插入图片',
     actionHandle: () => {
       // todo setting
     }
   },
   {
-    name: 'sun',
-    icon:sunIcon,
+    name: 'addPage',
+    icon:'pi-file-plus',
+    title:'插入单页',
     actionHandle: () => {
       // todo setting
     }
   },
   {
-    name: 'magic',
-    icon:magicIcon,
+    name: 'polishing',
+    icon:'pi-sparkles',
+    title:'润色文稿',
     actionHandle: () => {
       // todo setting
     }
   },
   {
-    name: 'mask',
-    icon:settingIcon,
+    name: 'textToImg',
+    icon:'pi-images',
+    title:'文本转图',
     actionHandle: () => {
       // todo setting
     }
   },
   {
-    name: 'clear',
-    icon:clearIcon,
-    actionHandle: () => {
-      // todo setting
-    }
-  },
-  {
-    name: 'robot',
-    icon:robotIcon,
+    name: 'downLoad',
+    icon:'pi-file-pdf',
+    title:'下载pdf',
     actionHandle: () => {
       // todo setting
     }
@@ -111,14 +104,37 @@ const actions = ref([
     .action {
       display: flex;
       align-items: center;
-      justify-content: center;
       width: 36px;
       height: 24px;
+      padding: 0 9px;
       margin-right: 4px;
+      overflow: hidden;
+      white-space: nowrap;
+      cursor: pointer;
       background: #fff;
       border: 1px solid #e6e6e6;
       border-radius: 13px;
       box-shadow: 0 1px 4px 0 rgb(0 0 0 / 10%);
+      transition: width 0.3s ease;
+
+      span {
+        margin-left: 4px;
+        font-size: 13px;
+        opacity: 0;
+        transition: all 0.3s ease;
+        transform: translateY(-1px);
+      }
+
+      &:hover {
+        width: 92px;
+        background: #e5e5e5;
+        transition-delay: 0.5s;
+
+        span {
+          opacity: 1;
+          transition-delay: 0.5s;
+        }
+      }
 
       img {
         width: 18px;
@@ -132,8 +148,8 @@ const actions = ref([
     display: flex;
     flex: 1 1;
     cursor: text;
-    border: 1px solid #dedede;
-    border-radius: 10px;
+    border: 1px solid #e6e6e6;
+    border-radius: 7px;
 
     textarea {
       box-sizing: border-box;
@@ -148,31 +164,19 @@ const actions = ref([
       border: none;
       border-radius: 10px;
       outline: none;
-      box-shadow: 0 -2px 5px rgb(0 0 0 / 3%);
 
       &::-webkit-scrollbar {
-        width: 2px;
-      }
-
-      &::-webkit-scrollbar-track {
-        background: #dedede;
-      }
-
-      &::-webkit-scrollbar-thumb {
-        background: #dedede;
-      }
-
-      &::-webkit-scrollbar-thumb:hover {
-        background: #dedede;
+        width: 0;
       }
     }
 
     :deep() {
       .p-button {
-        min-width: 100px;
+        min-width: 80px;
         height: 40px;
-        padding: 0 16px;
+        padding: 0 10px;
         margin: 12px 4px 0 0;
+        margin-left: 5px;
         border: none;
       }
     }
