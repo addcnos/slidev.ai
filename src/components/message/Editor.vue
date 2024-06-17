@@ -6,7 +6,7 @@
       </div>
     </div>
     <div class="input-panel">
-      <textarea v-model="message" placeholder="请输入内容" rows="2"></textarea>
+      <Textarea v-model="message" placeholder="请输入内容" rows="2"></Textarea>
       <Button
         @click="send"
         label="Submit"

@@ -19,20 +19,15 @@
         </div>
       </div>
       <div class="settings-item">
-        <div class="settings-item-title">图片来源：</div>
-        <div class="settings-item-ctn">
-          <Select v-model="selectedCity" :options="cities" optionLabel="name" placeholder="选中图片feng" class="w-full md:w-56" />
-        </div>
-      </div>
-      <div class="settings-item">
         <div class="settings-item-title">图片风格：</div>
         <div class="settings-item-ctn">
-          <Select v-model="selectedCity" :options="cities" optionLabel="name" placeholder="选中图片feng" class="w-full md:w-56" />
+          <Select v-model="selectedCity" editable :options="cities" optionLabel="name" placeholder="Select a City" class="w-full md:w-56" />
         </div>
       </div>
       <div class="settings-item">
         <div class="settings-item-title">图片模型：</div>
         <div class="settings-item-ctn">
+
         </div>
       </div>
     </div>
@@ -41,6 +36,7 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
+import Select from 'primevue/select';
 const selectedCity = ref();
 const cities = ref([
     { name: 'New York', code: 'NY' },
