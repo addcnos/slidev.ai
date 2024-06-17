@@ -173,7 +173,7 @@ watch(() => updateCapturePage.value, async (value) =>{
     display: flex;
     flex-direction: column;
     flex-shrink: 0;
-    width: 300px;
+    width: 350px;
     height: 100%;
     transition: 0.5s;
 
