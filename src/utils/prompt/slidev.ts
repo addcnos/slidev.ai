@@ -36,7 +36,7 @@ export function initUsePreset() {
     "Configurations: Define configurations in the Markdown file.",
     "Example: ---\\ntheme: seriph\\nlayout: cover\\nbackground: 'https://source.unsplash.com/1600x900/?nature,water'\\n---\\n# Slidev\\nThis is the cover page.",
     "LaTeX: Support for LaTeX, powered by KaTeX. Inline and block rendering for LaTeX. LaTeX line highlighting.",
-    "Example: $\\sqrt{3x-1}+(1+x)^2$\\n$$\\n\\begin{array}{c}\\n\\nabla \\times \\vec{\\mathbf{B}} -\, \\frac1c\, \\frac{\\partial\\vec{\\mathbf{E}}}{\\partial t} &= \\frac{4\\pi}{c}\\vec{\\mathbf{j}}    \\nabla \\cdot \\vec{\\mathbf{E}} &= 4 \\pi \\rho \\\\ \\nabla \\times \\vec{\\mathbf{E}}\, +\, \\frac1c\, \\frac{\\partial\\vec{\\mathbf{B}}}{\\partial t} &= \\vec{\\mathbf{0}} \\\\ \\nabla \\cdot \\vec{\\mathbf{B}} &= 0\\n\\end{array}\\n$$",
+    "Example: $\\sqrt{3x-1}+(1+x)^2$\\n$$\\n\\begin{array}{c}\\n\\nabla \\times \\vec{\\mathbf{B}} -\\, \\frac1c\\, \\frac{\\partial\\vec{\\mathbf{E}}}{\\partial t} &= \\frac{4\\pi}{c}\\vec{\\mathbf{j}}    \\nabla \\cdot \\vec{\\mathbf{E}} &= 4 \\pi \\rho \\\\ \\nabla \\times \\vec{\\mathbf{E}}\\, +\\, \\frac1c\\, \\frac{\\partial\\vec{\\mathbf{B}}}{\\partial t} &= \\vec{\\mathbf{0}} \\\\ \\nabla \\cdot \\vec{\\mathbf{B}} &= 0\\n\\end{array}\\n$$",
     "Diagrams: Create diagrams from textual descriptions using Mermaid.",
     "Example: ```mermaid\\nsequenceDiagram\\n  Alice->John: Hello John, how are you?\\n  Note over Alice,John: A typical interaction\\n```",
     "Multiple Entries: Split slides.md into multiple files. Merge frontmatters from main entry and external markdown pages. Reuse pages with multi-entries support.",
@@ -71,7 +71,7 @@ export function initSlidevPrompt(theme: string) {
     '5. Do not bring the numbers in the title',
     '6. You only need to generate the content of the current page, and you do not need to generate the content of the entire slidev',
     '7. You never use any component',
-    '8. You are not allowed to use external pictures. If you want to use pictures, please call the picture generation',
+    '8. You are not allowed to use external pictures. If you want to use pictures, please call the function generateImage',
     '',
     'The current theme is: ' + theme,
   ].join('\n')
