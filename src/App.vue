@@ -12,6 +12,7 @@ import Panel from './components/panel/index.vue'
 import { mount } from '@main/webcontainer';
 import { useIpcEmit } from '@renderer/composables'
 
+
 const step = ref(1) 
 provide('toggleStep', (next) => step.value = next)
 onMounted(async () => {

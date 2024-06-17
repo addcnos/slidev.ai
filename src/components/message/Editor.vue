@@ -13,22 +13,27 @@
         label="Submit"
       ><img src="@assets/images/send-icon.png" width="18" height="18">发送</Button>
     </div>
+    <Toast />
   </div>
 </template>
 
 <script setup lang="ts">
+import Toast from 'primevue/toast';
 import { ref, watch } from 'vue'
 import { useMagicKeys } from '@vueuse/core'
 import { useChatSession } from '@renderer/store/useChatSession';
-import { beautifySlidevPrompt } from '@renderer/utils/prompt/slidev';
+import { beautifySlidevPrompt, instertSlidevPrompt } from '@renderer/utils/prompt/slidev';
 import { Role } from '@renderer/types/chat';
+import { useToast } from 'primevue/usetoast';
 
 const message = ref('')
 const { enter } = useMagicKeys()
+const { sendSession } = useChatSession()
+const toast = useToast();
 
 async function send() {
   if (!message.value) return
-  useChatSession().sendSession(message.value, {
+  sendSession(message.value, {
     promptFunc: beautifySlidevPrompt,
     role: Role.System
   })
@@ -49,7 +54,7 @@ const actions = ref([
     icon:'pi-image',
     title:'插入图片',
     actionHandle: () => {
-      // todo setting
+     
     }
   },
   {
@@ -57,7 +62,13 @@ const actions = ref([
     icon:'pi-file-plus',
     title:'插入单页',
     actionHandle: () => {
-      // todo setting
+      if (!message.value)  {
+        return toast.add({ severity: 'error', summary: '请输入相关描述哦', life: 3000, closable:false });
+      }
+      sendSession(message.value, {
+        promptFunc: instertSlidevPrompt,
+        role: Role.System
+      })
     }
   },
   {
@@ -65,7 +76,13 @@ const actions = ref([
     icon:'pi-sparkles',
     title:'润色文稿',
     actionHandle: () => {
-      // todo setting
+      if (!message.value)  {
+        return toast.add({ severity: 'error', summary: '请输入相关描述哦', life: 3000, closable:false });
+      }
+      sendSession(message.value, {
+        promptFunc: beautifySlidevPrompt,
+        role: Role.System
+      })
     }
   },
   {
