@@ -143,7 +143,7 @@ export const useUserFiles = {
   read: readTempFile,
   delete: deleteTempFile,
   clear: clearTempFiles,
-  readAllJsonFiles
+  readAllJsonFiles,
 };
 
 export type UserFilesActions = keyof typeof useUserFiles;

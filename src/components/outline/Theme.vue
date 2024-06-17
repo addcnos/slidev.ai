@@ -22,7 +22,7 @@
       <!-- 主题 -->
       <InputText  v-model="theme" />
       <!-- 初始化 -->
-      <Button :disabled="loading" icon="pi pi-sync" aria-label="Submit" @click="initOutline" />
+      <Button :disabled="loading" icon="pi pi-sync" label="生成" aria-label="Submit" @click="initOutline" />
     </div>
   </div>
 </template>
@@ -82,8 +82,18 @@ function initOutline() {
     justify-content: space-between;
     padding: 6px 12px;
     margin-top: 6px;
+    background-color: #fff;
     border: 1px solid #d0dddb;
     border-radius: 8px;
+
+    :deep() {
+      .p-inputtext {
+        width: calc(100% - 100px);
+        border: none;
+        outline: none;
+        box-shadow: none;
+      }
+    }
   }
 }
 </style>

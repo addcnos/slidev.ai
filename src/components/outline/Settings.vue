@@ -21,13 +21,14 @@
       <div class="settings-item">
         <div class="settings-item-title">图片风格：</div>
         <div class="settings-item-ctn">
-          <Select v-model="selectedCity" editable :options="cities" optionLabel="name" placeholder="Select a City" class="w-full md:w-56" />
+          <Select v-model="selectedCity" editable :options="cities" optionLabel="name" placeholder="选择 Slide 图片风格" class="w-full md:w-56" />
         </div>
       </div>
       <div class="settings-item">
         <div class="settings-item-title">图片模型：</div>
-        <div class="settings-item-ctn">
-
+        <div class="settings-item-ctn img-modal">
+          <i class="icon-star"></i>
+          DALL·E 3
         </div>
       </div>
     </div>
@@ -37,13 +38,20 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import Select from 'primevue/select';
-const selectedCity = ref();
+const selectedCity = ref('卡通');
 const cities = ref([
-    { name: 'New York', code: 'NY' },
-    { name: 'Rome', code: 'RM' },
-    { name: 'London', code: 'LDN' },
-    { name: 'Istanbul', code: 'IST' },
-    { name: 'Paris', code: 'PRS' }
+    { name: '卡通', code: '卡通' },
+    { name: '写实', code: '写实' },
+    { name: '插画', code: '插画' },
+    { name: '抽象', code: '抽象' },
+    { name: '平面设计', code: '平面设计' },
+    { name: '低多边形', code: '低多边形' },
+    { name: '水彩', code: '水彩' },
+    { name: '素描', code: '素描' },
+    { name: '像素', code: '像素' },
+    { name: '赛博朋克', code: '赛博朋克' },
+    { name: '复古', code: '复古' },
+    { name: '极简主义', code: '极简主义' },
 ]);
 const activeIndex = ref(1);
 </script>
@@ -84,6 +92,7 @@ const activeIndex = ref(1);
 
     &-ctn {
       height: 44px;
+      padding: 0 3px;
       margin-top: 9px;
       background: #f2f4f7;
       border-radius: 8px;
@@ -108,6 +117,35 @@ const activeIndex = ref(1);
             border-radius: 8px;
           }
         }
+      }
+
+      :deep() {
+        .p-select {
+          width: 100%;
+          height: 100%;
+          background: #f2f4f7;
+          border: none;
+          outline: none;
+        }
+      }
+
+      &.img-modal {
+        .icon-star {
+          position: relative;
+          top: 4px;
+          display: inline-block;
+          width: 20px;
+          height: 20px;
+          margin: 0 2px 0 10px;
+          background: url("../../assets/images/star-icon.png") no-repeat;
+          background-size: 100% 100%;
+        }
+
+        height: 44px;
+        font-size: 14px;
+        font-weight: normal;
+        line-height: 44px;
+        color: #333;
       }
     }
   }

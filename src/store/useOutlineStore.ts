@@ -1,4 +1,4 @@
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import { openai } from "@renderer/api/openai";
 import { createSharedComposable, useLocalStorage } from "@vueuse/core";
 import { Outline, OutlineStore } from "@renderer/types/outline";
@@ -15,11 +15,19 @@ export const useOutlineStore = createSharedComposable(() => {
   const count = ref<number>(10) // 大纲数量
   const loading = ref(false)
 
-  const outline = useLocalStorage<OutlineStore>('outline', {
+  const outline = useLocalStorage<OutlineStore>('outline', { // 开发阶段，保持缓存，避免重复请求
     session: [],
     title: '',
     content: [],
   })
+
+  const outlineCount = computed(() => getTreeCount(outline.value.content))
+
+  // const outline = ref<OutlineStore>({
+  //   session: [],
+  //   title: '',
+  //   content: [],
+  // })
 
   function resetOutline() {
     outline.value = {
@@ -30,6 +38,7 @@ export const useOutlineStore = createSharedComposable(() => {
   }
 
   async function initOutlineContent(subject: string) {
+    loading.value = true
     const prompt = genOutlineBySubjectPrompt(subject)
     resetOutline()
     outline.value.session.push({
@@ -45,6 +54,7 @@ export const useOutlineStore = createSharedComposable(() => {
         type: 'json_object',
       }
     });
+    loading.value = false
     outline.value.session.push({
       role: Role.Gpt,
       timestamp: +Date.now(),
@@ -77,12 +87,24 @@ export const useOutlineStore = createSharedComposable(() => {
     outline.value.content = normalizeGpt2Outline(completion.choices[0].message.content)
   }
 
+  function getTreeCount(tree: Outline[]) {
+    let count = 0
+    tree.forEach((item) => {
+      count++
+      if (item.children) {
+        count += getTreeCount(item.children)
+      }
+    })
+    return count
+  }
+
   return {
     visible,
     count,
     theme,
     loading,
     outline,
+    outlineCount,
     initOutlineContent,
     modifyOutlineContent,
   }
