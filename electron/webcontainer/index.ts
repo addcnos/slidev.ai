@@ -11,6 +11,8 @@ const serverProcessMap = {
   1: '服务启动中，请稍候...',
   2: '正在加载嵌入内容，马上就好...'
 }
+const buildLoading = ref(false);
+const exportPdfLoading = ref(false);
 // The web container fs API
 const webcontainerFs = (): FileSystemAPI => {
   return webcontainerInstance.value.fs;
@@ -64,6 +66,60 @@ const mount = async (file: FileSystemTree) => {
   startDevServer();
 }
 
+const getDistFiles = async () => {
+  const files = await webcontainerInstance.value.fs.readdir('dist');
+  return files;
+}
+
+const buildFile = async () => {
+  const buildProcess = await webcontainerInstance.value.spawn('npm', ['run', 'build']);
+  buildProcess.output.pipeTo(new WritableStream({
+    write(data) {
+      console.log(data);
+    }
+  }));
+  return buildProcess.exit;
+}
+
+async function build() {
+  if (buildLoading.value) return;
+  buildLoading.value = true;
+  const exitCode = await buildFile()
+  buildLoading.value = false;
+  if (exitCode !== 0) {
+    throw new Error('Build failed');
+  } else {
+    const files = await getDistFiles();
+    console.log(files, 'files')
+    return files;
+  }
+}
+
+
+const exportProcess = async () => {
+  const process = await webcontainerInstance.value.spawn('npm', ['run', 'export']);
+  process.output.pipeTo(new WritableStream({
+    write(data) {
+      console.log(data);
+    }
+  }));
+  return process.exit;
+}
+
+async function exportPdf() {
+  if (exportPdfLoading.value) return;
+  exportPdfLoading.value = true;
+  const exitCode = await exportProcess()
+
+  if (exitCode !== 0) {
+    throw new Error('Build failed');
+  } else {
+    const targetFileData = webcontainerFs().readFile('slides-export.pdf', 'utf-8');
+    console.log('Exported PDF', targetFileData);
+  }
+}
+
+
 export {
   mount,
   iframeSrc,
@@ -72,4 +128,8 @@ export {
   serverProcess,
   serverProcessMap,
   webcontainerFs,
+  build,
+  buildLoading,
+  exportPdf,
+  exportPdfLoading
 }

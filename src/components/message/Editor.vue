@@ -1,9 +1,10 @@
 <template>
   <div class="editor">
     <div class="actions">
-      <div v-for="item, index in actions" :key="index" class="action" @click="item.actionHandle">
+      <div v-for="item, index in actions" :key="index" class="action" @click="actionHandles[item.name]()">
         <i class="pi" :class="item.icon" style="font-size: 16px;color: #4a4a4a;"></i>
         <span>{{ item.title }}</span>
+        <br v-if="index === 3" />
       </div>
     </div>
     <div class="input-panel">
@@ -13,22 +14,28 @@
         label="Submit"
       ><img src="@assets/images/send-icon.png" width="18" height="18">发送</Button>
     </div>
+    <Toast />
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { ref, watch, computed } from 'vue'
+import Toast from 'primevue/toast';
 import { useMagicKeys } from '@vueuse/core'
 import { useChatSession } from '@renderer/store/useChatSession';
-import { beautifySlidevPrompt } from '@renderer/utils/prompt/slidev';
+import { beautifySlidevPrompt, instertSlidevPrompt } from '@renderer/utils/prompt/slidev';
 import { Role } from '@renderer/types/chat';
+import { build, buildLoading, exportPdf, exportPdfLoading } from '@main/webcontainer';
+import { useToast } from 'primevue/usetoast';
 
 const message = ref('')
 const { enter } = useMagicKeys()
+const { sendSession } = useChatSession()
+const toast = useToast();
 
 async function send() {
   if (!message.value) return
-  useChatSession().sendSession(message.value, {
+  sendSession(message.value, {
     promptFunc: beautifySlidevPrompt,
     role: Role.System
   })
@@ -42,49 +49,73 @@ watch(() => enter.value, (v: boolean) => {
     message.value = ''
   }
 })
-
-const actions = ref([
+const actions = computed(() => [
   {
     name: 'insertImg',
     icon:'pi-image',
     title:'插入图片',
-    actionHandle: () => {
-      // todo setting
-    }
   },
   {
     name: 'addPage',
     icon:'pi-file-plus',
     title:'插入单页',
-    actionHandle: () => {
-      // todo setting
-    }
   },
   {
     name: 'polishing',
     icon:'pi-sparkles',
     title:'润色文稿',
-    actionHandle: () => {
-      // todo setting
-    }
   },
   {
     name: 'textToImg',
     icon:'pi-images',
     title:'文本转图',
-    actionHandle: () => {
-      // todo setting
-    }
   },
   {
     name: 'downLoad',
-    icon:'pi-file-pdf',
-    title:'下载pdf',
-    actionHandle: () => {
-      // todo setting
-    }
+    icon: exportPdfLoading.value ? 'pi-spin pi-spinner' : 'pi-file-pdf',
+    title: exportPdfLoading.value ? '下载中..' :'下载pdf',
+  },
+  {
+    name: 'share',
+    icon: buildLoading.value ? 'pi-spin pi-spinner' : 'pi-share-alt',
+    title: buildLoading.value ? '生成中..' :'分享PPT',
   },
 ])
+
+const actionHandles = {
+  share: () => {
+    build()
+  },
+  insertImg: () => {
+    console.log('insertImg')
+  },
+  addPage: () => {
+    if (!message.value)  {
+      return toast.add({ severity: 'error', summary: '请输入相关描述哦', life: 3000, closable:false });
+    }
+    sendSession(message.value, {
+      promptFunc: instertSlidevPrompt,
+      role: Role.System
+    })
+  },
+  polishing: () => {
+    if (!message.value)  {
+        return toast.add({ severity: 'error', summary: '请输入相关描述哦', life: 3000, closable:false });
+      }
+      sendSession(message.value, {
+        promptFunc: beautifySlidevPrompt,
+        role: Role.System
+      })
+  },
+  textToImg: () => {
+    console.log('textToImg')
+  },
+  downLoad: async () => {
+    exportPdf()
+    // console.log('downLoad')
+  },
+}
+
 </script>
 
 <style lang="scss" scoped>

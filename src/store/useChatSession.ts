@@ -81,9 +81,10 @@ export const useChatSession = createSharedComposable(() => {
       completeText,
     }: { promptFunc?: any; role?: Role, completeText?: string } = {}
   ) {
+    const current = chat.value.page.nav.currentPage
     pushSession({
       role: role || Role.User,
-      content: promptFunc ? promptFunc(chat.value.page.nav.currentPage, message) : message
+      content: promptFunc ? promptFunc(current, message) : message
     })
     const func = variableSession({ role: Role.Gpt, content: '处理中...' })
 
@@ -101,7 +102,8 @@ export const useChatSession = createSharedComposable(() => {
     })
 
     if (promptFunc) {
-      chat.value.content = chat.value.content.slice(0, chat.value.page.nav.currentPage)
+      // 把当前页的内容替换为新的内容
+      chat.value.content.splice(current - 1, 1, ...await normalizeSlidev2Json(result.choices[0].message.content))
       updateJSONCache()
       return
     }
