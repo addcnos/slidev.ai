@@ -21,9 +21,12 @@
           v-model="outline.content"
           :indent="46"
           :treeLineOffset="24"
+          :maxLevel="2"
+          :triggerClass="['pi-bars']"
           treeLine
         >
           <template #default="{ node, stat }">
+            <i class="pi pi-bars"></i>
             <OpenIcon
               v-if="stat.children.length"
               :open="stat.open"
@@ -120,8 +123,25 @@ function deleteItem(item: Outline) {
           background: #f2f4f7;
           border-radius: 8px;
 
+          .pi-bars {
+            width: 14px;
+            padding: 0 4px;
+            overflow: hidden;
+            color: #666;
+            text-align: center;
+            cursor: move;
+          }
+
+          .mtl-mr {
+            position: relative;
+            top: 2px;
+            margin-right: -4px;
+            margin-left: 2px;
+          }
+
           input {
             flex: 1;
+            padding: 0 0 0 8px;
             margin-right: 16px;
             background: transparent;
             border: none;
