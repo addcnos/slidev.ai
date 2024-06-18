@@ -14,23 +14,29 @@ export function saveImage2File(filename: string, base64: string) {
     content,
     dirName: 'assets',
   })
-  webcontainerFs()
-    .writeFile(`public/images/${filename}`, content)
-    .then(syncMarkdown)
+  try {
+    webcontainerFs()
+      .writeFile(`public/images/${filename}`, content)
+      .then(syncMarkdown)
+  } catch (_) {
+    // TODO
+  }
 }
 
 export async function generateImage({ prompt, size }: { prompt: string, size: ImageGenerateParams['size'] }) {
   const filename = `${nanoid()}.png`
 
+  const { chat } = useChatSession()
+
   openai.images.generate({
     model: 'dall-e-3',
-    prompt: prompt,
+    prompt: `${prompt}\n my desired image style is: ${chat.value.imageStyle}!!!!!!!!`,
     n: 1,
     size,
     response_format: 'b64_json',
   }).then(async (res) => saveImage2File(filename, res.data[0].b64_json))
 
-  return `public/images/${filename}`
+  return `http://internal.com/public/images/${filename}`
 }
 
 const config: RunnableToolFunction<object>[] = [

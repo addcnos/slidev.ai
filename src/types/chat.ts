@@ -60,4 +60,5 @@ export interface ChatStore {
   session: ChatSessionContext[]
   content: SourceSlideInfo[]
   page: any
+  imageStyle: string
 }

@@ -20,6 +20,7 @@ export const useChatSession = createSharedComposable(() => {
     session: [],
     content: [],
     page: {},
+    imageStyle: '卡通'
   })
 
 
@@ -81,7 +82,7 @@ export const useChatSession = createSharedComposable(() => {
       completeText,
     }: { promptFunc?: any; role?: Role, completeText?: string } = {}
   ) {
-    const current = chat.value.page.nav.currentPage
+    const current = chat.value?.page?.nav?.currentPage || 1
     pushSession({
       role: role || Role.User,
       content: promptFunc ? promptFunc(current, message) : message

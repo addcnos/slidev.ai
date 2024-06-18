@@ -19,8 +19,9 @@ defineProps({
 .ouline-skeleton {
   &-item {
     display: inline-block;
-    height: 50px !important;
-    margin-top: 10px;
+    height: 44px !important;
+    margin-bottom: 8px;
+    background-color: #f2f4f7;
   }
 }
 </style>
