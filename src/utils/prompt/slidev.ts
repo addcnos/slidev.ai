@@ -130,3 +130,18 @@ export function polishSlidevPrompt(process: string, message: string) {
     message
   ].join('\n')
 }
+
+export function insertImage2SlidevPrompt(process: string, message: string) {
+  return [
+    'The current process is: ' + process,
+    'You need to insert an image by calling the image generation on the current page, and the content of the image is: ' + message
+  ].join('\n')
+}
+
+export function insertMyImage2SlidevPrompt(process: string, path: string) {
+  return [
+    'The current process is: ' + process,
+    'This is the image I uploaded, you need to insert it into the current page',
+    'The path of the image is: ' + path
+  ].join('\n')
+}

@@ -21,17 +21,24 @@
 <script setup lang="ts">
 import { ref, watch, computed } from 'vue'
 import Toast from 'primevue/toast';
-import { useMagicKeys } from '@vueuse/core'
+import { useMagicKeys, file, useFileDialog } from '@vueuse/core'
 import { useChatSession } from '@renderer/store/useChatSession';
-import { beautifySlidevPrompt, instertSlidevPrompt } from '@renderer/utils/prompt/slidev';
+import { beautifySlidevPrompt, insertImage2SlidevPrompt, insertMyImage2SlidevPrompt, instertSlidevPrompt } from '@renderer/utils/prompt/slidev';
 import { Role } from '@renderer/types/chat';
-import { build, buildLoading, exportPdf, exportPdfLoading } from '@main/webcontainer';
+import { build, buildLoading, exportPdf, exportPdfLoading, webcontainerFs } from '@main/webcontainer';
 import { useToast } from 'primevue/usetoast';
+import { nanoid } from 'nanoid';
+import { saveImage2File } from '@renderer/utils/ai/tools/image';
+import { useIpcEmit } from '@renderer/composables';
 
 const message = ref('')
 const { enter } = useMagicKeys()
 const { sendSession } = useChatSession()
 const toast = useToast();
+const { files, open, reset, onChange } = useFileDialog({
+  accept: 'image/*', // Set to accept only image files
+  directory: true, // Select directories instead of files if set true
+})
 
 async function send() {
   if (!message.value) return
@@ -87,7 +94,30 @@ const actionHandles = {
     build()
   },
   insertImg: () => {
-    console.log('insertImg')
+    onChange((files) => {
+      const filename = `public/images/${nanoid()}.png`
+      const file = files[0]
+
+      const reader = new FileReader()
+      reader.onload = async () => {
+        const arrayBuffer = reader.result as ArrayBuffer
+        const content = new Uint8Array(arrayBuffer)
+        useIpcEmit.fileManager('write', {
+          fileName: filename,
+          content,
+          dirName: 'assets',
+        })
+        webcontainerFs().writeFile(filename, content)
+      }
+
+      reader.readAsArrayBuffer(file)
+
+      sendSession(filename, {
+        promptFunc: insertMyImage2SlidevPrompt,
+        role: Role.System
+      })
+    })
+    open()
   },
   addPage: () => {
     if (!message.value)  {
@@ -108,7 +138,13 @@ const actionHandles = {
       })
   },
   textToImg: () => {
-    console.log('textToImg')
+    if (!message.value)  {
+      return toast.add({ severity: 'error', summary: '请输入相关描述哦', life: 3000, closable:false });
+    }
+    sendSession(message.value, {
+      promptFunc: insertImage2SlidevPrompt,
+      role: Role.System
+    })
   },
   downLoad: async () => {
     exportPdf()
