@@ -1,7 +1,9 @@
 <template>
   <div class="editor">
-    图片正在加载中请稍等
-    <ProgressBar v-show="chat.waitImage.length" mode="indeterminate" style="height: 6px;margin-top: 5px;margin-bottom: 5px;"></ProgressBar>
+    <template  v-show="chat.waitImage.length">
+      图片正在加载中请稍等
+      <ProgressBar mode="indeterminate" style="height: 6px;margin-top: 5px;margin-bottom: 5px;"></ProgressBar>
+    </template>
     <div class="actions">
       <div v-for="item, index in actions" :key="index" class="action" @click="actionHandles[item.name]()">
         <i class="pi" :class="item.icon" style="font-size: 16px;color: #4a4a4a;"></i>
