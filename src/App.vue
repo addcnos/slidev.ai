@@ -121,14 +121,14 @@ onMounted(async () => {
 
     .bg {
       width: 100%;
-      height: calc(100% - 80px);
+      height: calc(100% - 0px);
       object-fit: cover;
     }
 
     .spin-pane-item {
       position: absolute;
+      right: 20px;
       bottom: 40px;
-      left: 20px;
       background: linear-gradient(90deg, #ff7e5f, #feb47b);
       background-clip: text;
       transform: translateY(50%);
