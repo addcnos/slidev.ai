@@ -9,6 +9,10 @@ declare global {
   const MAIN_WINDOW_VITE_DEV_SERVER_URL: string;
   const MAIN_WINDOW_VITE_NAME: string;
   const OPENAI_API_KEY: string;
+  const SSH_PASSWORD: string;
+  const SSH_USER: string;
+  const SSH_HOST: string;
+  const SSH_PORT: string;
 
   namespace NodeJS {
     interface Process {

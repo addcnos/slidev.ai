@@ -56,6 +56,10 @@ export function getBuildDefine(env: ConfigEnv<'build'>) {
       [VITE_DEV_SERVER_URL]: command === 'serve' ? JSON.stringify(process.env[VITE_DEV_SERVER_URL]) : undefined,
       [VITE_NAME]: JSON.stringify(name),
       OPENAI_API_KEY: JSON.stringify(process.env.OPENAI_API_KEY),
+      SSH_PASSWORD: JSON.stringify(process.env.SSH_PASSWORD),
+      SSH_USER: JSON.stringify(process.env.SSH_USER),
+      SSH_HOST: JSON.stringify(process.env.SSH_HOST),
+      SSH_PORT: JSON.stringify(process.env.SSH_PORT),
     };
     return { ...acc, ...def };
   }, {} as Record<string, string>);

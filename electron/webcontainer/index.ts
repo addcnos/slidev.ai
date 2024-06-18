@@ -1,8 +1,9 @@
 import { ref } from 'vue'
 import { WebContainer } from '@webcontainer/api'
 import type { WebContainer as WebContainerInstance, FileSystemTree, FileSystemAPI } from '@webcontainer/api';
+import { useIpcEmit } from '@renderer/composables'
 
-// let webcontainerInstance: WebContainerInstance;
+
 const webcontainerInstance = ref<WebContainerInstance>(null);
 const iframeSrc = ref('');
 const serverProcess = ref(0)
@@ -66,13 +67,9 @@ const mount = async (file: FileSystemTree) => {
   startDevServer();
 }
 
-const getDistFiles = async () => {
-  const files = await webcontainerInstance.value.fs.readdir('dist');
-  return files;
-}
 
 const buildFile = async () => {
-  const buildProcess = await webcontainerInstance.value.spawn('npm', ['run', 'build']);
+  const buildProcess = await webcontainerInstance.value.spawn('npm', ['run', 'build', '--', '--base', `/${await useIpcEmit.getId()}/`]);
   buildProcess.output.pipeTo(new WritableStream({
     write(data) {
       console.log(data);
@@ -81,17 +78,109 @@ const buildFile = async () => {
   return buildProcess.exit;
 }
 
+async function getAllFiles(dir: string) {
+  let files: { fullPath: string, name: string }[] = [];
+  const items = await webcontainerFs().readdir(dir, {
+    withFileTypes: true
+  });
+
+  for (const item of items) {
+    const fullPath = `${dir}/${item.name}`;
+
+    if (item.isDirectory()) {
+      files = files.concat(await getAllFiles(fullPath));
+    } else {
+      files.push({
+        fullPath,
+        name: item.name
+      });
+    }
+  }
+
+  return files;
+}
+
+async function buildTreeRecursively(node: { name: string, children: { name: string }[] }) {
+  const items = await webcontainerFs().readdir(node.name, {
+    withFileTypes: true
+  });
+
+  for (const item of items) {
+    const fullPath = `${node.name}/${item.name}`;
+
+
+    if (item.isDirectory()) {
+      const childNode = { name: fullPath, children: [] };
+      node.children.push(childNode);
+      await buildTreeRecursively(childNode);
+    }
+  }
+}
+
+async function getAllDirs(dir: string) {
+  const rootNode = { name: dir, children: [] };
+  await buildTreeRecursively(rootNode);
+  return rootNode;
+}
+
+function normalizeDirName(dir: string, content: string) {
+  return dir.replace('dist', content);
+}
+
+function normalizeFileDirName(dir: string, content: string) {
+  let newPath = dir.replace('dist', content);
+  const lastSlashIndex = newPath.lastIndexOf('/');
+  newPath = newPath.substring(0, lastSlashIndex);
+  return newPath
+}
+
+async function createLocalDir(dirMap: { name: string, children: { name: string }[] }, id: string) {
+  await useIpcEmit.fileManager('mkdir', {
+    dirName: normalizeDirName(dirMap.name, id)
+  })
+  if (dirMap.children?.length) {
+    dirMap.children.forEach(async (child) => {
+      await createLocalDir(child, id)
+    })
+  }
+}
+
+async function createLocalFile(paths: { fullPath: string, name: string }[], id: string) {
+
+  for (const path of paths) {
+    const fileContent = await webcontainerFs().readFile(path.fullPath, 'utf-8');
+    await useIpcEmit.fileManager('write', {
+      fileName: path.name,
+      content: fileContent,
+      dirName: normalizeFileDirName(path.fullPath, id)
+    })
+  }
+}
+
 async function build() {
   if (buildLoading.value) return;
   buildLoading.value = true;
   const exitCode = await buildFile()
   buildLoading.value = false;
   if (exitCode !== 0) {
-    throw new Error('Build failed');
+    return Promise.reject('Build failed');
   } else {
-    const files = await getDistFiles();
-    console.log(files, 'files')
-    return files;
+    const activeId = await useIpcEmit.getId();
+    const paths = await getAllFiles('/dist')
+    const dirMap = await getAllDirs('/dist')
+    await createLocalDir(dirMap, activeId)
+    await createLocalFile(paths, activeId)
+
+    const sourcePath = await useIpcEmit.fileManager('getUserFileDir', {
+      dirName: activeId
+    }) as string;
+
+    console.log(sourcePath, 'sourcePath')
+    await useIpcEmit.sshUpdateFile({
+      sourcePath,
+      targetPath: `/home/htdocs/${activeId}`
+    })
+    return Promise.resolve('Build success');
   }
 }
 

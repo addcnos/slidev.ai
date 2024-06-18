@@ -119,6 +119,16 @@ async function readAllJsonFiles() {
   }
 }
 
+export const mkdir = async (option: UserFileOptions) => {
+  const TEMP_DIR = getUserFileDir({
+    dirName: '/'
+  })
+  const dirPath = path.join(TEMP_DIR, option.dirName);
+  if (!fs.existsSync(dirPath)) {
+    await fs.mkdir(dirPath);
+  }
+}
+
 // 删除
 export const deleteTempFile = async (option: UserFileOptions) => {
   const TEMP_DIR = getUserFileDir(option)
@@ -144,6 +154,8 @@ export const useUserFiles = {
   delete: deleteTempFile,
   clear: clearTempFiles,
   readAllJsonFiles,
+  getUserFileDir,
+  mkdir,
 };
 
 export type UserFilesActions = keyof typeof useUserFiles;

@@ -141,6 +141,11 @@ export const useChatSession = createSharedComposable(() => {
     )
   }
 
+  function updateActivityId(id: string) {
+    activityId.value = id
+    useIpcEmit.updateActiveId(id)
+  }
+
   return {
     chat,
     pushSession,
@@ -152,5 +157,6 @@ export const useChatSession = createSharedComposable(() => {
     updateCapturePage,
     updateJSONCache,
     syncMarkdown: useDebounceFn(syncMarkdown, 1000),
+    updateActivityId,
   }
 })

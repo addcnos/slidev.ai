@@ -28,13 +28,14 @@ import { Role } from '@renderer/types/chat';
 import { build, buildLoading, exportPdf, exportPdfLoading, webcontainerFs } from '@main/webcontainer';
 import { useToast } from 'primevue/usetoast';
 import { nanoid } from 'nanoid';
-import { saveImage2File } from '@renderer/utils/ai/tools/image';
 import { useIpcEmit } from '@renderer/composables';
+import { useClipboard } from '@vueuse/core'
 
 const message = ref('')
 const { enter } = useMagicKeys()
-const { sendSession } = useChatSession()
+const { sendSession, activityId } = useChatSession()
 const toast = useToast();
+const shareLink = ref('')
 const { files, open, reset, onChange } = useFileDialog({
   accept: 'image/*', // Set to accept only image files
   directory: true, // Select directories instead of files if set true
@@ -78,20 +79,25 @@ const actions = computed(() => [
     title:'文本转图',
   },
   {
-    name: 'downLoad',
-    icon: exportPdfLoading.value ? 'pi-spin pi-spinner' : 'pi-file-pdf',
-    title: exportPdfLoading.value ? '下载中..' :'下载pdf',
-  },
-  {
     name: 'share',
     icon: buildLoading.value ? 'pi-spin pi-spinner' : 'pi-share-alt',
     title: buildLoading.value ? '生成中..' :'分享PPT',
+  },
+  {
+    name: 'copy',
+    icon: 'pi-copy',
+    title: '复制链接',
   },
 ])
 
 const actionHandles = {
   share: () => {
-    build()
+    build().then(() => {
+      toast.add({ severity: 'success', summary: '分享PPT成功，请前往复制链接', life: 3000, closable:false });
+      shareLink.value = `https://slidev-ai.addcn.com/${activityId.value}`
+    }).catch(() => {
+      return toast.add({ severity: 'error', summary: '分享失败，请联系管理员', life: 3000, closable:false });
+    })
   },
   insertImg: () => {
     onChange((files) => {
@@ -150,9 +156,12 @@ const actionHandles = {
       role: Role.System
     })
   },
-  downLoad: async () => {
-    exportPdf()
-    // console.log('downLoad')
+  copy: async () => {
+    if (!shareLink.value) {
+      return toast.add({ severity: 'error', summary: '请先分享PPT', life: 3000, closable:false });
+    }
+    useClipboard().copy(shareLink.value)
+    toast.add({ severity: 'success', summary: '链接已复制到剪贴板', life: 3000, closable:false });
   },
 }
 
