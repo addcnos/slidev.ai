@@ -163,7 +163,7 @@ async function build() {
   const exitCode = await buildFile()
   buildLoading.value = false;
   if (exitCode !== 0) {
-    throw new Error('Build failed');
+    return Promise.reject('Build failed');
   } else {
     const activeId = await useIpcEmit.getId();
     const paths = await getAllFiles('/dist')
@@ -180,6 +180,7 @@ async function build() {
       sourcePath,
       targetPath: `/home/htdocs/${activeId}`
     })
+    return Promise.resolve('Build success');
   }
 }
 
