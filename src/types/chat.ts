@@ -61,4 +61,5 @@ export interface ChatStore {
   content: SourceSlideInfo[]
   page: any
   imageStyle: string
+  waitImage: string[]
 }

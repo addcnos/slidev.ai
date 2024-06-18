@@ -7,7 +7,7 @@ import { webcontainerFs } from "@main/webcontainer";
 import { useChatSession } from "@renderer/store";
 
 export function saveImage2File(filename: string, base64: string) {
-  const { syncMarkdown } = useChatSession()
+  const { syncMarkdown, chat } = useChatSession()
   const content = Uint8Array.from(atob(base64), c => c.charCodeAt(0))
   useIpcEmit.fileManager('write', {
     fileName: filename,
@@ -21,6 +21,7 @@ export function saveImage2File(filename: string, base64: string) {
   } catch (_) {
     // TODO
   }
+  chat.value.waitImage = chat.value.waitImage.filter((item) => item !== filename)
 }
 
 export async function generateImage({ prompt, size }: { prompt: string, size: ImageGenerateParams['size'] }) {
@@ -35,6 +36,8 @@ export async function generateImage({ prompt, size }: { prompt: string, size: Im
     size,
     response_format: 'b64_json',
   }).then(async (res) => saveImage2File(filename, res.data[0].b64_json))
+
+  chat.value.waitImage.push(filename)
 
   return `http://internal.com/public/images/${filename}`
 }

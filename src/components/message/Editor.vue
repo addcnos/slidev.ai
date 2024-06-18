@@ -1,5 +1,7 @@
 <template>
   <div class="editor">
+    图片正在加载中请稍等
+    <ProgressBar v-show="chat.waitImage.length" mode="indeterminate" style="height: 6px;margin-top: 5px;margin-bottom: 5px;"></ProgressBar>
     <div class="actions">
       <div v-for="item, index in actions" :key="index" class="action" @click="actionHandles[item.name]()">
         <i class="pi" :class="item.icon" style="font-size: 16px;color: #4a4a4a;"></i>
@@ -25,7 +27,7 @@ import { useMagicKeys, file, useFileDialog } from '@vueuse/core'
 import { useChatSession } from '@renderer/store/useChatSession';
 import { beautifySlidevPrompt, insertImage2SlidevPrompt, insertMyImage2SlidevPrompt, instertSlidevPrompt } from '@renderer/utils/prompt/slidev';
 import { Role } from '@renderer/types/chat';
-import { build, buildLoading, exportPdf, exportPdfLoading, webcontainerFs } from '@main/webcontainer';
+import { build, buildLoading,  webcontainerFs } from '@main/webcontainer';
 import { useToast } from 'primevue/usetoast';
 import { nanoid } from 'nanoid';
 import { useIpcEmit } from '@renderer/composables';
@@ -33,7 +35,7 @@ import { useClipboard } from '@vueuse/core'
 
 const message = ref('')
 const { enter } = useMagicKeys()
-const { sendSession, activityId } = useChatSession()
+const { sendSession, activityId, chat } = useChatSession()
 const toast = useToast();
 const shareLink = ref('')
 const { files, open, reset, onChange } = useFileDialog({
