@@ -95,7 +95,7 @@ const actionHandles = {
   },
   insertImg: () => {
     onChange((files) => {
-      const filename = `public/images/${nanoid()}.png`
+      const filename = `http://internal.com/public/images/${nanoid()}.png`
       const file = files[0]
 
       const reader = new FileReader()

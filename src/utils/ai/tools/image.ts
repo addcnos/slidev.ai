@@ -36,7 +36,7 @@ export async function generateImage({ prompt, size }: { prompt: string, size: Im
     response_format: 'b64_json',
   }).then(async (res) => saveImage2File(filename, res.data[0].b64_json))
 
-  return `public/images/${filename}`
+  return `http://internal.com/public/images/${filename}`
 }
 
 const config: RunnableToolFunction<object>[] = [
