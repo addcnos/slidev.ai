@@ -27,7 +27,7 @@ const chatList = computed(() => (chat.value?.session || []).filter((item) => ite
 
 watch(() => chatList.value, () => {
   nextTick(() => {
-    el.value.scrollTop = el.value.scrollHeight
+    el.value.scrollTop = el.value?.scrollHeight
   })
 }, {
   deep: true,

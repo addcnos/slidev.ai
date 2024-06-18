@@ -20,6 +20,7 @@ export const useChatSession = createSharedComposable(() => {
     session: [],
     content: [],
     page: {},
+    imageStyle: '卡通'
   })
 
 

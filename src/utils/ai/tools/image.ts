@@ -22,9 +22,11 @@ export function saveImage2File(filename: string, base64: string) {
 export async function generateImage({ prompt, size }: { prompt: string, size: ImageGenerateParams['size'] }) {
   const filename = `${nanoid()}.png`
 
+  const { chat } = useChatSession()
+
   openai.images.generate({
     model: 'dall-e-3',
-    prompt: prompt,
+    prompt: `${prompt}\n my desired image style is: ${chat.value.imageStyle}!!!!!!!!`,
     n: 1,
     size,
     response_format: 'b64_json',

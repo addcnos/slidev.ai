@@ -7,7 +7,11 @@ export const useCrossMessage = createSharedComposable(() => {
 
   function subscribe() {
     window.addEventListener('message', (value) => {
-      useChatSession().chat.value.page = JSON.parse(value.data).data
+      try {
+        useChatSession().chat.value.page = JSON.parse(value.data).data
+      } catch (_) {
+        // TOOD
+      }
     })
   }
 

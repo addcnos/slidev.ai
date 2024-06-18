@@ -21,7 +21,7 @@
       <div class="settings-item">
         <div class="settings-item-title">图片风格：</div>
         <div class="settings-item-ctn">
-          <Select v-model="selectedCity" editable :options="cities" optionLabel="name" placeholder="选择 Slide 图片风格" class="w-full md:w-56" />
+          <Select v-model="chat.imageStyle" editable :options="cities" optionLabel="name" placeholder="选择 Slide 图片风格" class="w-full md:w-56" />
         </div>
       </div>
       <div class="settings-item">
@@ -38,7 +38,10 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import Select from 'primevue/select';
-const selectedCity = ref('卡通');
+import { useChatSession } from "@renderer/store";
+
+const { chat } = useChatSession()
+
 const cities = ref([
     { name: '卡通', code: '卡通' },
     { name: '写实', code: '写实' },
