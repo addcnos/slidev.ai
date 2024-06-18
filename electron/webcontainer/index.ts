@@ -124,11 +124,11 @@ async function getAllDirs(dir: string) {
 }
 
 function normalizeDirName(dir: string, content: string) {
-  return dir.replace('dist', content);
+  return dir.replace('dist', `/export/${content}`);
 }
 
 function normalizeFileDirName(dir: string, content: string) {
-  let newPath = dir.replace('dist', content);
+  let newPath = dir.replace('dist', `/export/${content}`);
   const lastSlashIndex = newPath.lastIndexOf('/');
   newPath = newPath.substring(0, lastSlashIndex);
   return newPath
@@ -146,7 +146,6 @@ async function createLocalDir(dirMap: { name: string, children: { name: string }
 }
 
 async function createLocalFile(paths: { fullPath: string, name: string }[], id: string) {
-
   for (const path of paths) {
     const fileContent = await webcontainerFs().readFile(path.fullPath, 'utf-8');
     await useIpcEmit.fileManager('write', {
@@ -168,11 +167,14 @@ async function build() {
     const activeId = await useIpcEmit.getId();
     const paths = await getAllFiles('/dist')
     const dirMap = await getAllDirs('/dist')
+    await useIpcEmit.fileManager('mkdir', {
+      dirName: '/export'
+    })
     await createLocalDir(dirMap, activeId)
     await createLocalFile(paths, activeId)
 
     const sourcePath = await useIpcEmit.fileManager('getUserFileDir', {
-      dirName: activeId
+      dirName: `/export/${activeId}`
     }) as string;
 
     console.log(sourcePath, 'sourcePath')
