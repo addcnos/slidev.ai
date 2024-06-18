@@ -10,7 +10,7 @@ const serverProcess = ref(0)
 const serverProcessMap = {
   0: '环境配置中，这可能需要一些时间...',
   1: '服务启动中，请稍候...',
-  2: '正在加载嵌入内容，马上就好...'
+  2: '读取页面配置中，马上就好...'
 }
 const buildLoading = ref(false);
 const exportPdfLoading = ref(false);
