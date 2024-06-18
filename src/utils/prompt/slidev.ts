@@ -55,9 +55,12 @@ export function initSlidevPrompt(theme: string) {
   return [
     'you need to generate the corresponding slidev markdown content code based on the text content I provide.',
     '',
+    'You can use the following tools:',
+    '1. generateImage: Generate a image',
+    '',
     'Generation requirements:',
     '1. Generate the corresponding content and further decompose and layout the content',
-    '2. You can add some visual elements to the current page, such as pictures (remember that you can call the picture generation), code blocks, write HTML, etc.',
+    '2. You can add some visual elements to the current page, such as image, code blocks, write HTML, etc. If you want use image, please call the function generateImage',
     '3. Is the generated content beautiful and full? If it is barely satisfactory, you need to modify it again',
     '4. Add animation for each page switch',
     '5. You do not need to generate the conclusion',
