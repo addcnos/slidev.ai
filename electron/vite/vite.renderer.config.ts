@@ -1,7 +1,7 @@
 import type { ConfigEnv, UserConfig } from 'vite';
 import { defineConfig } from 'vite';
 import Components from 'unplugin-vue-components/vite';
-import {PrimeVueResolver} from 'unplugin-vue-components/resolvers';
+import { PrimeVueResolver } from 'unplugin-vue-components/resolvers';
 import { pluginExposeRenderer, alias } from './vite.base.config';
 import vue from '@vitejs/plugin-vue';
 import dotenv from "dotenv";
@@ -43,6 +43,10 @@ export default defineConfig((env) => {
     clearScreen: false,
     define: {
       OPENAI_API_KEY: `"${process.env.OPENAI_API_KEY}"`,
+      SSH_PASSWORD: `"${process.env.SSH_PASSWORD}"`,
+      SSH_USER: `"${process.env.SSH_USER}"`,
+      SSH_HOST: `"${process.env.SSH_HOST}"`,
+      SSH_PORT: `"${process.env.SSH_PORT}"`,
     }
   } as UserConfig;
 });

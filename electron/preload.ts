@@ -8,6 +8,10 @@ interface IpcEmitter {
   createModel: (option: ModelOption) => Promise<void>;
   fileManager: (action: UserFilesActions, option: UserFileOptions) => UserFileResponse;
   capturePage: (option: UserRectangle) => Promise<void>;
+  connectSSH: () => Promise<Record<string, unknown>>;
+  updateActiveId: (id: string) => Promise<void>;
+  getId: () => string;
+  sshUpdateFile: (option: { sourcePath: string, targetPath?: string }) => Promise<void>;
 }
 
 interface ContentListener {
@@ -27,6 +31,10 @@ contextBridge.exposeInMainWorld('ipcEmitter', {
   createModel: (option: ModelOption) => ipcRenderer.invoke('model:create', option),
   fileManager: (action: UserFilesActions, option: UserFileOptions) => ipcRenderer.invoke(`user:${action}`, option),
   capturePage: (option: UserRectangle) => ipcRenderer.invoke('app:capture-page', option),
+  connectSSH: () => ipcRenderer.invoke('connect-ssh'),
+  updateActiveId: (id: number) => ipcRenderer.invoke('update-id', id),
+  sshUpdateFile: (option: { sourcePath: string, targetPath?: string }) => ipcRenderer.invoke('ssh-update-file', option),
+  getId: () => ipcRenderer.invoke('get-id'),
 });
 
 // 渲染器进程 监听主进程事件 on-xxx

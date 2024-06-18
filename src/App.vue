@@ -11,7 +11,7 @@ import SlidevEmbed from './slidev.vue'
 import Panel from './components/panel/index.vue'
 import { mount } from '@main/webcontainer';
 import { useIpcEmit } from '@renderer/composables'
-
+import { useChatSession } from '@renderer/store/useChatSession';
 
 const step = ref(1) 
 provide('toggleStep', (next) => step.value = next)
@@ -19,6 +19,7 @@ onMounted(async () => {
   console.log('🚀 The Vue app is mounted');
   const files = await useIpcEmit.readFiles();
   mount(files);
+  await useIpcEmit.connectSSH();
 });
 </script>
 

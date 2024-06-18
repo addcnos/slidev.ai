@@ -34,7 +34,7 @@ import { nanoid } from 'nanoid'
 import { useOutlineStore } from '@renderer/store';
 
 const emit = defineEmits(['updateStep'])
-const { activityId, chat, updateJSONCache } = useChatSession()
+const { activityId, chat, updateJSONCache, updateActivityId } = useChatSession()
 const { outline, visible }  = useOutlineStore()
 const templates = ref([
   {
@@ -112,7 +112,7 @@ init()
 async function handleClickHistory(item: { id?: string }) {
   if (!item?.id) return
   emit('updateStep', 2)
-  activityId.value = item.id
+  updateActivityId(item.id)
 
   const jsonStr = await useIpcEmit.fileManager('read', {
     dirName: 'json',
@@ -128,7 +128,7 @@ async function handleClickHistory(item: { id?: string }) {
 }
 
 async function handleClickCreate() {
-  activityId.value = nanoid()
+  updateActivityId(nanoid())
 
   visible.value = true
   await until(visible).toBe(false)

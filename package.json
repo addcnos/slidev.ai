@@ -68,6 +68,7 @@
     "get-port": "^7.1.0",
     "http-proxy-middleware": "^3.0.0",
     "nanoid": "^4.0.1",
+    "node-ssh": "^13.2.0",
     "openai": "^4.47.3",
     "primeicons": "^7.0.0",
     "primevue": "4.0.0-rc.1",
