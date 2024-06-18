@@ -107,7 +107,11 @@ const actionHandles = {
           content,
           dirName: 'assets',
         })
-        webcontainerFs().writeFile(filename, content)
+        try {
+          webcontainerFs().writeFile(filename, content)
+        } catch (_) {
+          // TODO
+        }
       }
 
       reader.readAsArrayBuffer(file)

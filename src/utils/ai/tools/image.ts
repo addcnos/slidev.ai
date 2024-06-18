@@ -14,9 +14,13 @@ export function saveImage2File(filename: string, base64: string) {
     content,
     dirName: 'assets',
   })
-  webcontainerFs()
-    .writeFile(`public/images/${filename}`, content)
-    .then(syncMarkdown)
+  try {
+    webcontainerFs()
+      .writeFile(`public/images/${filename}`, content)
+      .then(syncMarkdown)
+  } catch (_) {
+    // TODO
+  }
 }
 
 export async function generateImage({ prompt, size }: { prompt: string, size: ImageGenerateParams['size'] }) {
