@@ -152,6 +152,9 @@ const actionHandles = {
       })
   },
   textToImg: () => {
+    if (!chat.value.waitImage.length) {
+      return toast.add({ severity: 'error', summary: '图片还在生成中还要等一会哦', life: 3000, closable:false });
+    }
     if (!message.value)  {
       return toast.add({ severity: 'error', summary: '请输入相关描述哦', life: 3000, closable:false });
     }

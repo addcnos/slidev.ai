@@ -74,7 +74,7 @@ export function initSlidevPrompt(theme: string) {
     '5. Do not bring the numbers in the title',
     '6. You only need to generate the content of the current page, and you do not need to generate the content of the entire slidev',
     '7. You never use any component',
-    '8. You are not allowed to use external pictures. If you want to use pictures, please call the function generateImage',
+    '8. You are not allowed to use external image. If you want to use image, please call the function generateImage',
     '',
     'The current theme is: ' + theme,
   ].join('\n')
