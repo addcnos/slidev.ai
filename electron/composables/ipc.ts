@@ -2,7 +2,7 @@ import { BrowserWindow, ipcMain } from "electron";
 import { slidevTempFiles, createModel, useUserFiles, capturePage } from '@main/composables'
 import type { UserFilesActions, UserFileOptions } from '@main/composables'
 
-const fsActionsMap: UserFilesActions[] = ['write', 'read', 'delete', 'clear', 'readAllJsonFiles', 'getUserFileDir', 'mkdir']
+const fsActionsMap: UserFilesActions[] = ['write', 'read', 'delete', 'clear', 'readAllJsonFiles', 'getUserFileDir', 'mkdir', 'copy']
 
 export const ipcHandle = (main: BrowserWindow) => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

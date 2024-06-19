@@ -52,6 +52,10 @@ export interface UserFileOptions {
    * 是否追加写入
    */
   append?: boolean;
+
+  sourcePath?: string;
+
+  filePath?: string;
 }
 
 export const getUserFileDir = (opt: UserFileOptions) => {
@@ -129,6 +133,13 @@ export const mkdir = async (option: UserFileOptions) => {
   }
 }
 
+export const copy = async (option: UserFileOptions) => {
+  const { filePath, sourcePath } = option;
+  if (fs.existsSync(sourcePath)) {
+    await fs.copyFile(sourcePath, filePath);
+  }
+}
+
 // 删除
 export const deleteTempFile = async (option: UserFileOptions) => {
   const TEMP_DIR = getUserFileDir(option)
@@ -156,6 +167,7 @@ export const useUserFiles = {
   readAllJsonFiles,
   getUserFileDir,
   mkdir,
+  copy,
 };
 
 export type UserFilesActions = keyof typeof useUserFiles;

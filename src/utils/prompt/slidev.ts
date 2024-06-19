@@ -60,7 +60,7 @@ export function initSlidevPrompt(theme: string) {
     '',
     'Generation requirements:',
     '1. Generate the corresponding content and further decompose and layout the content',
-    '2. You can add some visual elements to the current page, such as image, code blocks, write HTML, etc. If you want use image, please call the function generateImage',
+    '2. You can add some visual elements to the current page, such as image. If you want use image, please call the function generateImage',
     '3. Is the generated content beautiful and full? If it is barely satisfactory, you need to modify it again',
     '4. Add animation for each page switch',
     '5. You do not need to generate the conclusion',
