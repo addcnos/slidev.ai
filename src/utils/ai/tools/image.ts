@@ -6,7 +6,7 @@ import { ImageGenerateParams } from "openai/resources/images";
 import { webcontainerFs } from "@main/webcontainer";
 import { useChatSession } from "@renderer/store";
 
-export function saveImage2File(filename: string, base64: string) {
+export async function saveImage2File(filename: string, base64: string) {
   const { syncMarkdown, chat } = useChatSession()
   const content = Uint8Array.from(atob(base64), c => c.charCodeAt(0))
   useIpcEmit.fileManager('write', {
@@ -15,10 +15,11 @@ export function saveImage2File(filename: string, base64: string) {
     dirName: 'assets',
   })
   try {
-    webcontainerFs()
-      .writeFile(`public/images/${filename}`, content)
-      .then(syncMarkdown)
+    await webcontainerFs().mkdir('public/images', { recursive: true })
+    await webcontainerFs().writeFile(`public/images/${filename}`, content)
+    syncMarkdown()
   } catch (_) {
+    console.log('Failed to save image', _)
     // TODO
   }
   chat.value.waitImage = chat.value.waitImage.filter((item) => item !== filename)
@@ -35,7 +36,7 @@ export async function generateImage({ prompt, size }: { prompt: string, size: Im
     n: 1,
     size,
     response_format: 'b64_json',
-  }).then(async (res) => saveImage2File(filename, res.data[0].b64_json))
+  }).then((res) => saveImage2File(filename, res.data[0].b64_json))
 
   chat.value.waitImage.push(filename)
 

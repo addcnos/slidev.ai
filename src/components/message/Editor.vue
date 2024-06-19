@@ -1,6 +1,6 @@
 <template>
   <div class="editor">
-    <template  v-show="chat.waitImage.length">
+    <template  v-if="chat.waitImage.length">
       图片正在加载中请稍等
       <ProgressBar mode="indeterminate" style="height: 6px;margin-top: 5px;margin-bottom: 5px;"></ProgressBar>
     </template>

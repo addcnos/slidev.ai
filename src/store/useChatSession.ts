@@ -110,6 +110,7 @@ export const useChatSession = createSharedComposable(() => {
       return
     }
 
+    updateJSONCache()
     return await normalizeSlidev2Json(result.choices[0].message.content)
   }
 
