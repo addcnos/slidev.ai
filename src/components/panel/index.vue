@@ -261,7 +261,7 @@ async function handleClickCreate() {
       width: 100%;
 
       .history-card {
-        width: 23%;
+        width: 210px;
         margin-right: 25px;
         margin-bottom: 22px;
 
