@@ -11,6 +11,7 @@ import { useOutlineStore } from './useOutlineStore';
 import { useIpcEmit } from "@renderer/composables";
 import { webcontainerFs } from "@main/webcontainer";
 import dayjs from 'dayjs'
+import { Outline } from '@renderer/types/outline';
 
 
 export const useChatSession = createSharedComposable(() => {
@@ -34,13 +35,14 @@ export const useChatSession = createSharedComposable(() => {
     const { outline } = useOutlineStore()
 
     initPrompt(outline.value.title)
-    const len = outline.value.content.length
-
+    const flatOutline = (outline: Outline[]): Outline[] => outline.flatMap(item => [item, ...flatOutline(item.children || [])])
+    const allOutline = flatOutline(outline.value.content)
+    const len = allOutline.length
     for (let idx = 0; idx < len; idx++) {
-      const item = outline.value.content[idx];
+      const item = allOutline[idx];
 
       const _json = await sendSession(
-        genSingleSlidevPrompt(item.title, `${idx + 1}/${len}`),
+        genSingleSlidevPrompt(`${idx + 1}`, item.title),
         { completeText: idx + 1 === len ? '好的，已经处理了！请查收！' : `快好了，${idx + 1}/${len}...`, role: Role.System }
       )
 
@@ -48,9 +50,9 @@ export const useChatSession = createSharedComposable(() => {
 
       updateJSONCache()
 
-      if (idx >= 1)
+      if (idx >= 4) {
         break
-
+      }
     }
   }
 
@@ -79,19 +81,20 @@ export const useChatSession = createSharedComposable(() => {
     message: string,
     {
       promptFunc,
+      insert,
       role,
       completeText,
-    }: { promptFunc?: any; role?: Role, completeText?: string } = {}
+    }: { promptFunc?: any; role?: Role, completeText?: string, insert?: boolean } = {}
   ) {
     const current = chat.value?.page?.nav?.currentPage || 1
     pushSession({
       role: role || Role.User,
-      content: promptFunc ? promptFunc(current, message) : message
+      content: promptFunc ? promptFunc(current, message, chat.value.content[current - 1]) : message
     })
     const func = variableSession({ role: Role.Gpt, content: '处理中...' })
 
     const runner = await openai.beta.chat.completions.runTools({
-      model: 'gpt-4o',
+      model: 'gpt-3.5-turbo',
       tools,
       messages: normalizeSession2Gpt(chat.value.session),
     })
@@ -104,14 +107,17 @@ export const useChatSession = createSharedComposable(() => {
     })
 
     if (promptFunc) {
-      // 把当前页的内容替换为新的内容
-      chat.value.content.splice(current - 1, 1, ...await normalizeSlidev2Json(result.choices[0].message.content))
+      if (insert) {
+        chat.value.content.splice(current - 1, 0, ...await normalizeSlidev2Json(result.choices[0].message.content + '\n'))
+      } else {
+        chat.value.content.splice(current - 1, 1, ...await normalizeSlidev2Json(result.choices[0].message.content + '\n'))
+      }
       updateJSONCache()
       return
     }
 
     updateJSONCache()
-    return await normalizeSlidev2Json(result.choices[0].message.content)
+    return await normalizeSlidev2Json(result.choices[0].message.content + '\n')
   }
 
   async function updateJSONCache(skip = false) {

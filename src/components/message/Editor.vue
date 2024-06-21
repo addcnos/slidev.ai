@@ -27,7 +27,7 @@ import { ref, watch, computed } from 'vue'
 import Toast from 'primevue/toast';
 import { useMagicKeys, file, useFileDialog } from '@vueuse/core'
 import { useChatSession } from '@renderer/store/useChatSession';
-import { beautifySlidevPrompt, insertImage2SlidevPrompt, insertMyImage2SlidevPrompt, instertSlidevPrompt } from '@renderer/utils/prompt/slidev';
+import { beautifySlidevPrompt, insertImage2SlidevPrompt, insertMyImage2SlidevPrompt, instertSlidevPrompt, genSingleSlidevPrompt } from '@renderer/utils/prompt/slidev';
 import { Role } from '@renderer/types/chat';
 import { build, buildLoading,  webcontainerFs } from '@main/webcontainer';
 import { useToast } from 'primevue/usetoast';
@@ -130,6 +130,7 @@ const actionHandles = {
         promptFunc: insertMyImage2SlidevPrompt,
         role: Role.System
       })
+      message.value = ''
     })
     open()
   },
@@ -138,9 +139,11 @@ const actionHandles = {
       return toast.add({ severity: 'error', summary: '请输入相关描述哦', life: 3000, closable:false });
     }
     sendSession(message.value, {
-      promptFunc: instertSlidevPrompt,
-      role: Role.System
+      promptFunc: genSingleSlidevPrompt,
+      role: Role.System,
+      insert: true
     })
+    message.value = ''
   },
   polishing: () => {
     if (!message.value)  {
@@ -150,6 +153,7 @@ const actionHandles = {
         promptFunc: beautifySlidevPrompt,
         role: Role.System
       })
+      message.value = ''
   },
   textToImg: () => {
     if (!chat.value.waitImage.length) {
@@ -162,6 +166,7 @@ const actionHandles = {
       promptFunc: insertImage2SlidevPrompt,
       role: Role.System
     })
+    message.value = ''
   },
   copy: async () => {
     if (!shareLink.value) {

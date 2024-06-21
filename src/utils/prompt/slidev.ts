@@ -1,4 +1,5 @@
 export function initUsePreset() {
+  return ''
   return [
     "Markdown Syntax: Slides are written within a single markdown file (by default ./slides.md). Use Markdown features with inlined HTML and Vue Components. Styling using UnoCSS is supported. Use --- padded with a new line to separate your slides.",
     "Example: ---\\n# Slidev\\nHello, World!\\n---\\n# Page 2\\n```ts\\nconsole.log('Hello, World!')\\n```\\n---\\n# Page 3\\n<div class='p-3'><Tweet id='20' /></div>",
@@ -53,60 +54,38 @@ export function initUsePreset() {
 
 export function initSlidevPrompt(theme: string) {
   return [
-    'you need to generate the corresponding slidev markdown content code based on the text content I provide.',
+    '你需要根据我给出的主题生成内容 (Markdown)',
+    '我会将每一页需要生成的内容发送给你',
+    // '',
+    // '你可以使用的工具有:',
+    // '1. 图片生成',
     '',
-    'You can use the following tools:',
-    '1. generateImage: Generate a image',
+    '每次生成的要求如下:',
+    '1. 你需要在一屏幕大小的尺寸中，尽可能生成丰富的内容，需要注意你需要用 html 标签来进行排版',
+    '2. 你在生成的时候需要思考，是否超出屏幕尺寸，并且是否有使用布局来进行排版',
+    '3. 切换的时候需要有过渡动画',
+    '4. 你需要在开头提供一个简单的主题欢迎页面',
     '',
-    'Generation requirements:',
-    '1. Generate the corresponding content and further decompose and layout the content',
-    '2. You can add some visual elements to the current page, such as image. If you want use image, please call the function generateImage',
-    '3. Is the generated content beautiful and full? If it is barely satisfactory, you need to modify it again',
-    '4. Add animation for each page switch',
-    '5. You do not need to generate the conclusion',
-    '6. You need to provide a simple theme welcome page at the beginning',
+    '输出格式:',
+    '1. 我需要你直接输出 markdown',
+    '2. 需要回复中文',
+    '4. 不需要带上 ```markdown',
+    '6. 只需要生成当页面的主题内容',
+    '7. 你不要包含任何 vue 组件，只需要生成 markdown 内容即可',
     '',
-    'Output format:',
-    '1. I need you to output markdown directly and strictly follow the format of slidev.',
-    '2. No other text is allowed outside of markdown',
-    '3. The reply needs to be in Chinese',
-    '4. Do not need to bring ```markdown',
-    '5. Do not bring the numbers in the title',
-    '6. You only need to generate the content of the current page, and you do not need to generate the content of the entire slidev',
-    '7. You never use any component',
-    '8. You are not allowed to use external image. If you want to use image, please call the function generateImage',
-    '',
-    'The current theme is: ' + theme,
+    '我的主题是: ' + theme,
   ].join('\n')
 }
 
-export function genSingleSlidevPrompt(title: string, process: string,) {
+export function genSingleSlidevPrompt(process: string, title: string) {
   return [
-    'The current page is: ' + title,
-    'The current process is: ' + process,
-    'Please generate the content of the current page according to the requirements',
-    'Only need to generate the content of the current page, and do not need to generate the content of the entire slidev',
-  ].join('\n')
-}
-
-export function instertSlidevPrompt(
-  position: string,
-  process: string,
-  message: string
-) {
-  return [
-    'The current process in after inserting is: ' + process,
-    'The current page is the ' + position + ' page',
-    'Please insert the content of the current page according to the requirements',
-    '',
-    'Here are my requirements:',
-    message
+    '当前页面需要的内容是是: ' + title,
+    '请根据要求生成当前页面的内容',
   ].join('\n')
 }
 
 export function beautifySlidevPrompt(process: string, message: string) {
   return [
-    'The current process is: ' + process,
     'I think the content here is not very satisfied, you can modify it again to make the content more rich',
     '',
     'Here are my requirements:',
@@ -114,23 +93,27 @@ export function beautifySlidevPrompt(process: string, message: string) {
   ].join('\n')
 }
 
-export function expendSlidevPrompt(process: string, message: string) {
+export function expendSlidevPrompt(_: string, message: string, content: string) {
   return [
-    'The current process is: ' + process,
-    'I think the content here is too little, you can expand it in more detail',
+    '我觉得当前内容不够丰富，你需要按照我的要求来扩写内容',
     '',
-    'Here are my requirements:',
-    message
+    '这里是我的要求:',
+    message,
+    '',
+    '当前的内容是:',
+    content
   ].join('\n')
 }
 
-export function polishSlidevPrompt(process: string, message: string) {
+export function polishSlidevPrompt(process: string, message: string, content: string) {
   return [
-    'The current process is: ' + process,
-    'I think the content here is too stiff, you can modify it again to make the content smoother',
+    '我觉得这里的内容太死板了，你可以再修改一下，让内容更流畅',
     '',
-    'Here are my requirements:',
-    message
+    '这里是我的要求:',
+    message,
+    '',
+    '当前的内容是:',
+    content
   ].join('\n')
 }
 
