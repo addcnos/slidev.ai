@@ -9,5 +9,5 @@ export async function normalizeSlidev2Json(code: string) {
 }
 
 export function normalizeSlidev2Markdown(slides: SourceSlideInfo[]) {
-  return `${slides.map(stringifySlide).join('\n').trim()}\n <!-- ${+new Date()} -->\n ${CROSS_COMPONENT}\n`.replace(/http:\/\/internal.com\//g, '/')
+  return `${slides.map(stringifySlide).join('\n').trim()}\n <!-- ${+new Date()} -->\n ${CROSS_COMPONENT}\n`
 }

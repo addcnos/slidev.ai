@@ -77,14 +77,29 @@ export const useChatSession = createSharedComposable(() => {
     })
   }
 
+  async function addedImage2CurrentSlidev(image: string) {
+    const current = chat.value?.page?.nav?.currentPage || 0
+    let content = chat.value.content[current - 1].raw
+    content = image + '\n' + content
+    chat.value.content[current - 1] = (await normalizeSlidev2Json(content))[0]
+    updateJSONCache()
+  }
+
   async function sendSession(
     message: string,
     {
       promptFunc,
       insert,
+      addedImage,
       role,
       completeText,
-    }: { promptFunc?: any; role?: Role, completeText?: string, insert?: boolean } = {}
+    }: {
+      promptFunc?: (...args: unknown[]) => string,
+      role?: Role,
+      completeText?: string,
+      insert?: boolean
+      addedImage?: boolean
+    } = {}
   ) {
     const current = chat.value?.page?.nav?.currentPage || 1
     pushSession({
@@ -105,19 +120,22 @@ export const useChatSession = createSharedComposable(() => {
       content: completeText || '好的，已经处理了！请查收！',
       source: result.choices[0],
     })
-
+    const content = result.choices[0].message.content
     if (promptFunc) {
       if (insert) {
-        chat.value.content.splice(current - 1, 0, ...await normalizeSlidev2Json(result.choices[0].message.content + '\n'))
-      } else {
-        chat.value.content.splice(current - 1, 1, ...await normalizeSlidev2Json(result.choices[0].message.content + '\n'))
+        chat.value.content.splice(current - 1, 0, ...await normalizeSlidev2Json(content + '\n'))
+      } else if (addedImage) {
+        addedImage2CurrentSlidev(content)
+      }
+      else {
+        chat.value.content.splice(current - 1, 1, ...await normalizeSlidev2Json(content + '\n'))
       }
       updateJSONCache()
       return
     }
 
     updateJSONCache()
-    return await normalizeSlidev2Json(result.choices[0].message.content + '\n')
+    return await normalizeSlidev2Json(content + '\n')
   }
 
   async function updateJSONCache(skip = false) {
@@ -166,5 +184,6 @@ export const useChatSession = createSharedComposable(() => {
     updateJSONCache,
     syncMarkdown: useDebounceFn(syncMarkdown, 1000),
     updateActivityId,
+    addedImage2CurrentSlidev,
   }
 })

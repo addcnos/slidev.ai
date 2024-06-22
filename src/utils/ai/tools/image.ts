@@ -1,4 +1,3 @@
-import { openai } from "@renderer/api/openai";
 import { useIpcEmit } from "@renderer/composables";
 import { nanoid } from "nanoid";
 import { RunnableToolFunction } from "openai/lib/RunnableFunction";
@@ -40,7 +39,7 @@ export async function generateImage({ prompt, size }: { prompt: string, size: Im
 
   chat.value.waitImage.push(filename)
 
-  return `http://internal.com/public/images/${filename}`
+  return `<img v-drag="[Left,Top,Width,Height,Rotate]" src="/public/images/${filename}" />`
 }
 
 const config: RunnableToolFunction<object>[] = [

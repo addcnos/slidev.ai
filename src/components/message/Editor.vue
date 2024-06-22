@@ -5,10 +5,13 @@
       <ProgressBar mode="indeterminate" style="height: 6px;margin-top: 5px;margin-bottom: 5px;"></ProgressBar>
     </template>
     <div class="actions">
+      <div v-for="item, index in sessionActions" :key="index" class="action" :class="{ active: actionFunc === item.name }" @click="actionFunc = actionFunc === item.name ? '' : item.name">
+        <i class="pi" :class="item.icon" style="font-size: 16px;color: #4a4a4a;"></i>
+        <span>{{ item.title }}</span>
+      </div>
       <div v-for="item, index in actions" :key="index" class="action" @click="actionHandles[item.name]()">
         <i class="pi" :class="item.icon" style="font-size: 16px;color: #4a4a4a;"></i>
         <span>{{ item.title }}</span>
-        <br v-if="index === 3" />
       </div>
     </div>
     <div class="input-panel">
@@ -37,7 +40,7 @@ import { useClipboard } from '@vueuse/core'
 
 const message = ref('')
 const { enter } = useMagicKeys()
-const { sendSession, activityId, chat } = useChatSession()
+const { sendSession, activityId, chat, addedImage2CurrentSlidev } = useChatSession()
 const toast = useToast();
 const shareLink = ref('')
 const { files, open, reset, onChange } = useFileDialog({
@@ -45,13 +48,19 @@ const { files, open, reset, onChange } = useFileDialog({
   directory: true, // Select directories instead of files if set true
 })
 
+const actionFunc = ref('')
+
 async function send() {
   if (!message.value) return
-  sendSession(message.value, {
-    promptFunc: beautifySlidevPrompt,
-    role: Role.System
-  })
-  message.value = ''
+  if (actionFunc.value) {
+    actionHandles.value[actionFunc.value]()
+  } else {
+    sendSession(message.value, {
+      promptFunc: beautifySlidevPrompt,
+      role: Role.System
+    })
+    message.value = ''
+  }
 }
 
 watch(() => enter.value, (v: boolean) => {
@@ -61,12 +70,26 @@ watch(() => enter.value, (v: boolean) => {
     message.value = ''
   }
 })
+
 const actions = computed(() => [
   {
     name: 'insertImg',
     icon:'pi-image',
     title:'插入图片',
   },
+  {
+    name: 'share',
+    icon: buildLoading.value ? 'pi-spin pi-spinner' : 'pi-share-alt',
+    title: buildLoading.value ? '生成中' :'分享',
+  },
+  {
+    name: 'copy',
+    icon: 'pi-copy',
+    title: '复制',
+  },
+])
+
+const sessionActions = ref([
   {
     name: 'addPage',
     icon:'pi-file-plus',
@@ -82,16 +105,6 @@ const actions = computed(() => [
     icon:'pi-images',
     title:'文本转图',
   },
-  {
-    name: 'share',
-    icon: buildLoading.value ? 'pi-spin pi-spinner' : 'pi-share-alt',
-    title: buildLoading.value ? '生成中..' :'分享PPT',
-  },
-  {
-    name: 'copy',
-    icon: 'pi-copy',
-    title: '复制链接',
-  },
 ])
 
 const actionHandles = {
@@ -103,9 +116,16 @@ const actionHandles = {
       return toast.add({ severity: 'error', summary: '分享失败，请联系管理员', life: 3000, closable:false });
     })
   },
+  copy: async () => {
+    if (!shareLink.value) {
+      return toast.add({ severity: 'error', summary: '请先分享PPT', life: 3000, closable:false });
+    }
+    useClipboard().copy(shareLink.value)
+    toast.add({ severity: 'success', summary: '链接已复制到剪贴板', life: 3000, closable:false });
+  },
   insertImg: () => {
     onChange((files) => {
-      const filename = `http://internal.com/public/images/${nanoid()}.png`
+      const filename = `<img v-drag="[Left,Top,Width,Height,Rotate]" src="/public/images/${nanoid()}" />`
       const file = files[0]
 
       const reader = new FileReader()
@@ -126,10 +146,8 @@ const actionHandles = {
 
       reader.readAsArrayBuffer(file)
 
-      sendSession(filename, {
-        promptFunc: insertMyImage2SlidevPrompt,
-        role: Role.System
-      })
+      addedImage2CurrentSlidev(filename)
+
       message.value = ''
     })
     open()
@@ -168,13 +186,7 @@ const actionHandles = {
     })
     message.value = ''
   },
-  copy: async () => {
-    if (!shareLink.value) {
-      return toast.add({ severity: 'error', summary: '请先分享PPT', life: 3000, closable:false });
-    }
-    useClipboard().copy(shareLink.value)
-    toast.add({ severity: 'success', summary: '链接已复制到剪贴板', life: 3000, closable:false });
-  },
+
 }
 
 </script>
@@ -217,6 +229,7 @@ const actionHandles = {
         transform: translateY(-1px);
       }
 
+      &.active,
       &:hover {
         width: 92px;
         background: #e5e5e5;
