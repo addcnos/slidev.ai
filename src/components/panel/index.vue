@@ -32,6 +32,7 @@ import { useIpcEmit } from "@renderer/composables";
 import { useChatSession } from '@renderer/store/useChatSession';
 import { nanoid } from 'nanoid'
 import { useOutlineStore } from '@renderer/store';
+import { webcontainerFs } from "@main/webcontainer";
 
 const emit = defineEmits(['updateStep'])
 const { activityId, chat, updateJSONCache, updateActivityId } = useChatSession()
@@ -104,7 +105,7 @@ async function init() {
     })
   }
 
-  historys.value = _historys
+  historys.value = _historys.sort((a, b) => new Date(b.createTime).getTime() - new Date(a.createTime).getTime())
 }
 
 init()
@@ -120,7 +121,22 @@ async function handleClickHistory(item: { id?: string }) {
   })
 
   const _json = JSON.parse(jsonStr as string)
-  console.log(_json)
+  const useImages:string[] = []
+  _json.chat.content.map(i => {
+    const reg = /public\/images\/(.*?).png/g
+    const res = reg.exec(i.content)
+    if (res) {
+      useImages.push(`${res[1]}.png`)
+    }
+  })
+  for (const item of useImages) {
+    const image = await useIpcEmit.fileManager('read', {
+      dirName: 'assets',
+      fileName: `${item}`
+    })
+    console.log(`public/images/${item}`, image)
+    await webcontainerFs().writeFile(`public/images/${item}`, image as Uint8Array)
+  }
 
   Object.assign(chat.value, _json.chat)
   Object.assign(outline.value, _json.outline)
