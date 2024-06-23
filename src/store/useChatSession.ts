@@ -43,7 +43,10 @@ export const useChatSession = createSharedComposable(() => {
 
       const _json = await sendSession(
         genSingleSlidevPrompt(`${idx + 1}`, item.title),
-        { completeText: idx + 1 === len ? '好的，已经处理了！请查收！' : `快好了，${idx + 1}/${len}...`, role: Role.System }
+        {
+          completeText: idx + 1 === len ? '好的，已经处理了！请查收！' : `快好了，${idx + 1}/${len}...`,
+          role: Role.User,
+        }
       )
 
       chat.value.content.push(..._json)
@@ -107,7 +110,10 @@ export const useChatSession = createSharedComposable(() => {
       content: promptFunc ? promptFunc(current, message, chat.value.content[current - 1]) : message
     })
     const func = variableSession({ role: Role.Gpt, content: '处理中...' })
-
+    console.log(normalizeSession2Gpt(chat.value.session))
+    return [{
+      raw: message,
+    }]
     const runner = await openai.beta.chat.completions.runTools({
       model: 'gpt-3.5-turbo',
       tools,
