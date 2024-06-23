@@ -53,11 +53,11 @@ const actionFunc = ref('')
 async function send() {
   if (!message.value) return
   if (actionFunc.value) {
-    actionHandles.value[actionFunc.value]()
+    actionHandles[actionFunc.value]()
   } else {
     sendSession(message.value, {
       promptFunc: beautifySlidevPrompt,
-      role: Role.System
+      role: Role.User
     })
     message.value = ''
   }
@@ -158,7 +158,7 @@ const actionHandles = {
     }
     sendSession(message.value, {
       promptFunc: genSingleSlidevPrompt,
-      role: Role.System,
+      role: Role.User,
       insert: true
     })
     message.value = ''
@@ -169,7 +169,7 @@ const actionHandles = {
       }
       sendSession(message.value, {
         promptFunc: beautifySlidevPrompt,
-        role: Role.System
+        role: Role.User
       })
       message.value = ''
   },
@@ -182,7 +182,7 @@ const actionHandles = {
     }
     sendSession(message.value, {
       promptFunc: insertImage2SlidevPrompt,
-      role: Role.System
+      role: Role.User
     })
     message.value = ''
   },

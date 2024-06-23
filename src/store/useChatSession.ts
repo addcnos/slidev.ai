@@ -12,6 +12,7 @@ import { useIpcEmit } from "@renderer/composables";
 import { webcontainerFs } from "@main/webcontainer";
 import dayjs from 'dayjs'
 import { Outline } from '@renderer/types/outline';
+import { ChatCompletion } from 'openai/resources';
 
 
 export const useChatSession = createSharedComposable(() => {
@@ -107,13 +108,15 @@ export const useChatSession = createSharedComposable(() => {
     const current = chat.value?.page?.nav?.currentPage || 1
     pushSession({
       role: role || Role.User,
-      content: promptFunc ? promptFunc(current, message, chat.value.content[current - 1]) : message
+      content: message,
+      source: {
+        message: {
+          content: promptFunc ? promptFunc(current, message, chat.value.content[current - 1]) : message,
+        }
+      } as ChatCompletion.Choice
     })
     const func = variableSession({ role: Role.Gpt, content: '处理中...' })
-    console.log(normalizeSession2Gpt(chat.value.session))
-    return [{
-      raw: message,
-    }]
+
     const runner = await openai.beta.chat.completions.runTools({
       model: 'gpt-3.5-turbo',
       tools,

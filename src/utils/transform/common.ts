@@ -1,4 +1,4 @@
-import { GptSessionContext } from "@renderer/types/chat";
+import { GptSessionContext, Role } from "@renderer/types/chat";
 import { ChatCompletion } from "openai/resources/chat/completions";
 
 export function normalizeSession2Gpt(session: GptSessionContext[]) {
@@ -9,6 +9,6 @@ export function normalizeSession2Gpt(session: GptSessionContext[]) {
     return true
   }).map((item) => ({
     role: item.role,
-    content: item.source?.message?.content || item.content,
+    content: item.role === Role.User ? item.content : (item.source?.message?.content || item.content),
   }) as ChatCompletion.Choice['message'])
 }
