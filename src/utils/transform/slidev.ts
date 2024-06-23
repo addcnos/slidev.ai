@@ -5,9 +5,32 @@ const CROSS_COMPONENT = '<CrossMessage />'
 
 export async function normalizeSlidev2Json(code: string) {
   code = code.replace(new RegExp(CROSS_COMPONENT, 'g'), '')
-  return (await parse(code)).slides
+  return (await parse(code)).slides.map((data, idx) => {
+    if (data.frontmatterDoc) {
+      const head = data.frontmatterDoc.toJSON()
+      data.raw = data.raw.slice(0, data.frontmatterDoc.range![0]) + data.raw.slice(data.frontmatterDoc.range![2])
+      data.raw = `<!--& ${JSON.stringify(head)} &-->\n${data.raw}`
+    }
+    return stringifySlide(data, idx)
+  })
 }
 
 export function normalizeSlidev2Markdown(slides: SourceSlideInfo[]) {
-  return `${slides.map(stringifySlide).join('\n').trim()}\n <!-- ${+new Date()} -->\n ${CROSS_COMPONENT}\n`
+  return `${slides.map((data, idx) => {
+    const jsonReg = /<!--&\s*(.*?)\s*&-->/g
+    const extractHead = jsonReg.exec(data.raw)
+    if (!extractHead) {
+      return stringifySlide(data, idx)
+    }
+    const json = extractHead[1]
+    try {
+      const head = JSON.parse(json)
+      data.raw = data.raw.replace(jsonReg, '')
+      const yaml = Object.keys(head).map(key => `${key}: ${head[key]}`).join('\n')
+      data.raw = `---\n${yaml}\n---\n${data.raw}`
+    } catch (e) {
+      console.error('JSON 解析失败', e)
+    }
+    return stringifySlide(data, idx)
+  }).join('\n').trim()}\n <!-- ${+new Date()} -->\n ${CROSS_COMPONENT}\n`
 }
