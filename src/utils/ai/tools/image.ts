@@ -40,7 +40,7 @@ export async function generateImage({ prompt, size }: { prompt: string, size: Im
 
   chat.value.waitImage.push(filename)
 
-  return `<img v-drag="[Left,Top,Width,Height,Rotate]" src="/public/images/${filename}" />`
+  return `<img v-drag="[Left,Top,100%,100%,Rotate]" src="/public/images/${filename}" />`
 }
 
 const config: RunnableToolFunction<object>[] = [

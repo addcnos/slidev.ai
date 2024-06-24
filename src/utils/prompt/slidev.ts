@@ -35,9 +35,8 @@ export function initSlidevPrompt(theme: string) {
     '2. 需要回复中文',
     '3. 不需要带上 ```markdown',
     '4. 只需要生成当页面的主题内容',
-    '6. 每一条回答都需要附带 <!--& { JSON } &-->',
-    '7. 你必须需要按顺序将 Markdown 的内容用 <v-click></v-click> 包裹除了第一个的标题外',
-    '7. eg: <v-click>## 标题1</v-click>\n\n<v-click>内容</v-click>\n\n<v-click>## 标题2</v-click>\n\n<v-click>内容2</v-click> (非常重要)',
+    '6. 每一条回答都需要附带 <!--& { JSON } &--> (非常重要)',
+    '7. 你必须需要按顺序将 Markdown 的内容用 <v-click></v-click> 包裹内容(非常重要)  ## 标题1\n\n<v-click>内容</v-click>\n\n<v-click>## 标题2</v-click>\n\n<v-click>内容2</v-click>',
     '',
     '我的主题是: ' + theme,
   ].join('\n')

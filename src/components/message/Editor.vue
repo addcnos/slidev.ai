@@ -125,7 +125,7 @@ const actionHandles = {
   },
   insertImg: () => {
     onChange((files) => {
-      const filename = `<img v-drag="[Left,Top,Width,Height,Rotate]" src="/public/images/${nanoid()}" />`
+      const filename = `<img v-drag="[Left,Top,100%,100%,Rotate]" src="/public/images/${nanoid()}" />`
       const file = files[0]
 
       const reader = new FileReader()

@@ -46,7 +46,7 @@ export const useChatSession = createSharedComposable(() => {
         genSingleSlidevPrompt(`${idx + 1}`, item.title),
         {
           completeText: idx + 1 === len ? '好的，已经处理了！请查收！' : `快好了，${idx + 1}/${len}...`,
-          role: Role.User,
+          role: Role.System,
         }
       )
 
