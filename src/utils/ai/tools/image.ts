@@ -4,6 +4,7 @@ import { RunnableToolFunction } from "openai/lib/RunnableFunction";
 import { ImageGenerateParams } from "openai/resources/images";
 import { webcontainerFs } from "@main/webcontainer";
 import { useChatSession } from "@renderer/store";
+import { openai } from "@renderer/api/openai";
 
 export async function saveImage2File(filename: string, base64: string) {
   const { syncMarkdown, chat } = useChatSession()
@@ -29,13 +30,13 @@ export async function generateImage({ prompt, size }: { prompt: string, size: Im
 
   const { chat } = useChatSession()
 
-  // openai.images.generate({
-  //   model: 'dall-e-3',
-  //   prompt: `${prompt}\n my desired image style is: ${chat.value.imageStyle}!!!!!!!!`,
-  //   n: 1,
-  //   size,
-  //   response_format: 'b64_json',
-  // }).then((res) => saveImage2File(filename, res.data[0].b64_json))
+  openai.images.generate({
+    model: 'dall-e-3',
+    prompt: `${prompt}\n my desired image style is: ${chat.value.imageStyle}!!!!!!!!`,
+    n: 1,
+    size,
+    response_format: 'b64_json',
+  }).then((res) => saveImage2File(filename, res.data[0].b64_json))
 
   chat.value.waitImage.push(filename)
 

@@ -1,5 +1,3 @@
-import { stringifyOutline } from "../transform/outline"
-import { Outline } from "../../types/outline"
 
 export function genOutlineBySubjectPrompt(subject: string) {
   return [
