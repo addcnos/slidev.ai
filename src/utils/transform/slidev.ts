@@ -24,10 +24,12 @@ export function normalizeSlidev2Markdown(slides: SourceSlideInfo[]) {
     }
     const json = extractHead[1]
     try {
-      const head = JSON.parse(json)
-      data.raw = data.raw.replace(jsonReg, '')
-      const yaml = Object.keys(head).map(key => `${key}: ${head[key]}`).join('\n')
-      data.raw = `---\n${yaml}\n---\n${data.raw}`
+      if (json) {
+        const head = JSON.parse(json)
+        data.raw = data.raw.replace(jsonReg, '')
+        const yaml = Object.keys(head).map(key => `${key}: ${head[key]}`).join('\n')
+        data.raw = `---\n${yaml}\n---\n${data.raw}`
+      }
     } catch (e) {
       console.error('JSON 解析失败', e)
     }
