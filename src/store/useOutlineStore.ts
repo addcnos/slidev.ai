@@ -65,28 +65,6 @@ export const useOutlineStore = createSharedComposable(() => {
     outline.value.content = normalizeGpt2Outline(completion.choices[0].message.content)
   }
 
-  async function modifyOutlineContent(modify: Outline[]) {
-    const prompt = iterationModifyOutlinePrompt(modify, outline.value.session.filter(i => i.role === Role.Gpt).length + 1)
-    outline.value.session.push({
-      role: Role.System,
-      timestamp: +Date.now(),
-      content: prompt,
-      id: nanoid(),
-    })
-    const completion = await openai.chat.completions.create({
-      model: GPT_MODEL,
-      messages: normalizeSession2Gpt(outline.value.session),
-    });
-    outline.value.session.push({
-      role: Role.Gpt,
-      timestamp: +Date.now(),
-      content: completion.choices[0].message.content,
-      source: completion.choices[0],
-      id: nanoid(),
-    })
-    outline.value.content = normalizeGpt2Outline(completion.choices[0].message.content)
-  }
-
   function getTreeCount(tree: Outline[]) {
     let count = 0
     tree.forEach((item) => {
@@ -106,6 +84,5 @@ export const useOutlineStore = createSharedComposable(() => {
     outline,
     outlineCount,
     initOutlineContent,
-    modifyOutlineContent,
   }
 })

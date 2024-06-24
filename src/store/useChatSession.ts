@@ -166,6 +166,7 @@ export const useChatSession = createSharedComposable(() => {
     updateCapturePage.value = true
 
     console.log(normalizeSlidev2Markdown(chat.value.content))
+    console.log(chat.value)
   }
 
   async function syncMarkdown() {
