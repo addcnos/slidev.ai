@@ -24,7 +24,7 @@ export function normalizeSlidev2Markdown(slides: SourceSlideInfo[]) {
     }
     const json = extractHead[1]
     try {
-      if (json) {
+      if (json && json !== 'null') {
         const head = JSON.parse(json)
         data.raw = data.raw.replace(jsonReg, '')
         const yaml = Object.keys(head).map(key => `${key}: ${head[key]}`).join('\n')
