@@ -25,7 +25,7 @@ export async function saveImage2File(filename: string, base64: string) {
   chat.value.waitImage = chat.value.waitImage.filter((item) => item !== filename)
 }
 
-export async function generateImage({ prompt, size }: { prompt: string, size: ImageGenerateParams['size'] }) {
+export async function generateImage({ prompt, size, isInJson }: { prompt: string, size: ImageGenerateParams['size'], isInJson: boolean }) {
   const filename = `${nanoid()}.png`
 
   const { chat } = useChatSession()
@@ -39,7 +39,9 @@ export async function generateImage({ prompt, size }: { prompt: string, size: Im
   }).then((res) => saveImage2File(filename, res.data[0].b64_json))
 
   chat.value.waitImage.push(filename)
-
+  if (isInJson) {
+    return `/public/images/${filename}`
+  }
   return `<img v-drag="[Left,Top,100%,100%,Rotate]" src="/public/images/${filename}" />`
 }
 
@@ -55,6 +57,7 @@ const config: RunnableToolFunction<object>[] = [
         properties: {
           prompt: { type: 'string' },
           size: { type: 'string', enum: ["1024x1024", "1792x1024", "1024x1792"] },
+          isInJson: { type: 'boolean', default: false },
         },
       },
       function: generateImage,

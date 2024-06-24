@@ -1,9 +1,9 @@
 export interface Key {
-  layout: 'center' | 'cover' /** 可以用 key 为 background 来设置背景图片 */ | 'default' | 'image' /** 可以用 key 为 image 的属性设置背景图片 */ | 'two-cols' /** # Left\n\n显示在左侧\n\n::right::\n\n# Right\n\n显示在右侧 */ | 'two-cols-header' /** 显示在上方\n::left::\n# Left\n显示在左侧\n::right::\n# Right\n显示在右侧*/,
+  layout: 'center' | 'cover' /** 可以用 key 为 background 来设置背景图片 */ | 'default' | 'image' /** 可以用 key 为 image 的属性设置背景图片(调用图片生成) */ | 'two-cols' /** # Left\n\n显示在左侧\n\n::right::\n\n# Right\n\n显示在右侧 */ | 'two-cols-header' /** 显示在上方\n::left::\n# Left\n显示在左侧\n::right::\n# Right\n显示在右侧*/,
   transition: 'fade' | /** 淡入/淡出 */'fade-out' | /** 淡出然后淡入 */'slide-left' | /** 向左滑动（向后滑动时向右滑动） */'slide-right' | /** 向右滑动（向后滑动时向左滑动） */'slide-up' | /** 滑动至顶部（向后滑动至底部） */'slide-down' /** 滑动至底部（向后滑动至顶部） */,
-  image: string /** 背景图片 (url) */,
+  image: string /** 背景图片 (url)(调用图片生成) */,
   backgroundSize: string /** 支持 css background-size 的全部属性 */,
-  background: string /** 背景, 支持渐变/图片 */,
+  background: string /** 背景, 支持渐变/图片(调用图片生成) */,
 }
 
 export function initUsePreset() {
@@ -22,7 +22,7 @@ export function initSlidevPrompt(theme: string) {
     '',
     '以下为约定的一些规则或者扩展 Markdown 的语法',
     '1. 如果你需要在后续的 Markdown 中附加一些东西你可以使用 <!--& { JSON } &--> 来表示，其中 JSON 为你需要附加的内容，每条回答仅切只能包含一个',
-    `2. <!--& { JSON } &--> 中可用的 key 和约定如下有: \`\`\`ts\ninterface Key{\nlayout:'center'|'cover'/**可以用key为background来设置背景图片*/|'default'|'image'/**可以用key为image的属性设置背景图片*/|'two-cols'/**#Left\n\n显示在左侧\n\n::right::\n\n#Right\n\n显示在右侧*/|'two-cols-header'/**显示在上方\n::left::\n#Left\n显示在左侧\n::right::\n#Right\n显示在右侧*/,\ntransition:'fade'|/**淡入/淡出*/'fade-out'|/**淡出然后淡入*/'slide-left'|/**向左滑动（向后滑动时向右滑动）*/'slide-right'|/**向右滑动（向后滑动时向左滑动）*/'slide-up'|/**滑动至顶部（向后滑动至底部）*/'slide-down'/**滑动至底部（向后滑动至顶部）*/,\nimage:string/**背景图片(url)*/,\nbackgroundSize:string/**支持cssbackground-size的全部属性*/,\nbackground:string/**背景,支持渐变/图片*/}\`\`\``,
+    `2. <!--& { JSON } &--> 中可用的 key 和约定如下有: \`\`\`ts\ninterface Key{\nlayout:'center'|'cover'/**可以用key为background来设置背景图片*/|'default'|'image'/**可以用key为image的属性设置背景图片(调用图片生成)*/|'two-cols'/**#Left\n\n显示在左侧\n\n::right::\n\n#Right\n\n显示在右侧*/|'two-cols-header'/**显示在上方\n::left::\n#Left\n显示在左侧\n::right::\n#Right\n显示在右侧*/,\ntransition:'fade'|/**淡入/淡出*/'fade-out'|/**淡出然后淡入*/'slide-left'|/**向左滑动（向后滑动时向右滑动）*/'slide-right'|/**向右滑动（向后滑动时向左滑动）*/'slide-up'|/**滑动至顶部（向后滑动至底部）*/'slide-down'/**滑动至底部（向后滑动至顶部）*/,\nimage:string/**背景图片(url)(调用图片生成)*/,\nbackgroundSize:string/**支持cssbackground-size的全部属性*/,\nbackground:string/**背景,支持渐变/图片(调用图片生成)*/}\`\`\``,
     `3. 你可以将代码块标记为 mermaid 以使用 mermaid 渲染代码块`,
     '',
     '每次生成的要求如下:',
@@ -36,7 +36,7 @@ export function initSlidevPrompt(theme: string) {
     '3. 不需要带上 ```markdown',
     '4. 只需要生成当页面的主题内容',
     '6. 每一条回答都需要附带 <!--& { JSON } &--> (非常重要)',
-    '7. 你必须需要按顺序将 Markdown 的内容用 <v-click></v-click> 包裹内容(非常重要)  ## 标题1\n\n<v-click>内容</v-click>\n\n<v-click>## 标题2</v-click>\n\n<v-click>内容2</v-click>',
+    '7. 你必须需要按顺序将 Markdown 的内容用 <v-click></v-click> 分开包裹内容，标题不需要包裹(非常重要)  ## 标题1\n\n<v-click>内容</v-click>\n\n<v-click>## 标题2</v-click>\n\n<v-click>内容2</v-click>',
     '',
     '我的主题是: ' + theme,
   ].join('\n')
