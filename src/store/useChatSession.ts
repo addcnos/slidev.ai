@@ -3,7 +3,7 @@ import { ChatSessionContext, ChatStore, Role } from '@renderer/types/chat'
 import { nanoid } from 'nanoid'
 import { genSingleSlidevPrompt, initSlidevPrompt, initUsePreset } from '@renderer/utils/prompt/slidev'
 import { createSharedComposable, useDebounceFn } from "@vueuse/core";
-import { openai } from "@renderer/api/openai";
+import { GPT_MODEL, openai } from "@renderer/api/openai";
 import { tools } from "@renderer/utils/ai/tools";
 import { normalizeSession2Gpt } from '@renderer/utils/transform/common';
 import { normalizeSlidev2Json, normalizeSlidev2Markdown } from '@renderer/utils/transform/slidev';
@@ -118,7 +118,7 @@ export const useChatSession = createSharedComposable(() => {
     const func = variableSession({ role: Role.Gpt, content: '处理中...' })
 
     const runner = await openai.beta.chat.completions.runTools({
-      model: 'gpt-3.5-turbo',
+      model: GPT_MODEL,
       tools,
       messages: normalizeSession2Gpt(chat.value.session),
     })

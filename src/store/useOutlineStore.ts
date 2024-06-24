@@ -1,5 +1,5 @@
 import { ref, computed } from "vue";
-import { openai } from "@renderer/api/openai";
+import { GPT_MODEL, openai } from "@renderer/api/openai";
 import { createSharedComposable, useLocalStorage } from "@vueuse/core";
 import { Outline, OutlineStore } from "@renderer/types/outline";
 import { Role } from "@renderer/types/chat";
@@ -48,7 +48,7 @@ export const useOutlineStore = createSharedComposable(() => {
       id: nanoid(),
     })
     const completion = await openai.chat.completions.create({
-      model: 'gpt-3.5-turbo',
+      model: GPT_MODEL,
       messages: normalizeSession2Gpt(outline.value.session),
       response_format: {
         type: 'json_object',
@@ -74,7 +74,7 @@ export const useOutlineStore = createSharedComposable(() => {
       id: nanoid(),
     })
     const completion = await openai.chat.completions.create({
-      model: 'gpt-3.5-turbo',
+      model: GPT_MODEL,
       messages: normalizeSession2Gpt(outline.value.session),
     });
     outline.value.session.push({
