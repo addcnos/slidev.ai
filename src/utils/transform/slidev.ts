@@ -8,6 +8,9 @@ export async function normalizeSlidev2Json(code: string) {
   return (await parse(code)).slides.map((data) => {
     if (data.frontmatterDoc && Object.keys(data.frontmatterDoc).length > 0) {
       const head = data.frontmatterDoc.toJSON()
+      if (!head) {
+        return data
+      }
       data.raw = data.raw.slice(0, data.frontmatterDoc.range![0]) + data.raw.slice(data.frontmatterDoc.range![2])
       data.raw = `<!--& ${JSON.stringify(head)} &-->\n${data.raw}`
     }
