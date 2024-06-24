@@ -6,7 +6,7 @@ const CROSS_COMPONENT = '<CrossMessage />'
 export async function normalizeSlidev2Json(code: string) {
   code = code.replace(new RegExp(CROSS_COMPONENT, 'g'), '')
   return (await parse(code)).slides.map((data) => {
-    if (data.frontmatterDoc) {
+    if (data.frontmatterDoc && Object.keys(data.frontmatterDoc.toJSON()).length > 0) {
       const head = data.frontmatterDoc.toJSON()
       data.raw = data.raw.slice(0, data.frontmatterDoc.range![0]) + data.raw.slice(data.frontmatterDoc.range![2])
       data.raw = `<!--& ${JSON.stringify(head)} &-->\n${data.raw}`
