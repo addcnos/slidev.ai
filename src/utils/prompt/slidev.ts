@@ -1,11 +1,3 @@
-export interface Key {
-  layout: 'center' | 'cover' /** 可以用 key 为 background 来设置背景图片 */ | 'default' | 'image' /** 可以用 key 为 image 的属性设置背景图片(调用图片生成) */ | 'two-cols' /** # Left\n\n显示在左侧\n\n::right::\n\n# Right\n\n显示在右侧 */ | 'two-cols-header' /** 显示在上方\n::left::\n# Left\n显示在左侧\n::right::\n# Right\n显示在右侧*/,
-  transition: 'fade' | /** 淡入/淡出 */'fade-out' | /** 淡出然后淡入 */'slide-left' | /** 向左滑动（向后滑动时向右滑动） */'slide-right' | /** 向右滑动（向后滑动时向左滑动） */'slide-up' | /** 滑动至顶部（向后滑动至底部） */'slide-down' /** 滑动至底部（向后滑动至顶部） */,
-  image: string /** 背景图片 (url)(调用图片生成) */,
-  backgroundSize: string /** 支持 css background-size 的全部属性 */,
-  background: string /** 背景, 支持渐变/图片(调用图片生成) */,
-}
-
 export function initUsePreset() {
   return [
 
@@ -22,21 +14,22 @@ export function initSlidevPrompt(theme: string) {
     '',
     '以下为约定的一些规则或者扩展 Markdown 的语法',
     '1. 如果你需要在后续的 Markdown 中附加一些东西你可以使用 <!--& { JSON } &--> 来表示，其中 JSON 为你需要附加的内容，每条回答仅切只能包含一个',
-    `2. <!--& { JSON } &--> 中可用的 key 和约定如下有: \`\`\`ts\ninterface Key{\nlayout:'center'|'cover'/**可以用key为background来设置背景图片*/|'default'|'image'/**可以用key为image的属性设置背景图片(调用图片生成)*/|'two-cols'/**#Left\n\n显示在左侧\n\n::right::\n\n#Right\n\n显示在右侧*/|'two-cols-header'/**显示在上方\n::left::\n#Left\n显示在左侧\n::right::\n#Right\n显示在右侧*/,\ntransition:'fade'|/**淡入/淡出*/'fade-out'|/**淡出然后淡入*/'slide-left'|/**向左滑动（向后滑动时向右滑动）*/'slide-right'|/**向右滑动（向后滑动时向左滑动）*/'slide-up'|/**滑动至顶部（向后滑动至底部）*/'slide-down'/**滑动至底部（向后滑动至顶部）*/,\nimage:string/**背景图片(url)(调用图片生成)*/,\nbackgroundSize:string/**支持cssbackground-size的全部属性*/,\nbackground:string/**背景,支持渐变/图片(调用图片生成)*/}\`\`\``,
+    `2. <!--& { JSON } &--> 中可用的 key 和约定如下有: \`\`\`ts\ninterface Key{\nlayout:'center'|'cover'/**可以用key为background来设置背景图片*/|'default'|'image'/**可以用key为image的属性设置背景图片(调用图片生成)*/|'two-cols'/**#Left\n\n显示在左侧\n\n::right::\n\n#Right\n\n显示在右侧*/|'two-cols-header'/**显示在上方\n::left::\n#Left\n显示在左侧\n::right::\n#Right\n显示在右侧*/,\ntransition:'fade'|/**淡入/淡出*/'fade-out'|/**淡出然后淡入*/'slide-left'|/**向左滑动（向后滑动时向右滑动）*/'slide-right'|/**向右滑动（向后滑动时向左滑动）*/'slide-up'|/**滑动至顶部（向后滑动至底部）*/'slide-down'/**滑动至底部（向后滑动至顶部）*/,\nimage:string/**背景图片(url)(调用图片生成)*/,\nbackground:string/**背景(调用图片生成url)*/}\`\`\``,
     `3. 你可以将代码块标记为 mermaid 以使用 mermaid 渲染代码块`,
     '',
     '每次生成的要求如下:',
-    '1. 你需要在一屏幕大小的尺寸中，生成丰富的内容(标题不超过3个并且内容不超过15行)，需要注意在一些情况下你需要用 html 标签来进行排版(非常重要)',
+    '1. 你需要在一屏幕大小的尺寸中，生成丰富的内容(内容不超过20行)，需要注意在一些情况下你需要用 html 标签来进行排版(非常重要)',
     '2. 你在生成的时候需要思考，是否超出屏幕尺寸，并且是否有使用布局来进行排版',
     '3. 切换的时候需要有过渡动画',
+    '4. 每一条回答都需要附带 (非常重要) <!--& { JSON } &--> (非常重要)',
+    '5. 你必须需要将 Markdown 的内容用 <v-clicks></v-clicks> 包裹，但是第一个标题不需要包裹, 这里是例子:```例子1\n#这里是标题\n<v-clicks>\n\n## 这里是子标题\n这里是内容\n##这里是另一个子标题\n这里是内容</v-clicks>\n```\n```例子2\n<v-clicks>\n\n- Item 1\n- Item 2\n- Item 3\n</v-clicks>```\n```例子3\n#这里是标题\n<v-clicks>\n\n- Item 1\n\t- Item 1-1\n\t- Item 1-2\n- Item 2\n- Item 3</v-clicks>\n```\n',
+    '6. 如果内容包含图片，layout只能为 two-cols ｜ two-cols-header',
     '',
     '输出格式:',
     '1. 我需要你直接输出 markdown',
     '2. 需要回复中文',
     '3. 不需要带上 ```markdown',
     '4. 只需要生成当页面的主题内容',
-    '6. 每一条回答都需要附带 <!--& { JSON } &--> (非常重要)',
-    '7. 你必须需要按顺序将 Markdown 的内容用 <v-click></v-click> 分开包裹内容，标题不需要包裹(非常重要)  ## 标题1\n\n<v-click>内容</v-click>\n\n<v-click>## 标题2</v-click>\n\n<v-click>内容2</v-click>',
     '',
     '我的主题是: ' + theme,
   ].join('\n')
@@ -45,6 +38,7 @@ export function initSlidevPrompt(theme: string) {
 export function genSingleSlidevPrompt(process: string, title: string) {
   return [
     '当前页面需要的内容是是: ' + title,
+    ...(process === '1' ? ['当前页面 layout 必须为 cover, 并且必须使用 background 设置图片，background 图片必须由工具生成，并且当前页面不允许有 <v-clicks />'] : []),
     '请根据要求生成当前页面的内容',
   ].join('\n')
 }

@@ -11,7 +11,7 @@ import { nanoid } from "nanoid";
 
 export const useOutlineStore = createSharedComposable(() => {
   const visible = ref<boolean>(false)
-  const theme = ref<string>('苏州旅游计划') // 大纲标题
+  const theme = useLocalStorage<string>('苏州旅游计划', '') // 大纲标题
   const count = ref<number>(10) // 大纲数量
   const loading = ref(false)
 

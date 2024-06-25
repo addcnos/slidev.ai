@@ -26,9 +26,20 @@ export const useChatSession = createSharedComposable(() => {
     waitImage: [],
   })
 
+  function resetSession() {
+    activityId.value = nanoid()
+    chat.value = {
+      session: [],
+      content: [],
+      page: {},
+      imageStyle: '卡通',
+      waitImage: [],
+    }
+  }
+
 
   function initPrompt(theme: string) {
-    pushSession({ content: initUsePreset() })
+    // pushSession({ content: initUsePreset() })
     pushSession({ content: initSlidevPrompt(theme) })
   }
 
@@ -121,6 +132,7 @@ export const useChatSession = createSharedComposable(() => {
       model: GPT_MODEL,
       tools,
       messages: normalizeSession2Gpt(chat.value.session),
+      temperature: 0.2,
     })
 
     const result = await runner.finalChatCompletion();
@@ -195,5 +207,6 @@ export const useChatSession = createSharedComposable(() => {
     syncMarkdown: useDebounceFn(syncMarkdown, 1000),
     updateActivityId,
     addedImage2CurrentSlidev,
+    resetSession,
   }
 })

@@ -98,7 +98,7 @@ async function init() {
     })
     const img = await transImage(image as Uint8Array)
     _historys.push({
-      title: item.title,
+      title: item.outline.title,
       createTime: item.createTime,
       image: img,
       id: item?.id || ''
@@ -242,10 +242,13 @@ async function handleClickCreate() {
 
           .title {
             height: 20px;
+            overflow: hidden;
             font-size: 14px;
             line-height: 20px;
             color: #3c3c3c;
             text-align: left;
+            text-overflow: ellipsis;
+            white-space: nowrap;
           }
         }
       }

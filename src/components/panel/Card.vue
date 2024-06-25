@@ -70,10 +70,13 @@ defineProps({
 
     .title {
       height: 20px;
+      overflow: hidden;
       font-size: 14px;
       line-height: 20px;
       color: #3c3c3c;
       text-align: left;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
 
     .subtitle {
@@ -83,6 +86,9 @@ defineProps({
       font-size: 14px;
       line-height: 14px;
       color: #666;
+      text-align: left;
+      text-overflow: ellipsis;
+      white-space: nowrap;
 
       img {
         width: 14px;

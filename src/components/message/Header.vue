@@ -15,9 +15,19 @@
 import { inject } from 'vue'
 import { useCrossMessage } from './../../composables/cross-message'
 import { useMessage } from './../../composables/message';
+import { useChatSession, useOutlineStore } from '@renderer/store'
 const toggleStep = inject('toggleStep',(a:number)=>{})
 const { messageToIframe } = useCrossMessage()
 const { extend } = useMessage()
+
+const { resetSession } = useChatSession()
+const { resetOutline } = useOutlineStore()
+
+function handleToggleStep() {
+  resetSession()
+  resetOutline()
+  toggleStep(1)
+}
 
 function handleChangePageNo() {
   messageToIframe({
