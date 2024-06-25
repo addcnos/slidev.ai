@@ -124,7 +124,7 @@ async function handleClickHistory(item: { id?: string }) {
   const useImages:string[] = []
   _json.chat.content.map(i => {
     const reg = /public\/images\/(.*?).png/g
-    const res = reg.exec(i.content)
+    const res = reg.exec(i.raw)
     if (res) {
       useImages.push(`${res[1]}.png`)
     }
