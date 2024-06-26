@@ -134,7 +134,6 @@ async function handleClickHistory(item: { id?: string }) {
       dirName: 'assets',
       fileName: `${item}`
     })
-    console.log(`public/images/${item}`, image)
     await webcontainerFs().writeFile(`public/images/${item}`, image as Uint8Array)
   }
 

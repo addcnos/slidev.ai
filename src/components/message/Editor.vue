@@ -30,9 +30,10 @@ import { ref, watch, computed } from 'vue'
 import Toast from 'primevue/toast';
 import { useMagicKeys, file, useFileDialog } from '@vueuse/core'
 import { useChatSession } from '@renderer/store/useChatSession';
-import { beautifySlidevPrompt, insertImage2SlidevPrompt, insertMyImage2SlidevPrompt, instertSlidevPrompt, genSingleSlidevPrompt } from '@renderer/utils/prompt/slidev';
+import { beautifySlidevPrompt, insertImage2SlidevPrompt, genSingleSlidevPrompt } from '@renderer/utils/prompt/slidev';
 import { Role } from '@renderer/types/chat';
-import { build, buildLoading,  webcontainerFs } from '@main/webcontainer';
+import { build, buildLoading, webcontainerFs } from '@main/webcontainer';
+import { dialog } from 'electron/main';
 import { useToast } from 'primevue/usetoast';
 import { nanoid } from 'nanoid';
 import { useIpcEmit } from '@renderer/composables';
@@ -43,11 +44,6 @@ const { enter } = useMagicKeys()
 const { sendSession, activityId, chat, addedImage2CurrentSlidev } = useChatSession()
 const toast = useToast();
 const shareLink = ref('')
-const { files, open, reset, onChange } = useFileDialog({
-  accept: 'image/*', // Set to accept only image files
-  directory: true, // Select directories instead of files if set true
-})
-
 const actionFunc = ref('')
 
 async function send() {
@@ -72,11 +68,6 @@ watch(() => enter.value, (v: boolean) => {
 })
 
 const actions = computed(() => [
-  {
-    name: 'insertImg',
-    icon:'pi-image',
-    title:'插入图片',
-  },
   {
     name: 'share',
     icon: buildLoading.value ? 'pi-spin pi-spinner' : 'pi-share-alt',
@@ -123,35 +114,6 @@ const actionHandles = {
     useClipboard().copy(shareLink.value)
     toast.add({ severity: 'success', summary: '链接已复制到剪贴板', life: 3000, closable:false });
   },
-  insertImg: () => {
-    onChange((files) => {
-      const filename = `<img v-drag="[Left,Top,100%,100%,Rotate]" src="/public/images/${nanoid()}" />`
-      const file = files[0]
-
-      const reader = new FileReader()
-      reader.onload = async () => {
-        const arrayBuffer = reader.result as ArrayBuffer
-        const content = new Uint8Array(arrayBuffer)
-        useIpcEmit.fileManager('write', {
-          fileName: filename,
-          content,
-          dirName: 'assets',
-        })
-        try {
-          webcontainerFs().writeFile(filename, content)
-        } catch (_) {
-          // TODO
-        }
-      }
-
-      reader.readAsArrayBuffer(file)
-
-      addedImage2CurrentSlidev(filename)
-
-      message.value = ''
-    })
-    open()
-  },
   addPage: () => {
     if (!message.value)  {
       return toast.add({ severity: 'error', summary: '请输入相关描述哦', life: 3000, closable:false });
@@ -186,7 +148,6 @@ const actionHandles = {
     })
     message.value = ''
   },
-
 }
 
 </script>
