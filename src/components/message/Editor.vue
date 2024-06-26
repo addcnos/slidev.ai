@@ -14,7 +14,7 @@
         <span>{{ item.title }}</span>
       </div>
     </div>
-    <div class="input-panel">
+    <div class="input-panel" :class="{ disabled: initLoading}">
       <Textarea v-model="message" placeholder="请输入内容" rows="2"></Textarea>
       <Button
         @click="send"
@@ -33,15 +33,12 @@ import { useChatSession } from '@renderer/store/useChatSession';
 import { beautifySlidevPrompt, insertImage2SlidevPrompt, genSingleSlidevPrompt } from '@renderer/utils/prompt/slidev';
 import { Role } from '@renderer/types/chat';
 import { build, buildLoading, webcontainerFs } from '@main/webcontainer';
-import { dialog } from 'electron/main';
 import { useToast } from 'primevue/usetoast';
-import { nanoid } from 'nanoid';
-import { useIpcEmit } from '@renderer/composables';
 import { useClipboard } from '@vueuse/core'
 
 const message = ref('')
 const { enter } = useMagicKeys()
-const { sendSession, activityId, chat } = useChatSession()
+const { sendSession, activityId, chat, initLoading } = useChatSession()
 const toast = useToast();
 const shareLink = ref('')
 const actionFunc = ref('')
@@ -216,6 +213,11 @@ const actionHandles = {
     cursor: text;
     border: 1px solid #e6e6e6;
     border-radius: 7px;
+
+    &.disabled {
+      pointer-events: none;
+      filter: grayscale(1);
+    }
 
     textarea {
       box-sizing: border-box;

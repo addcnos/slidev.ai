@@ -18,6 +18,7 @@ import { ChatCompletion } from 'openai/resources';
 export const useChatSession = createSharedComposable(() => {
   const activityId = ref<string>(nanoid())
   const updateCapturePage = ref(false)
+  const initLoading = ref(false)
   const chat = ref<ChatStore>({
     session: [],
     content: [],
@@ -51,24 +52,29 @@ export const useChatSession = createSharedComposable(() => {
     const flatOutline = (outline: Outline[]): Outline[] => outline.flatMap(item => [item, ...flatOutline(item.children || [])])
     const allOutline = flatOutline(outline.value.content)
     const len = allOutline.length
-    for (let idx = 0; idx < len; idx++) {
-      const item = allOutline[idx];
+    try {
+      initLoading.value = true
+      for (let idx = 0; idx < len; idx++) {
+        const item = allOutline[idx];
 
-      const _json = await sendSession(
-        genSingleSlidevPrompt(`${idx + 1}`, item.title),
-        {
-          completeText: idx + 1 === len ? '好的，已经处理了！请查收！' : `快好了，${idx + 1}/${len}...`,
-          role: Role.System,
+        const _json = await sendSession(
+          genSingleSlidevPrompt(`${idx + 1}`, item.title),
+          {
+            completeText: idx + 1 === len ? '好的，已经处理了！请查收！' : `快好了，${idx + 1}/${len}...`,
+            role: Role.System,
+          }
+        )
+
+        chat.value.content.push(..._json)
+
+        updateJSONCache()
+
+        if (idx >= 4) {
+          break
         }
-      )
-
-      chat.value.content.push(..._json)
-
-      updateJSONCache()
-
-      if (idx >= 4) {
-        break
       }
+    } finally {
+      initLoading.value = false
     }
   }
 
@@ -202,5 +208,6 @@ export const useChatSession = createSharedComposable(() => {
     syncMarkdown: useDebounceFn(syncMarkdown, 1000),
     updateActivityId,
     resetSession,
+    initLoading,
   }
 })
