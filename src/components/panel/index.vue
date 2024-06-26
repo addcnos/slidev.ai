@@ -36,20 +36,12 @@ import { webcontainerFs } from "@main/webcontainer";
 
 const emit = defineEmits(['updateStep'])
 const { activityId, chat, updateJSONCache, updateActivityId } = useChatSession()
-const { outline, visible }  = useOutlineStore()
+const { outline, visible, resetOutline }  = useOutlineStore()
 const templates = ref([
-  {
-    title: 'Slidev功能介绍',
-    user: '大奔',
-  },
-  {
-    title: 'Slidev功能介绍',
-    user: '大奔',
-  },
-  {
-    title: 'Slidev功能介绍',
-    user: '大奔',
-  },
+  // {
+  //   title: 'Slidev功能介绍',
+  //   user: '大奔',
+  // },
 ])
 
 const historys = ref([])
@@ -146,6 +138,7 @@ async function handleClickCreate() {
   updateActivityId(nanoid())
 
   visible.value = true
+  resetOutline()
   await until(visible).toBe(false)
 
   emit('updateStep', 2)

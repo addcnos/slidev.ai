@@ -1,9 +1,9 @@
 import { ref, computed } from "vue";
 import { GPT_MODEL, openai } from "@renderer/api/openai";
-import { createSharedComposable, useLocalStorage } from "@vueuse/core";
+import { createSharedComposable } from "@vueuse/core";
 import { Outline, OutlineStore } from "@renderer/types/outline";
 import { Role } from "@renderer/types/chat";
-import { genOutlineBySubjectPrompt, iterationModifyOutlinePrompt } from "@renderer/utils/prompt/outline";
+import { genOutlineBySubjectPrompt } from "@renderer/utils/prompt/outline";
 import { normalizeSession2Gpt } from "@renderer/utils/transform/common";
 import { normalizeGpt2Outline } from "@renderer/utils/transform/outline";
 import { nanoid } from "nanoid";
@@ -11,23 +11,18 @@ import { nanoid } from "nanoid";
 
 export const useOutlineStore = createSharedComposable(() => {
   const visible = ref<boolean>(false)
-  const theme = useLocalStorage<string>('苏州旅游计划', '') // 大纲标题
+  const theme = ref<string>('') // 大纲标题
   const count = ref<number>(10) // 大纲数量
   const loading = ref(false)
 
-  const outline = useLocalStorage<OutlineStore>('outline', { // 开发阶段，保持缓存，避免重复请求
+
+  const outlineCount = computed(() => getTreeCount(outline.value.content))
+
+  const outline = ref<OutlineStore>({
     session: [],
     title: '',
     content: [],
   })
-
-  const outlineCount = computed(() => getTreeCount(outline.value.content))
-
-  // const outline = ref<OutlineStore>({
-  //   session: [],
-  //   title: '',
-  //   content: [],
-  // })
 
   function resetOutline() {
     outline.value = {
@@ -84,5 +79,6 @@ export const useOutlineStore = createSharedComposable(() => {
     outline,
     outlineCount,
     initOutlineContent,
+    resetOutline
   }
 })

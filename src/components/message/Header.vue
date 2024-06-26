@@ -6,7 +6,7 @@
       > <i class="pi pi-arrow-left"></i>
       </Button>
     <div class="title">聊天框</div>
-    <button @click="handleChangePageNo">切换页签</button>
+    <!-- <button @click="handleChangePageNo">切换页签</button> -->
     <i @click="extend = false" class="pi pi-angle-right" style="font-size: 20px;cursor: pointer;"></i>
   </div>
 </template>

@@ -41,7 +41,7 @@ import { useClipboard } from '@vueuse/core'
 
 const message = ref('')
 const { enter } = useMagicKeys()
-const { sendSession, activityId, chat, addedImage2CurrentSlidev } = useChatSession()
+const { sendSession, activityId, chat } = useChatSession()
 const toast = useToast();
 const shareLink = ref('')
 const actionFunc = ref('')
@@ -71,12 +71,12 @@ const actions = computed(() => [
   {
     name: 'share',
     icon: buildLoading.value ? 'pi-spin pi-spinner' : 'pi-share-alt',
-    title: buildLoading.value ? '生成中' :'分享',
+    title: buildLoading.value ? '生成中...' :'分享链接',
   },
   {
     name: 'copy',
     icon: 'pi-copy',
-    title: '复制',
+    title: '复制链接',
   },
 ])
 
@@ -136,7 +136,7 @@ const actionHandles = {
       message.value = ''
   },
   textToImg: () => {
-    if (!chat.value.waitImage.length) {
+    if (chat.value.waitImage.length) {
       return toast.add({ severity: 'error', summary: '图片还在生成中还要等一会哦', life: 3000, closable:false });
     }
     if (!message.value)  {

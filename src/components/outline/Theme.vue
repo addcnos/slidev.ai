@@ -4,7 +4,7 @@
       <!-- 主题 -->
       <span class="title">主题：</span>
       <!-- 页数 -->
-      <InputNumber
+      <!-- <InputNumber
         v-model="count"
         inputId="minmax-buttons"
         mode="decimal"
@@ -15,7 +15,7 @@
         size="small"
         suffix="页"
         @update:modelValue="onChangeCount"
-      />
+      /> -->
     </div>
 
     <div class="prompt-ctn">

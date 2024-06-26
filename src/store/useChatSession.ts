@@ -45,6 +45,7 @@ export const useChatSession = createSharedComposable(() => {
 
   async function initSlidevContent() {
     const { outline } = useOutlineStore()
+    resetSession()
 
     initPrompt(outline.value.title)
     const flatOutline = (outline: Outline[]): Outline[] => outline.flatMap(item => [item, ...flatOutline(item.children || [])])
@@ -92,20 +93,12 @@ export const useChatSession = createSharedComposable(() => {
     })
   }
 
-  async function addedImage2CurrentSlidev(image: string) {
-    const current = chat.value?.page?.nav?.currentPage || 0
-    let content = chat.value.content[current - 1].raw
-    content = image + '\n' + content
-    chat.value.content[current - 1] = (await normalizeSlidev2Json(content))[0]
-    updateJSONCache()
-  }
 
   async function sendSession(
     message: string,
     {
       promptFunc,
       insert,
-      addedImage,
       role,
       completeText,
     }: {
@@ -113,7 +106,6 @@ export const useChatSession = createSharedComposable(() => {
       role?: Role,
       completeText?: string,
       insert?: boolean
-      addedImage?: boolean
     } = {}
   ) {
     const current = chat.value?.page?.nav?.currentPage || 1
@@ -122,7 +114,7 @@ export const useChatSession = createSharedComposable(() => {
       content: message,
       source: {
         message: {
-          content: promptFunc ? promptFunc(current, message, chat.value.content[current - 1]) : message,
+          content: promptFunc ? promptFunc(current, message, await normalizeSlidev2Markdown([chat.value.content[current - 1]])) : message,
         }
       } as ChatCompletion.Choice
     })
@@ -145,8 +137,6 @@ export const useChatSession = createSharedComposable(() => {
     if (promptFunc) {
       if (insert) {
         chat.value.content.splice(current - 1, 0, ...await normalizeSlidev2Json(content + '\n'))
-      } else if (addedImage) {
-        addedImage2CurrentSlidev(content)
       }
       else {
         chat.value.content.splice(current - 1, 1, ...await normalizeSlidev2Json(content + '\n'))
@@ -166,7 +156,7 @@ export const useChatSession = createSharedComposable(() => {
       fileName: activityId.value + '.json',
       content: JSON.stringify({
         outline: outline.value,
-        chat: chat.value,
+        chat: { ...chat.value, waitImage: [] },
         createTime: dayjs().format('YYYY-MM-DD HH:mm:ss'),
         id: activityId.value,
       }),
@@ -206,7 +196,6 @@ export const useChatSession = createSharedComposable(() => {
     updateJSONCache,
     syncMarkdown: useDebounceFn(syncMarkdown, 1000),
     updateActivityId,
-    addedImage2CurrentSlidev,
     resetSession,
   }
 })
