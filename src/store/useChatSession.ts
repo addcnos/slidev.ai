@@ -172,11 +172,16 @@ export const useChatSession = createSharedComposable(() => {
   }
 
   async function syncMarkdown() {
-    await webcontainerFs().writeFile(
-      'slides.md',
-      normalizeSlidev2Markdown(chat.value.content),
-      { encoding: 'utf-8' }
-    )
+    try {
+      await webcontainerFs().writeFile(
+        'slides.md',
+        normalizeSlidev2Markdown(chat.value.content),
+        { encoding: 'utf-8' }
+      )
+    } catch (e) {
+      console.log(e, 'syncMarkdown error')
+    }
+
   }
 
   function updateActivityId(id: string) {
