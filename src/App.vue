@@ -49,11 +49,9 @@ const currentBg = ref('wave')
 const currentBgVideo = computed(() => bgVideos[currentBg.value].src)
 
 const count = ref(0)
-const { firstLoaded } = useChatSession()  
 const onLoad = useDebounceFn(() => {
   nextTick(() => {
     loaded.value = true
-    firstLoaded.value = true
   })
 }, 500)
 

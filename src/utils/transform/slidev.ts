@@ -31,14 +31,12 @@ export function normalizeSlidev2Markdown(slides: SourceSlideInfo[]) {
         const head = JSON.parse(json)
         data.raw = data.raw.replace(jsonReg, '')
         const yaml = Object.keys(head).map(key => `${key}: ${head[key]}`).join('\n')
-        console.log(json)
         data.raw = `---\n${yaml}\n---\n${data.raw}`
       }
     } catch (e) {
       console.error('JSON 解析失败', e)
     }
     const res = stringifySlide(data, idx)
-    console.log(res)
     return res
   }).join('\n').trim()}\n <!-- ${+new Date()} -->\n ${CROSS_COMPONENT}\n`
 }

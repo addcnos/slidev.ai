@@ -16,7 +16,6 @@ import { ChatCompletion } from 'openai/resources';
 
 
 export const useChatSession = createSharedComposable(() => {
-  const firstLoaded = ref(false)
   const activityId = ref<string>(nanoid())
   const updateCapturePage = ref(false)
   const initLoading = ref(false)
@@ -157,9 +156,10 @@ export const useChatSession = createSharedComposable(() => {
   }
 
   async function updateJSONCache(skip = false, skipSync = false) {
-    if (!firstLoaded.value) return
+    if (normalizeSlidev2Markdown(chat.value.content).includes('<!-- skip -->')) {
+      return
+    }
     const { outline } = useOutlineStore()
-    console.log(chat.value, activityId.value)
     !skip && await useIpcEmit.fileManager('write', {
       fileName: activityId.value + '.json',
       content: JSON.stringify({
@@ -211,6 +211,5 @@ export const useChatSession = createSharedComposable(() => {
     updateActivityId,
     resetSession,
     initLoading,
-    firstLoaded,
   }
 })
