@@ -129,6 +129,8 @@ async function handleClickHistory(item: { id?: string }) {
     await webcontainerFs().writeFile(`public/images/${item}`, image as Uint8Array)
   }
 
+  activityId.value = _json.id
+  updateActivityId(_json.id)
   Object.assign(chat.value, _json.chat)
   Object.assign(outline.value, _json.outline)
   await updateJSONCache(true)

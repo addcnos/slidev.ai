@@ -1,7 +1,7 @@
 import { parse, stringifySlide } from "../parser/slidev"
 import { SourceSlideInfo } from "@slidev/types"
 
-const CROSS_COMPONENT = '<CrossMessage />'
+export const CROSS_COMPONENT = '<CrossMessage />'
 
 export async function normalizeSlidev2Json(code: string) {
   code = code.replace(new RegExp(CROSS_COMPONENT, 'g'), '')
@@ -11,8 +11,10 @@ export async function normalizeSlidev2Json(code: string) {
       if (!head) {
         return data
       }
-      data.raw = data.raw.slice(0, data.frontmatterDoc.range![0]) + data.raw.slice(data.frontmatterDoc.range![2])
+      data.raw = data.raw.slice(0, data.frontmatterDoc.range![0]) + data.raw.slice(data.frontmatterDoc.range![2] + 7)
+      console.log(data.raw)
       data.raw = `<!--& ${JSON.stringify(head)} &-->\n${data.raw}`
+      console.log(data.raw)
     }
     return data
   })
@@ -31,11 +33,14 @@ export function normalizeSlidev2Markdown(slides: SourceSlideInfo[]) {
         const head = JSON.parse(json)
         data.raw = data.raw.replace(jsonReg, '')
         const yaml = Object.keys(head).map(key => `${key}: ${head[key]}`).join('\n')
+        console.log(json)
         data.raw = `---\n${yaml}\n---\n${data.raw}`
       }
     } catch (e) {
       console.error('JSON 解析失败', e)
     }
-    return stringifySlide(data, idx)
+    const res = stringifySlide(data, idx)
+    console.log(res)
+    return res
   }).join('\n').trim()}\n <!-- ${+new Date()} -->\n ${CROSS_COMPONENT}\n`
 }

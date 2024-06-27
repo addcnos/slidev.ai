@@ -28,6 +28,7 @@ import { useIpcEmit } from '@renderer/composables'
 import WaveVideo from '@renderer/assets/videos/wave.mp4'
 import StarVideo from '@renderer/assets/videos/star.mp4'
 import SunVideo from '@renderer/assets/videos/sun.mp4'
+import { useChatSession } from './store';
 
 const loaded = ref(false)
 const bgVideos = {
@@ -48,9 +49,11 @@ const currentBg = ref('wave')
 const currentBgVideo = computed(() => bgVideos[currentBg.value].src)
 
 const count = ref(0)
+const { firstLoaded } = useChatSession()  
 const onLoad = useDebounceFn(() => {
   nextTick(() => {
     loaded.value = true
+    firstLoaded.value = true
   })
 }, 500)
 
