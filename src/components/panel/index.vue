@@ -3,7 +3,7 @@
     <div class="template">
       <div class="title">新建空白页</div>
       <div class="card-wrapper">
-        <div class="card" @click="handleClickCreate">
+        <div class="card" @click="handleClickCreate()">
           <div class="wrapper">
             <img src="@assets/images/create-icon.png" />
           </div>
@@ -11,7 +11,7 @@
             <div class="title">空白文稿</div>
           </div>
         </div>
-        <Card class="template-card" :data="item" v-for="item, index in templates" :key="index" />
+        <Card class="template-card" :data="item" v-for="item, index in templates" :key="index" @click="handleClickCreate(item.theme)"/>
       </div>
     </div>
     <div class="history" v-if="historys.length">
@@ -33,15 +33,34 @@ import { useChatSession } from '@renderer/store/useChatSession';
 import { nanoid } from 'nanoid'
 import { useOutlineStore } from '@renderer/store';
 import { webcontainerFs } from "@main/webcontainer";
-
+import image01 from '@assets/images/01.png'
+import image02 from '@assets/images/02.png'
+import image03 from '@assets/images/03.png'
+import image04 from '@assets/images/04.png'
 const emit = defineEmits(['updateStep'])
 const { activityId, chat, updateJSONCache, updateActivityId } = useChatSession()
 const { outline, visible, resetOutline }  = useOutlineStore()
 const templates = ref([
-  // {
-  //   title: 'Slidev功能介绍',
-  //   user: '大奔',
-  // },
+  {
+    title: '主题1',
+    url: image01,
+    theme: 'seriph'
+  },
+  {
+    title: '主题2',
+    url: image02,
+    theme: 'apple-basic'
+  },
+  {
+    title: '主题3',
+    url: image03,
+    theme: 'bricks'
+  },
+  {
+    title: '主题4',
+    url:  image04,
+    theme: 'shibainu'
+  },
 ])
 
 const historys = ref([])
@@ -136,12 +155,13 @@ async function handleClickHistory(item: { id?: string }) {
   await updateJSONCache(true)
 }
 
-async function handleClickCreate() {
+async function handleClickCreate(theme?: string) {
   updateActivityId(nanoid())
 
   visible.value = true
   resetOutline()
   await until(visible).toBe(false)
+  outline.value.theme = theme || 'deafult'
 
   emit('updateStep', 2)
 }

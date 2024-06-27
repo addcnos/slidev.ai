@@ -22,6 +22,7 @@ export const useOutlineStore = createSharedComposable(() => {
     session: [],
     title: '',
     content: [],
+    theme: 'deafult',
   })
 
   function resetOutline() {
@@ -29,6 +30,7 @@ export const useOutlineStore = createSharedComposable(() => {
       session: [],
       title: '',
       content: [],
+      theme: 'deafult',
     }
   }
 

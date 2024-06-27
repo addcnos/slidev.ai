@@ -2,6 +2,7 @@
   <div class="card-container">
     <div class="wrapper">
       <img v-if="data?.image" :src="`data:image/png;base64,${data?.image}`" alt="">
+      <img v-if="data?.url" :src="data?.url" alt="">
     </div>
     <div class="desc">
       <div class="title">{{ data?.title }}</div>
@@ -48,7 +49,9 @@ defineProps({
     justify-content: center;
     width: 190px;
     height: 120px;
+    overflow: hidden;
     background: #f5f5f5;
+    border: 1px solid transparent;
     border-radius: 8px;
 
     &:hover {
