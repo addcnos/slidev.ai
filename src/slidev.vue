@@ -55,7 +55,7 @@ watch(() => updateCapturePage.value, async (value) =>{
 
   .slidev-container {
     flex: 1;
-    border-radius: 0 4px 4px 0;
+    border: 1px solid rgb(0 0 0 / 10%);
 
     .wrap {
       width: 100%;
@@ -71,6 +71,8 @@ watch(() => updateCapturePage.value, async (value) =>{
     flex-shrink: 0;
     width: 350px;
     height: 100%;
+    border: 1px solid rgb(0 0 0 / 10%);
+    border-left: 0;
     transition: 0.5s;
 
     &-ctn {

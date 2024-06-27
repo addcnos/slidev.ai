@@ -20,7 +20,7 @@ import { serverProcess, serverProcessMap } from '@main/webcontainer';
 .rocket-bg {
   width: 100%;
   height: calc(100% - 0px);
-  background: url("@assets/images/load-bg3.jpg") no-repeat center center;
+  background: url("@assets/images/load-bg4.jpg") no-repeat center center;
   background-size: cover;
   object-fit: cover;
 }
