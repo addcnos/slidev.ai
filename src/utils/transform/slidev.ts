@@ -12,9 +12,7 @@ export async function normalizeSlidev2Json(code: string) {
         return data
       }
       data.raw = data.raw.slice(0, data.frontmatterDoc.range![0]) + data.raw.slice(data.frontmatterDoc.range![2] + 7)
-      console.log(data.raw)
       data.raw = `<!--& ${JSON.stringify(head)} &-->\n${data.raw}`
-      console.log(data.raw)
     }
     return data
   })
