@@ -1,20 +1,10 @@
 <template>
   <div class="slidev-ai-container">
-    <div class="spin-pane" v-show="!loaded">
-      <div class="toolbar">
-        <span class="item" :class="{ active: currentBg === key }" v-for="(item, key) in bgVideos" :key="key"
-          @click="currentBg = key">{{ item.name }}</span>
-      </div>
-      <video class="bg" :src="currentBgVideo" autoplay loop muted playsinline></video>
-      <div class="spin-pane-item" v-show="serverProcess === +key" v-for="(content, key) in serverProcessMap" :key="key">
-        <span class="txt">{{ content }}</span>
-      </div>
-    </div>
+    <Loading v-show="!loaded"/>
     <div v-show="loaded" class="inner-card">
       <Panel v-show="step === 1" @updateStep="(next) => step = next" />
       <SlidevEmbed v-show="step === 2" :loaded="loaded" />
     </div>
-
   </div>
 </template>
 
@@ -22,31 +12,13 @@
 import { onMounted, provide, ref, computed, nextTick } from 'vue';
 import SlidevEmbed from './slidev.vue'
 import Panel from './components/panel/index.vue'
+import Loading from './components/Loading.vue'
 import { mount, serverProcess, serverProcessMap } from '@main/webcontainer';
 import { useDebounceFn } from '@vueuse/core'
 import { useIpcEmit } from '@renderer/composables'
-import WaveVideo from '@renderer/assets/videos/wave.mp4'
-import StarVideo from '@renderer/assets/videos/star.mp4'
-import SunVideo from '@renderer/assets/videos/sun.mp4'
 import { useChatSession } from './store';
 
 const loaded = ref(false)
-const bgVideos = {
-  'wave': {
-    src: WaveVideo,
-    name: '海浪'
-  },
-  'star': {
-    src: StarVideo,
-    name: '星空'
-  },
-  'sun': {
-    src: SunVideo,
-    name: '落日'
-  }
-}
-const currentBg = ref('wave')
-const currentBgVideo = computed(() => bgVideos[currentBg.value].src)
 
 const count = ref(0)
 const onLoad = useDebounceFn(() => {
