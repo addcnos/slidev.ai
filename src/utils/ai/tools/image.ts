@@ -40,9 +40,9 @@ export async function generateImage({ prompt, size, isInJson }: { prompt: string
 
   chat.value.waitImage.push(filename)
   if (isInJson) {
-    return `"/public/images/${filename}"`
+    return `/images/${filename}`
   }
-  return `<img v-drag="[0,0,'100%,'100%']" src="/public/images/${filename}" />`
+  return `<img v-drag="[0,0,'100%,'100%']" src="/images/${filename}" />`
 }
 
 const config: RunnableToolFunction<object>[] = [

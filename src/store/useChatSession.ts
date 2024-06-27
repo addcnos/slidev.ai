@@ -28,7 +28,7 @@ export const useChatSession = createSharedComposable(() => {
   })
 
   function resetSession() {
-    activityId.value = nanoid()
+    updateActivityId(nanoid())
     chat.value = {
       session: [],
       content: [],
