@@ -20,6 +20,8 @@ import { serverProcess, serverProcessMap } from '@main/webcontainer';
 .rocket-bg {
   width: 100%;
   height: calc(100% - 0px);
+  background: url("@assets/images/load-bg3.jpg") no-repeat center center;
+  background-size: cover;
   object-fit: cover;
 }
 
@@ -36,14 +38,12 @@ import { serverProcess, serverProcessMap } from '@main/webcontainer';
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 125px;
-  height: 125px;
+  width: 240px;
+  height: 240px;
   overflow: hidden;
   text-align: center;
-  background: linear-gradient(90deg, gray, transparent 10%) 0 20%/180% 0.2rem repeat-x, linear-gradient(90deg, gray, transparent 20%) 0 80%/150% 0.2rem repeat-x, linear-gradient(90deg, gray, transparent 5%) 0 65%/100% 0.2rem repeat-x, linear-gradient(90deg, gray, transparent 5%) 0 40%/220% 0.2rem repeat-x, linear-gradient(0, white, white);
-  border: 1px solid rgb(0 0 0 / 10%);
+  background: linear-gradient(90deg, #fff, transparent 10%) 0 20%/180% 0.2rem repeat-x, linear-gradient(90deg, #fff, transparent 20%) 0 80%/150% 0.2rem repeat-x, linear-gradient(90deg, #fff, transparent 5%) 0 65%/100% 0.2rem repeat-x, linear-gradient(90deg, #fff, transparent 5%) 0 40%/220% 0.2rem repeat-x;
   border-radius: 50%;
-  box-shadow: inset 0 0 60px 0 rgb(0 0 0 / 10%);
   transform: translate(-50%, -50%);
   transform-origin: 50% 50%;
   animation: move-particles 6s linear infinite;
@@ -51,9 +51,10 @@ import { serverProcess, serverProcessMap } from '@main/webcontainer';
   &::before {
     position: absolute;
     right: 0;
-    bottom: 6%;
+    bottom: 10%;
     left: 0;
-    font-size: 12px;
+    font-size: 20px;
+    color: #fff;
     content: "Loading...";
     animation: blink 1s infinite;
   }
@@ -98,10 +99,10 @@ import { serverProcess, serverProcessMap } from '@main/webcontainer';
   }
 
   &::after { // Rocket tip
-    top: 2px;
-    right: -16px;
-    border: 7px solid transparent;
-    border-left: 14px solid rgb(0 0 0 / 40%);
+    top: 8px;
+    right: -28px;
+    border: 10px solid transparent;
+    border-left: 20px solid rgb(0 0 0 / 40%);
     border-radius: 15%;
   }
 
@@ -179,9 +180,10 @@ import { serverProcess, serverProcessMap } from '@main/webcontainer';
 
 .rocker-text {
   position: absolute;
-  top: calc(50% + 100px);
+  top: calc(50% + 160px);
   left: 50%;
   font-size: 18px;
+  color: #fff;
   white-space: nowrap;
   transform: translateX(-50%);
 }
