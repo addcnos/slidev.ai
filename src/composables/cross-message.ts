@@ -4,11 +4,17 @@ import { ref } from 'vue'
 
 export const useCrossMessage = createSharedComposable(() => {
   const iframeRef = ref()
+  const { chat, updateJSONCache } = useChatSession()
 
   function subscribe() {
     window.addEventListener('message', (value) => {
       try {
-        useChatSession().chat.value.page = JSON.parse(value.data).data
+        const data = JSON.parse(value.data)
+        chat.value.page = data.data
+        if (data.type === 'update') {
+          chat.value.content = data.nav.slides.map((i: any) => i.meta.slide)
+          updateJSONCache(false, true)
+        }
       } catch (_) {
         // TOOD
       }

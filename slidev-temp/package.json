@@ -11,6 +11,9 @@
     "@slidev/cli": "^0.49.9",
     "@slidev/theme-default": "latest",
     "@slidev/theme-seriph": "latest",
+    "@slidev/theme-apple-basic": "latest",
+    "@slidev/theme-bricks": "latest",
+    "@slidev/theme-shibainu": "latest",
     "vue": "^3.4.27",
     "@vueuse/core": "^10.10.0"
   },

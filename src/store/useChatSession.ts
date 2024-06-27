@@ -155,7 +155,7 @@ export const useChatSession = createSharedComposable(() => {
     return await normalizeSlidev2Json(content + '\n')
   }
 
-  async function updateJSONCache(skip = false) {
+  async function updateJSONCache(skip = false, skipSync = false) {
     const { outline } = useOutlineStore()
 
     !skip && await useIpcEmit.fileManager('write', {
@@ -169,7 +169,7 @@ export const useChatSession = createSharedComposable(() => {
       dirName: 'json',
     })
 
-    await syncMarkdown()
+    !skipSync && await syncMarkdown()
 
     updateCapturePage.value = true
 
