@@ -68,10 +68,6 @@ export const useChatSession = createSharedComposable(() => {
         chat.value.content.push(..._json)
 
         updateJSONCache()
-
-        if (idx >= 4) {
-          break
-        }
       }
     } finally {
       initLoading.value = false
