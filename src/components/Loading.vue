@@ -20,7 +20,7 @@ import { serverProcess, serverProcessMap } from '@main/webcontainer';
 .rocket-bg {
   width: 100%;
   height: calc(100% - 0px);
-  background: url("@assets/images/load-bg4.jpg") no-repeat center center;
+  background: url("@assets/images/load-bg5.jpg") no-repeat center center;
   background-size: cover;
   object-fit: cover;
 }
@@ -73,7 +73,7 @@ import { serverProcess, serverProcessMap } from '@main/webcontainer';
   width: 35%;
   height: 15%;
   background: lightgray;
-  background: linear-gradient(darken(red, 20), red, darken(red, 20));
+  background: linear-gradient(darken(#23d2e2, 20), #23d2e2, darken(#23d2e2, 20));
   border-left: 3px solid rgb(0 0 0 / 40%);
   border-radius: 50%/30%;
   transform: translate(-50%, -50%);
@@ -91,7 +91,7 @@ import { serverProcess, serverProcessMap } from '@main/webcontainer';
     width: 20%;
     height: 140%;
     background: darken(lightgray, 10);
-    background: linear-gradient(darken(red, 20), red, darken(red, 20));
+    background: linear-gradient(darken(#23d2e2, 20), #23d2e2, darken(#23d2e2, 20));
     border: 2px solid transparent;
     border-radius: 0 50% 50% 0;
     transform: translate(0, -50%);
