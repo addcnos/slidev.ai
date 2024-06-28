@@ -161,7 +161,7 @@ async function handleClickCreate(theme?: string) {
   visible.value = true
   resetOutline()
   await until(visible).toBe(false)
-  outline.value.theme = theme || 'deafult'
+  outline.value.theme = theme || ''
 
   emit('updateStep', 2)
 }

@@ -14,7 +14,9 @@ export async function normalizeSlidev2Json(code: string) {
         return data
       }
       data.raw = data.raw.slice(0, data.frontmatterDoc.range![0]) + data.raw.slice(data.frontmatterDoc.range![2] + 7)
-      head['theme'] = outline.value.theme
+      if (outline.value.theme) {
+        head['theme'] = outline.value.theme
+      }
       data.raw = `<!--& ${JSON.stringify(head)} &-->\n${data.raw}`
     }
     return data
@@ -33,7 +35,9 @@ export function normalizeSlidev2Markdown(slides: SourceSlideInfo[]) {
     try {
       if (json && json !== 'null') {
         const head = JSON.parse(json)
-        head['theme'] = outline.value.theme
+        if (outline.value.theme) {
+          head['theme'] = outline.value.theme
+        }
         data.raw = data.raw.replace(jsonReg, '')
         const yaml = Object.keys(head).map(key => `${key}: ${head[key]}`).join('\n')
         data.raw = `---\n${yaml}\n---\n${data.raw}`
