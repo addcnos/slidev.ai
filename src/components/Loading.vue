@@ -204,7 +204,7 @@ import { serverProcess, serverProcessMap } from '@main/webcontainer';
     width: 15px;
     height: 8px;
     content: "";
-    background: darken(orange, 6);
+    background: darken(#fff, 6);
     filter: blur(2px);
     border-radius: 50%;
     opacity: 1;
