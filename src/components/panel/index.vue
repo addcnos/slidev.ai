@@ -38,7 +38,7 @@ import image02 from '@assets/images/02.png'
 import image03 from '@assets/images/03.png'
 import image04 from '@assets/images/04.png'
 const emit = defineEmits(['updateStep'])
-const { activityId, chat, updateJSONCache, updateActivityId } = useChatSession()
+const { activityId, chat, syncMarkdown, updateActivityId } = useChatSession()
 const { outline, visible, resetOutline }  = useOutlineStore()
 const templates = ref([
   {
@@ -152,7 +152,7 @@ async function handleClickHistory(item: { id?: string }) {
   updateActivityId(_json.id)
   Object.assign(chat.value, _json.chat)
   Object.assign(outline.value, _json.outline)
-  await updateJSONCache(true)
+  syncMarkdown()
 }
 
 async function handleClickCreate(theme?: string) {

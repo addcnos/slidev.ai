@@ -181,6 +181,7 @@ export const useChatSession = createSharedComposable(() => {
 
   async function syncMarkdown() {
     try {
+      console.log(normalizeSlidev2Markdown(chat.value.content))
       await webcontainerFs().writeFile(
         'slides.md',
         normalizeSlidev2Markdown(chat.value.content),

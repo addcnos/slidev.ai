@@ -22,7 +22,7 @@ export function initSlidevPrompt(theme: string) {
     '2. 你在生成的时候需要思考，是否超出屏幕尺寸，并且是否有使用布局来进行排版',
     '3. 切换的时候需要有过渡动画',
     '4. 每一条回答都需要附带 (非常重要) <!--& { JSON } &--> (非常重要)',
-    '5. 你必须需要将 Markdown 的内容用 <v-clicks></v-clicks> 包裹，但是第一个标题不需要包裹, 这里是例子:```例子1\n#这里是标题\n<v-clicks>\n\n## 这里是子标题\n这里是内容\n##这里是另一个子标题\n这里是内容</v-clicks>\n```\n```例子2\n<v-clicks>\n\n- Item 1\n- Item 2\n- Item 3\n</v-clicks>```\n```例子3\n#这里是标题\n<v-clicks>\n\n- Item 1\n\t- Item 1-1\n\t- Item 1-2\n- Item 2\n- Item 3</v-clicks>\n```\n',
+    '5. 你必须需要将 Markdown 的内容用 <v-clicks>\n</v-clicks> 包裹，但是第一个标题不需要包裹, 这里是例子:```例子1\n#这里是标题\n<v-clicks>\n\n## 这里是子标题\n这里是内容\n##这里是另一个子标题\n这里是内容\n</v-clicks>\n```\n```例子2\n<v-clicks>\n\n- Item 1\n- Item 2\n- Item 3\n\n</v-clicks>```\n```例子3\n#这里是标题\n<v-clicks>\n\n- Item 1\n\t- Item 1-1\n\t- Item 1-2\n- Item 2\n- Item 3\n</v-clicks>\n```\n',
     '',
     '输出格式:',
     '1. 我需要你直接输出 markdown',
