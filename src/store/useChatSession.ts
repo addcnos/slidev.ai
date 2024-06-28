@@ -142,7 +142,7 @@ export const useChatSession = createSharedComposable(() => {
       if (insert) {
         chat.value.content.splice(current - 1, 0, ...await normalizeSlidev2Json(content + '\n'))
       }
-      else if (insertImage) {
+      else if (content.includes('v-drag')) {
         const origin = await normalizeSlidev2Markdown([chat.value.content[current - 1]])
         const after = origin + '\n' + content
         chat.value.content.splice(current - 1, 1, ...await normalizeSlidev2Json(after))

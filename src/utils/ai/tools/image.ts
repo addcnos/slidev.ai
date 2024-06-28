@@ -42,7 +42,7 @@ export async function generateImage({ prompt, size, isInJson }: { prompt: string
   if (isInJson) {
     return `/images/${filename}`
   }
-  return `<img v-drag src="/images/${filename}" />`
+  return `<img v-drag src="/images/${filename}" with="100" />`
 }
 
 const config: RunnableToolFunction<object>[] = [
@@ -58,8 +58,6 @@ const config: RunnableToolFunction<object>[] = [
           prompt: { type: 'string' },
           size: { type: 'string', enum: ["1024x1024", "1792x1024", "1024x1792"] },
           isInJson: { type: 'boolean', default: false },
-          left: { type: 'number', default: 0 },
-          top: { type: 'number', default: 0 },
         },
       },
       function: generateImage,

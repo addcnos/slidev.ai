@@ -49,6 +49,7 @@ export function beautifySlidevPrompt(process: string, message: string, content: 
     '',
     '这里是我的要求:',
     message,
+    '注意：图片的输出格式为 <img v-drag src="" />',
     '',
     '当前的内容是:',
     content
@@ -61,6 +62,7 @@ export function expendSlidevPrompt(_: string, message: string, content: string) 
     '',
     '这里是我的要求:',
     message,
+    '注意：图片的输出格式为 <img v-drag src="" />',
     '',
     '当前的内容是:',
     content
@@ -73,6 +75,7 @@ export function polishSlidevPrompt(process: string, message: string, content: st
     '',
     '这里是我的要求:',
     message,
+    '注意：图片的输出格式为 <img v-drag src="" />',
     '',
     '当前的内容是:',
     content

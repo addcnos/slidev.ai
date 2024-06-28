@@ -13,11 +13,11 @@ export async function normalizeSlidev2Json(code: string) {
       if (!head) {
         return data
       }
-      data.raw = data.raw.slice(0, data.frontmatterDoc.range![0]) + data.raw.slice(data.frontmatterDoc.range![2] + 7)
+      data.raw = data.raw.slice(0, data.frontmatterDoc.range![0]) + data.raw.slice(data.frontmatterDoc.range![2] + 9)
       if (outline.value.theme) {
         head['theme'] = outline.value.theme
       }
-      data.raw = `<!--& ${JSON.stringify(head)} &-->\n${data.raw}`
+      data.raw = `<!--& ${JSON.stringify(head)} &-->\n${data.raw}`.replace(/<!--\s\d+\s-->/g, '')
     }
     return data
   })
@@ -46,6 +46,6 @@ export function normalizeSlidev2Markdown(slides: SourceSlideInfo[]) {
       console.error('JSON 解析失败', e)
     }
     const res = stringifySlide(data, idx)
-    return res
+    return res.replace(/<!--\s\d+\s-->/g, '')
   }).join('\n').trim()}\n <!-- ${+new Date()} -->\n ${CROSS_COMPONENT}\n`
 }
