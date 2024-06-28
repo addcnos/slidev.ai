@@ -44,22 +44,22 @@ const templates = ref([
   {
     title: '主题1',
     url: image01,
-    theme: 'seriph'
+    theme: 'shibainu'
   },
   {
     title: '主题2',
     url: image02,
-    theme: 'apple-basic'
+    theme: 'bricks'
   },
   {
     title: '主题3',
     url: image03,
-    theme: 'bricks'
+    theme: 'apple-basic'
   },
   {
     title: '主题4',
     url:  image04,
-    theme: 'shibainu'
+    theme: 'seriph'
   },
 ])
 
