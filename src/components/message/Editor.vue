@@ -141,7 +141,8 @@ const actionHandles = {
     }
     sendSession(message.value, {
       promptFunc: insertImage2SlidevPrompt,
-      role: Role.User
+      role: Role.User,
+      insertImage: true
     })
     message.value = ''
   },
