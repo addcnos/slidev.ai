@@ -102,12 +102,14 @@ export const useChatSession = createSharedComposable(() => {
       promptFunc,
       insert,
       role,
+      insertImage,
       completeText,
     }: {
       promptFunc?: (...args: unknown[]) => string,
       role?: Role,
       completeText?: string,
       insert?: boolean
+      insertImage?: boolean
     } = {}
   ) {
     const current = chat.value?.page?.nav?.currentPage || 1
@@ -139,6 +141,11 @@ export const useChatSession = createSharedComposable(() => {
     if (promptFunc) {
       if (insert) {
         chat.value.content.splice(current - 1, 0, ...await normalizeSlidev2Json(content + '\n'))
+      }
+      else if (insertImage) {
+        const origin = await normalizeSlidev2Markdown([chat.value.content[current - 1]])
+        const after = origin + '\n' + content
+        chat.value.content.splice(current - 1, 1, ...await normalizeSlidev2Json(after))
       }
       else {
         chat.value.content.splice(current - 1, 1, ...await normalizeSlidev2Json(content + '\n'))
