@@ -23,7 +23,7 @@ export async function normalizeSlidev2Json(code: string) {
   })
 }
 
-export function normalizeSlidev2Markdown(slides: SourceSlideInfo[]) {
+export function normalizeSlidev2Markdown(slides: SourceSlideInfo[], headExtra?: boolean) {
   const { outline } = useOutlineStore()
   return `${slides.map((data, idx) => {
     const jsonReg = /<!--&\s*(.*?)\s*&-->/g
@@ -35,8 +35,12 @@ export function normalizeSlidev2Markdown(slides: SourceSlideInfo[]) {
     try {
       if (json && json !== 'null') {
         const head = JSON.parse(json)
-        if (outline.value.theme) {
-          head['theme'] = outline.value.theme
+        if (headExtra && idx === 0) {
+          if (outline.value.theme) {
+            head['theme'] = outline.value.theme
+          }
+          head['presenter'] = 'build'
+          head['record'] = 'build'
         }
         data.raw = data.raw.replace(jsonReg, '')
         const yaml = Object.keys(head).map(key => `${key}: ${head[key]}`).join('\n')

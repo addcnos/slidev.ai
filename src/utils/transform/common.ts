@@ -8,7 +8,7 @@ export function normalizeSession2Gpt(session: GptSessionContext[]) {
     }
     return true
   }).map((item) => ({
-    role: item.role,
+    role: item.role === Role.Progress ? Role.Gpt : item.role,
     content: item.source?.message?.content || item.content,
   }) as ChatCompletion.Choice['message'])
 }

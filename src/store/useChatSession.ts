@@ -1,7 +1,7 @@
 import { ref } from 'vue'
 import { ChatSessionContext, ChatStore, Role } from '@renderer/types/chat'
 import { nanoid } from 'nanoid'
-import { genSingleSlidevPrompt, initSlidevPrompt, initUsePreset } from '@renderer/utils/prompt/slidev'
+import { genSingleSlidevPrompt, initSlidevPrompt } from '@renderer/utils/prompt/slidev'
 import { createSharedComposable, useDebounceFn } from "@vueuse/core";
 import { GPT_MODEL, openai } from "@renderer/api/openai";
 import { tools } from "@renderer/utils/ai/tools";
@@ -62,6 +62,8 @@ export const useChatSession = createSharedComposable(() => {
           {
             completeText: idx + 1 === len ? '好的，已经处理了！请查收！' : `快好了，${idx + 1}/${len}...`,
             role: Role.System,
+            replyRole: Role.Progress,
+            replyPersent: ((idx + 1) / len).toFixed(2),
           }
         )
 
@@ -102,14 +104,16 @@ export const useChatSession = createSharedComposable(() => {
       promptFunc,
       insert,
       role,
-      insertImage,
       completeText,
+      replyRole,
+      replyPersent,
     }: {
       promptFunc?: (...args: unknown[]) => string,
       role?: Role,
       completeText?: string,
       insert?: boolean
-      insertImage?: boolean
+      replyRole?: Role
+      replyPersent?: string
     } = {}
   ) {
     const current = chat.value?.page?.nav?.currentPage || 1
@@ -122,7 +126,7 @@ export const useChatSession = createSharedComposable(() => {
         }
       } as ChatCompletion.Choice
     })
-    const func = variableSession({ role: Role.Gpt, content: '处理中...' })
+    const func = variableSession({ role: replyRole || Role.Gpt, content: replyPersent || '处理中...' })
 
     const runner = await openai.beta.chat.completions.runTools({
       model: GPT_MODEL,
@@ -134,7 +138,8 @@ export const useChatSession = createSharedComposable(() => {
     const result = await runner.finalChatCompletion();
 
     func({
-      content: completeText || '好的，已经处理了！请查收！',
+      ...(replyRole ? { role: replyRole } : {}),
+      content: replyPersent || completeText || '好的，已经处理了！请查收！',
       source: result.choices[0],
     })
     const content = result.choices[0].message.content
@@ -177,9 +182,6 @@ export const useChatSession = createSharedComposable(() => {
     !skipSync && await syncMarkdown()
 
     updateCapturePage.value = true
-
-    console.log(normalizeSlidev2Markdown(chat.value.content))
-    console.log(chat.value)
   }
 
   async function syncMarkdown() {

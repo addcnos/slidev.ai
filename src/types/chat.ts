@@ -13,6 +13,8 @@ export enum Role {
   Gpt = 'assistant',
   /** 工具 */
   Tool = 'tool',
+  /** 进度 */
+  Progress = 'progress',
 }
 
 export interface GptSessionContext {

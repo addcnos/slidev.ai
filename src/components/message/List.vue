@@ -2,10 +2,14 @@
   <div class="list" ref="el">
     <div class="container" >
       <div v-for="item in chatList" :key="item.id" class="item" :class="{'me': item.role === 'user'}">
-
         <div class="container">
           <div class="content">
-            {{ item.content }}
+            <template v-if="item.role === Role.Progress">
+              <ProgressBar style="width: 200px;" :value="(+item.content) * 100"></ProgressBar>
+            </template>
+            <template v-else>
+              {{ item.content }}
+            </template>
           </div>
           <div class="date">{{ dayjs(item.timestamp).format('YYYY-MM-DD HH:mm:ss') }}</div>
         </div>
@@ -22,7 +26,11 @@ import { useChatSession } from '@renderer/store/useChatSession';
 
 const el = ref<HTMLElement | null>(null)
 const { chat } = useChatSession()
-const chatList = computed(() => (chat.value?.session || []).filter((item) => item.role !== Role.System))
+const chatList = computed(() => {
+  const list = chat.value?.session || []
+  const lastProgress = list.findLastIndex((item) => item.role === Role.Progress)
+  return list.filter((item, idx) => item.role === Role.Progress ? idx === lastProgress : item.role !== Role.System)
+})
 
 
 watch(() => chatList.value, () => {

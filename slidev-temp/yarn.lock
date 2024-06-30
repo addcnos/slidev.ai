@@ -967,6 +967,24 @@
   dependencies:
     roughjs "^4.6.6"
 
+"@slidev/theme-apple-basic@latest":
+  version "0.25.1"
+  resolved "https://npmjs.addcn.com/@slidev/theme-apple-basic/-/theme-apple-basic-0.25.1.tgz#ef0c236870ffffddaad0a4df7e2f569a200d05a5"
+  integrity sha512-saA5yYui+jTT13tP+QJKnWeM8sK0IA1iln2E3sWAJsfKdQHUD3fw8+AlUHLUH6yc8NPq3ewtZcwWx49a/iF8Tg==
+  dependencies:
+    "@slidev/types" "^0.47.0"
+    codemirror-theme-vars "^0.1.2"
+    prism-theme-vars "^0.2.4"
+
+"@slidev/theme-bricks@latest":
+  version "0.25.0"
+  resolved "https://npmjs.addcn.com/@slidev/theme-bricks/-/theme-bricks-0.25.0.tgz#08b906ccdb96c3a981b09f3b5bf61155352e53a6"
+  integrity sha512-7fcYcnH2/xD4G7QzB+nrxTc9MEzdgjsx7qFUN2u+qpeiKKfXqsi7kbo+zxUcCV/8mi6zOQrDC4IjFcQsERffmg==
+  dependencies:
+    "@slidev/types" "^0.47.0"
+    codemirror-theme-vars "^0.1.2"
+    prism-theme-vars "^0.2.4"
+
 "@slidev/theme-default@latest":
   version "0.25.0"
   resolved "https://npmjs.addcn.com/@slidev/theme-default/-/theme-default-0.25.0.tgz#3006e3b20af497a27240091731fc3b056f780b28"
@@ -980,6 +998,15 @@
   version "0.25.0"
   resolved "https://npmjs.addcn.com/@slidev/theme-seriph/-/theme-seriph-0.25.0.tgz#053bf054325ca79dd58a19a7a0ca27b70f273486"
   integrity sha512-PnFQbn4I70+/cVie5iAr0Im6sYvnwjkO7Yj5KonTyJZFFJFytckLTrD3ijft/J4cRnz7OmSzTyQKNX1FN/x0YQ==
+  dependencies:
+    "@slidev/types" "^0.47.0"
+    codemirror-theme-vars "^0.1.2"
+    prism-theme-vars "^0.2.4"
+
+"@slidev/theme-shibainu@latest":
+  version "0.25.0"
+  resolved "https://npmjs.addcn.com/@slidev/theme-shibainu/-/theme-shibainu-0.25.0.tgz#ceecf24ec5926bb5add926ab470bc428b2db0265"
+  integrity sha512-ND4ZdF3L3EOB2UXCaBqhMfMFeyPG6lOXwz/DC29aaXkXSnuHYjNKMI79NJAISyLBnUgWGc4QjIJNntIAx4Uung==
   dependencies:
     "@slidev/types" "^0.47.0"
     codemirror-theme-vars "^0.1.2"
@@ -2656,6 +2683,11 @@ fs-minipass@^2.0.0:
   dependencies:
     minipass "^3.0.0"
 
+fsevents@2.3.2:
+  version "2.3.2"
+  resolved "https://npmjs.addcn.com/fsevents/-/fsevents-2.3.2.tgz#8a526f78b8fdf4623b709e0b975c52c24c02fd1a"
+  integrity sha512-xiqMQR4xAeHTuB9uWm+fFRcIOgKBMiOBP+eXiyT7jsgVCq1bkVygt00oASowB7EdtpOHaaPgKt812P9ab+DDKA==
+
 fsevents@~2.3.2, fsevents@~2.3.3:
   version "2.3.3"
   resolved "https://npmjs.addcn.com/fsevents/-/fsevents-2.3.3.tgz#cac6407785d03675a2a5e1a5305c697b347d90d6"
@@ -4147,6 +4179,27 @@ plantuml-encoder@^1.4.0:
   version "1.4.0"
   resolved "https://npmjs.addcn.com/plantuml-encoder/-/plantuml-encoder-1.4.0.tgz#7899302cf785de956bf1a167e15420feee5975f7"
   integrity sha512-sxMwpDw/ySY1WB2CE3+IdMuEcWibJ72DDOsXLkSmEaSzwEUaYBT6DWgOfBiHGCux4q433X6+OEFWjlVqp7gL6g==
+
+playwright-chromium@^1.44.1:
+  version "1.45.0"
+  resolved "https://npmjs.addcn.com/playwright-chromium/-/playwright-chromium-1.45.0.tgz#791c725671cc6f7eb079e7a3cd21e375319f568d"
+  integrity sha512-wKZ1NeRZSXp25bYL00X4REv/3mgZQ6QUC6OGTfYZY/YZyorbC/3Fr1WATCB/yF9SCd79gSWBzRCYv4Bf7DzW7g==
+  dependencies:
+    playwright-core "1.45.0"
+
+playwright-core@1.45.0:
+  version "1.45.0"
+  resolved "https://npmjs.addcn.com/playwright-core/-/playwright-core-1.45.0.tgz#5741a670b7c9060ce06852c0051d84736fb94edc"
+  integrity sha512-lZmHlFQ0VYSpAs43dRq1/nJ9G/6SiTI7VPqidld9TDefL9tX87bTKExWZZUF5PeRyqtXqd8fQi2qmfIedkwsNQ==
+
+playwright@^1.44.1:
+  version "1.45.0"
+  resolved "https://npmjs.addcn.com/playwright/-/playwright-1.45.0.tgz#400c709c64438690f13705cb9c88ef93089c5c27"
+  integrity sha512-4z3ac3plDfYzGB6r0Q3LF8POPR20Z8D0aXcxbJvmfMgSSq1hkcgvFRXJk9rUq5H/MJ0Ktal869hhOdI/zUTeLA==
+  dependencies:
+    playwright-core "1.45.0"
+  optionalDependencies:
+    fsevents "2.3.2"
 
 points-on-curve@0.2.0, points-on-curve@^0.2.0:
   version "0.2.0"
