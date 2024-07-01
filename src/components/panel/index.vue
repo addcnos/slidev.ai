@@ -17,14 +17,22 @@
     <div class="history" v-if="historys.length">
       <div class="title">近期文稿</div>
       <div class="card-wrapper">
-        <Card @click="handleClickHistory(item)" class="history-card" :data="item" v-for="item, index in historys"
-          :key="index" />
+        <card @click="handleClickHistory(item)" class="history-card" :data="item" v-for="item, index in historys"
+          :key="index">
+           <div class="actions-wrap" @click.stop>
+              <i class="pi pi-ellipsis-h" @click.stop="toggle(item)"></i>
+              <ul v-if="item.delete" ref="actionsRef">
+                <li @click.stop="deleteHistory(item)">删除</li>
+              </ul>
+           </div>
+        </card>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import { onClickOutside } from '@vueuse/core'
 import { until } from '@vueuse/core';
 import { ref } from 'vue'
 import Card from './Card.vue'
@@ -165,6 +173,27 @@ async function handleClickCreate(theme?: string) {
 
   emit('updateStep', 2)
 }
+
+const curRecord = ref();
+const toggle = (item:any) => {
+  curRecord.value = item
+  item.delete = !item.delete
+}
+const actionsRef = ref()
+onClickOutside(actionsRef,()=>{
+  if(curRecord.value){
+    curRecord.value.delete = false
+  }
+})
+
+// 删除某一项
+async function deleteHistory(item:{ id?: string }){
+  await useIpcEmit.fileManager('delete', {
+    dirName: 'json',
+    fileName: `${item?.id}.json`
+  })
+  init()
+}
 </script>
 
 <style lang="scss" scoped>
@@ -212,6 +241,7 @@ async function handleClickCreate(theme?: string) {
       flex-wrap: wrap;
 
       .card {
+        position: relative;
         display: flex;
         flex-direction: column;
         align-items: flex-start;
@@ -297,6 +327,46 @@ async function handleClickCreate(theme?: string) {
         width: 210px;
         margin-right: 25px;
         margin-bottom: 22px;
+
+        .actions-wrap {
+          position: absolute;
+          top: 15px;
+          right: 15px;
+          width: 20px;
+          height: 20px;
+
+          .pi-ellipsis-h {
+            position: absolute;
+            top: 0;
+            right: 0;
+            font-size: 20px;
+            color: #1e754f;
+          }
+
+          ul {
+            position: absolute;
+            top: 5px;
+            left: 50%;
+            z-index: 10;
+            width: 160px;
+            height: 50px;
+            padding-left: 0;
+            line-height: 50px;
+            text-align: center;
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 2px 2px 3px #ccc;
+            transform: translateX(-50%);
+
+            li {
+              padding: 0;
+              margin: 0;
+              text-align: center;
+              list-style: none;
+            }
+          }
+        }
 
         :deep() {
           .wrapper {

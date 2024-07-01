@@ -10,6 +10,7 @@
         {{ data?.createTime }}
       </div>
     </div>
+    <slot></slot>
   </div>
 </template>
 
@@ -24,6 +25,7 @@ defineProps({
 
 <style lang="scss" scoped>
 .card-container {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
