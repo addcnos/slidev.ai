@@ -3,7 +3,7 @@
     <Loading v-show="!loaded"/>
     <div v-show="loaded" class="inner-card">
       <Panel v-show="step === 1" @updateStep="(next) => step = next" :step="step"/>
-      <SlidevEmbed v-show="step === 2" :loaded="loaded" />
+      <SlidevEmbed v-show="step === 2" :loaded="loaded" :step="step"/>
     </div>
   </div>
 </template>

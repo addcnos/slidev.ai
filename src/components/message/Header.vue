@@ -1,7 +1,7 @@
 <template>
   <div class="header">
     <Button
-        @click="toggleStep(1)"
+        @click="back"
         label="Submit"
       > <i class="pi pi-arrow-left"></i>
       </Button>
@@ -13,11 +13,15 @@
 
 <script setup lang="ts">
 import { inject } from 'vue'
+import { useIpcEmit } from '@renderer/composables'
 import { useCrossMessage } from './../../composables/cross-message'
 import { useMessage } from './../../composables/message';
 import { useChatSession, useOutlineStore } from '@renderer/store'
+import { useElementBounding } from '@vueuse/core'
+const { activityId } = useChatSession()
 const toggleStep = inject('toggleStep',(a:number)=>{})
-const { messageToIframe } = useCrossMessage()
+const { messageToIframe, iframeRef } = useCrossMessage()
+const {x ,y, width,height} = useElementBounding(iframeRef)
 const { extend } = useMessage()
 
 const { resetSession } = useChatSession()
@@ -27,6 +31,24 @@ function handleToggleStep() {
   resetSession()
   resetOutline()
   toggleStep(1)
+}
+
+// 返回之前先跳转到ppt第一页再截屏
+async function back(){
+  messageToIframe({
+    type: 'changePageNo',
+    data: 1
+  })
+  setTimeout(async () => {
+    await useIpcEmit.capturePage({
+      x: x.value,
+      y: y.value,
+      width: width.value,
+      height: height.value,
+      fileName: `${activityId.value}.png`
+    })
+    toggleStep(1)
+  }, 1000);
 }
 
 function handleChangePageNo() {

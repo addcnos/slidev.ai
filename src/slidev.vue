@@ -32,19 +32,19 @@ const { updateCapturePage, activityId } = useChatSession()
 const {x ,y, width,height} = useElementBounding(iframeRef)
 subscribe()
 
-watch(() => updateCapturePage.value, async (value) =>{
-  if (!value) return
-  await useIpcEmit.capturePage({
-    x: x.value,
-    y: y.value,
-    width: width.value,
-    height: height.value,
-    fileName: `${activityId.value}.png`
-  })
-  updateCapturePage.value = false
-}, {
-  immediate: true
-})
+// watch(() => updateCapturePage.value, async (value) =>{
+//   if (!value) return
+//   await useIpcEmit.capturePage({
+//     x: x.value,
+//     y: y.value,
+//     width: width.value,
+//     height: height.value,
+//     fileName: `${activityId.value}.png`
+//   })
+//   updateCapturePage.value = false
+// }, {
+//   immediate: true
+// })
 
 </script>
 
