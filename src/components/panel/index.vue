@@ -171,7 +171,7 @@ async function handleClickCreate(theme?: string) {
   await until(visible).toBe(false)
   outline.value.theme = theme || ''
 
-  emit('updateStep', 2)
+  // emit('updateStep', 2)
 }
 
 const curRecord = ref();

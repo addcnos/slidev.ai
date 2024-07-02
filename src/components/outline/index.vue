@@ -2,7 +2,7 @@
   <Dialog
     v-model:visible="visible"
     modal
-    header="生成 Slide 大纲"
+    header="生成 Slide 大纲11"
     :style="{ width: '800px' }"
     class="outline-modal"
   >
@@ -21,34 +21,36 @@
           type="button"
           label="Cancel"
           severity="secondary"
-          @click="onCancel"
+          @click.stop="onCancel"
         >取消</Button>
         <Button
           :disabled="loading"
           type="button"
           label="Save"
-          @click="onSave"
+          @click.stop="onSave"
         >生成 slide</Button>
     </div>
   </Dialog>
 </template>
 
 <script setup lang="ts">
+import { inject } from 'vue'
 import { ref } from 'vue';
 import { useOutlineStore,  } from '@renderer/store';
 import Theme from './Theme.vue'
 import Outline from './Outline.vue'
 import Settings from './Settings.vue'
 import { useChatSession } from '@renderer/store/useChatSession';
-
+const toggleStep = inject('toggleStep',(a:number)=>{})
 const { visible, theme} = useOutlineStore();
 const { outline, loading } = useOutlineStore();
 const { initSlidevContent } = useChatSession();
 
-function onSave() {
+async function onSave() {
   visible.value = false;
   outline.value.title = theme.value
   initSlidevContent()
+  toggleStep(2)
 }
 
 function onCancel() {

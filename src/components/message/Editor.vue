@@ -28,7 +28,8 @@
 <script setup lang="ts">
 import { ref, watch, computed } from 'vue'
 import Toast from 'primevue/toast';
-import { useMagicKeys, file, useFileDialog } from '@vueuse/core'
+import {  } from '@vueuse/core'
+import { useMagicKeys, useFileDialog,onClickOutside } from '@vueuse/core'
 import { useChatSession } from '@renderer/store/useChatSession';
 import { beautifySlidevPrompt, insertImage2SlidevPrompt, genSingleSlidevPrompt } from '@renderer/utils/prompt/slidev';
 import { Role } from '@renderer/types/chat';

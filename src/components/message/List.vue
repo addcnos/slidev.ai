@@ -5,7 +5,7 @@
         <div class="container">
           <div class="content">
             <template v-if="item.role === Role.Progress">
-              <ProgressBar style="width: 200px;" :value="(+item.content) * 100"></ProgressBar>
+              <ProgressBar style="width: 200px; white-space: nowrap;" :value="Math.ceil((+item.content) * 100)"></ProgressBar>
             </template>
             <template v-else>
               {{ item.content }}
