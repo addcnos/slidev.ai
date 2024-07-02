@@ -34,7 +34,7 @@
 <script setup lang="ts">
 import { onClickOutside } from '@vueuse/core'
 import { until } from '@vueuse/core';
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import Card from './Card.vue'
 import { useIpcEmit } from "@renderer/composables";
 import { useChatSession } from '@renderer/store/useChatSession';
@@ -70,7 +70,9 @@ const templates = ref([
     theme: 'seriph'
   },
 ])
-
+const props = defineProps({
+  step: Number
+})
 const historys = ref([])
 
 const transImage = async (data: Uint8Array) => {
@@ -186,7 +188,6 @@ onClickOutside(actionsRef,()=>{
   }
 })
 
-// 删除某一项
 async function deleteHistory(item:{ id?: string }){
   await useIpcEmit.fileManager('delete', {
     dirName: 'json',
@@ -194,6 +195,11 @@ async function deleteHistory(item:{ id?: string }){
   })
   init()
 }
+
+// 返回到首页更新近期文稿
+watch(()=>props.step, (v) => {
+  v === 1 &&  init()
+})
 </script>
 
 <style lang="scss" scoped>
@@ -340,7 +346,7 @@ async function deleteHistory(item:{ id?: string }){
             top: 0;
             right: 0;
             font-size: 20px;
-            color: #1e754f;
+            color: #00d578;
           }
 
           ul {
