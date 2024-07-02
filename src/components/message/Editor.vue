@@ -4,7 +4,7 @@
       图片正在加载中请稍等
       <ProgressBar mode="indeterminate" style="height: 6px;margin-top: 5px;margin-bottom: 5px;"></ProgressBar>
     </template>
-    <div class="actions">
+    <div class="actions" :class="{ disabled: initLoading}">
       <div v-for="item, index in sessionActions" :key="index" class="action" :class="{ active: actionFunc === item.name }" @click="actionFunc = actionFunc === item.name ? '' : item.name">
         <i class="pi" :class="item.icon" style="font-size: 16px;color: #4a4a4a;"></i>
         <span>{{ item.title }}</span>
@@ -29,7 +29,7 @@
 import { ref, watch, computed } from 'vue'
 import Toast from 'primevue/toast';
 import {  } from '@vueuse/core'
-import { useMagicKeys, useFileDialog,onClickOutside } from '@vueuse/core'
+import { useMagicKeys } from '@vueuse/core'
 import { useChatSession } from '@renderer/store/useChatSession';
 import { beautifySlidevPrompt, insertImage2SlidevPrompt, genSingleSlidevPrompt } from '@renderer/utils/prompt/slidev';
 import { Role } from '@renderer/types/chat';
@@ -164,6 +164,11 @@ const actionHandles = {
     display: flex;
     flex-wrap: wrap;
     padding: 6px 0;
+
+    &.disabled {
+      pointer-events: none;
+      filter: grayscale(1);
+    }
 
     .action {
       display: flex;
