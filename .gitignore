@@ -91,3 +91,7 @@ components.d.ts
 
 # Electron-Forge
 out/
+
+# Lock files
+yarn.lock
+slidev-temp/yarn.lock
