@@ -23,7 +23,7 @@ export const createExpress = async () => {
 
   // 配置代理中间件
   server.use('/api', createProxyMiddleware({
-    target: 'https://one-api.system.addcn.com/v1',
+    target: `${process.env.OPENAI_API_HOST}/v1`,
     changeOrigin: true,
   }));
 

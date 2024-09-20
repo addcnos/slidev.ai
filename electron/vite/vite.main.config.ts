@@ -32,10 +32,9 @@ export default defineConfig((env) => {
     server: {
       proxy: {
         'http://api.com': {
-          target: 'https://one-api.system.addcn.com',
+          target: process.env.OPENAI_API_HOST,
           changeOrigin: true,
           rewrite: (path) => {
-            console.log(1)
             return path.replace(/^http:\/\/api\.com/, '')
           },
         },

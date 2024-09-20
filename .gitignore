@@ -95,3 +95,7 @@ out/
 # Lock files
 yarn.lock
 slidev-temp/yarn.lock
+
+# docs
+docs/.vitepress/dist
+docs/.vitepress/cache
