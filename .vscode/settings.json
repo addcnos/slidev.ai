@@ -1,0 +1,22 @@
+{
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit",
+    "source.fixAll.stylelint": "explicit"
+  },
+  "[vue]": {
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+  },
+  "[scss,css,sass]": {
+    "editor.defaultFormatter": "stylelint.vscode-stylelint"
+  },
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "css.validate": false,
+  "scss.validate": false,
+  "stylelint.validate": [
+    "scss",
+    "vue",
+    "css",
+    "sass",
+  ],
+}

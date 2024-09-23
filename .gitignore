@@ -87,6 +87,15 @@ typings/
 
 # Vite
 .vite/
+components.d.ts
 
 # Electron-Forge
 out/
+
+# Lock files
+yarn.lock
+slidev-temp/yarn.lock
+
+# docs
+docs/.vitepress/dist
+docs/.vitepress/cache

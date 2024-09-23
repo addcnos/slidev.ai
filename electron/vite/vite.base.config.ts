@@ -2,10 +2,17 @@ import { builtinModules } from 'node:module';
 import type { AddressInfo } from 'node:net';
 import type { ConfigEnv, Plugin, UserConfig } from 'vite';
 import pkg from '../../package.json';
-
+import path from 'path';
 export const builtins = ['electron', ...builtinModules.map((m) => [m, `node:${m}`]).flat()];
 
 export const external = [...builtins, ...Object.keys('dependencies' in pkg ? (pkg.dependencies as Record<string, unknown>) : {}), '@slidev/cli', '@slidev/theme-default'];
+
+export const alias: UserConfig['resolve']['alias'] = {
+  '@main': path.join(process.cwd(), 'electron'),
+  '@renderer': path.join(process.cwd(), 'src'),
+  '@temp': path.join(process.cwd(), 'slide-temp'),
+  '@assets': path.join(process.cwd(), 'src/assets')
+}
 
 export function getBuildConfig(env: ConfigEnv<'build'>): UserConfig {
   const { root, mode, command } = env;
@@ -48,6 +55,12 @@ export function getBuildDefine(env: ConfigEnv<'build'>) {
     const def = {
       [VITE_DEV_SERVER_URL]: command === 'serve' ? JSON.stringify(process.env[VITE_DEV_SERVER_URL]) : undefined,
       [VITE_NAME]: JSON.stringify(name),
+      OPENAI_API_KEY: JSON.stringify(process.env.OPENAI_API_KEY),
+      OPENAI_API_HOST: JSON.stringify(process.env.OPENAI_API_HOST),
+      SSH_PASSWORD: JSON.stringify(process.env.SSH_PASSWORD),
+      SSH_USER: JSON.stringify(process.env.SSH_USER),
+      SSH_HOST: JSON.stringify(process.env.SSH_HOST),
+      SSH_PORT: JSON.stringify(process.env.SSH_PORT),
     };
     return { ...acc, ...def };
   }, {} as Record<string, string>);

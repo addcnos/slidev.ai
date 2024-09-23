@@ -1,44 +1,61 @@
-import { app, BrowserWindow } from 'electron';
+import { app, BrowserWindow, session } from 'electron';
 import path from 'path';
-import { createSlidevServer} from './slidev.server'
+import { createExpress, ipcHandle } from '@main/composables'
+
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {
   app.quit();
 }
-// const isProd = process.env.NODE_ENV === 'production';
-// 设置语言环境
-process.env.LANG = 'zh_CN.UTF-8';
-process.env.LANGUAGE = 'zh_CN';
+
+const ICON_PATH = path.join(__dirname, '../../icons/icon.png');
+let mainWindow: BrowserWindow | null = null;
+let serverPort: number;
 
 const createWindow = async () => {
   // Create the browser window.
-  const mainWindow = new BrowserWindow({
+  mainWindow = new BrowserWindow({
     width: 1440,
     height: 960,
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: true,
-      webSecurity: false,
-      preload: path.join(__dirname, 'preload.js'),
+      webSecurity: true,
+      preload: path.join(__dirname, 'preload.js')
     },
+    icon: app.isPackaged ? '' : ICON_PATH
   });
-  // and load the index.html of the app.
+
+  // 拦截请求并添加CORS头
+  session.defaultSession.webRequest.onBeforeSendHeaders((details, callback) => {
+    details.requestHeaders['Cross-Origin-Resource-Policy'] = 'cross-origin';
+    callback({ cancel: false, requestHeaders: details.requestHeaders });
+  });
+
   if (MAIN_WINDOW_VITE_DEV_SERVER_URL) {
     mainWindow.loadURL(MAIN_WINDOW_VITE_DEV_SERVER_URL);
   } else {
-    mainWindow.loadFile(path.join(__dirname, `../renderer/${MAIN_WINDOW_VITE_NAME}/index.html`));
+    mainWindow.loadURL(`http://localhost:${serverPort}/index.html`);
   }
+
   // Open the DevTools.
   mainWindow.webContents.openDevTools();
-  // Create Slidev server
-  await createSlidevServer();
 };
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
-// app.on('ready', createWindow);
-app.whenReady().then(createWindow);
+
+app.whenReady().then(async () => {
+  const { port } = await createExpress();
+  serverPort = port;
+  // dev环境 设置 macOS 任务栏图标
+  if (process.platform === 'darwin' && !app.isPackaged) {
+    app.dock.setIcon(ICON_PATH);
+  }
+}).then(createWindow).then(() => {
+  ipcHandle(mainWindow)
+
+});
 
 // Quit when all windows are closed, except on macOS. There, it's common
 // for applications and their menu bar to stay active until the user quits

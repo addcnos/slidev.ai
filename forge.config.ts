@@ -10,7 +10,9 @@ import { FuseV1Options, FuseVersion } from '@electron/fuses';
 const config: ForgeConfig = {
   packagerConfig: {
     asar: true,
-    extraResource: ['./slidev-temp',"node_modules/yarn"],
+    appBundleId: 'com.slidev.ai.app',
+    extraResource: ['./slidev-temp', "node_modules/@webcontainer"],
+    icon: './icons/icon'
   },
   rebuildConfig: {},
   makers: [new MakerSquirrel({}), new MakerZIP({}, ['darwin']), new MakerRpm({}), new MakerDeb({})],
