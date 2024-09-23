@@ -45,6 +45,6 @@ SlidevAI 是一个结合 Slidev 和 OpenAI 技术的智能幻灯片创作工具�
 
 如果您有任何问题或建议，可以通过以下方式联系我们：
 
-- [GitHub Issues](https://github.com/addcn-ai-10829/slidev.ai/issues)
+- [GitHub Issues](https://github.com/addcnos/issues)
 
 再次感谢您的贡献！

@@ -1,6 +1,12 @@
 # Slidev AI
 
+<p align="center">
+  <img src="./docs/public/logo-mini.png" alt="Slidev AI Logo">
+</p>
+
 Slidev AI 是一个基于人工智能的幻灯片创建工具，旨在简化和增强幻灯片制作过程。
+
+[文档](https://slidev-ai.vercel.app/)
 
 ## 特性
 

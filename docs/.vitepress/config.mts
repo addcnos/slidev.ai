@@ -58,7 +58,7 @@ export default defineConfig({
     },
 
     socialLinks: [
-      { icon: 'github', link: 'https://github.com/addcn-ai-10829/slidev.ai' }
+      { icon: 'github', link: 'https://github.com/addcnos' }
     ]
   }
 })
