@@ -26,21 +26,8 @@ export default defineConfig({
   themeConfig: {
     nav: [
       { text: '指南', link: '/guide/what-is-slidevai' },
-      { text: '参考', link: '/reference/' },
-      { text: '资源', link: '/resources/' },
-      {
-        text: pkg.version,
-        items: [
-          {
-            text: '更新日志',
-            link: 'https://github.com/vuejs/vitepress/blob/main/CHANGELOG.md'
-          },
-          {
-            text: '参与贡献',
-            link: 'https://github.com/vuejs/vitepress/blob/main/.github/contributing.md'
-          }
-        ]
-      }
+      { text: '核心功能', link: '/features/home' },
+      { text: '贡献指南', link: '/contributing/guide' },
     ],
 
     sidebar: {
@@ -51,25 +38,27 @@ export default defineConfig({
             { text: '什么是SlidevAI', link: '/guide/what-is-slidevai' },
             { text: '快速开始', link: '/guide/getting-started' },
             { text: '配置', link: '/guide/configuration' },
-            { text: '部署', link: '/guide/deploy' }
+            { text: '部署', link: '/guide/deploy' },
           ]
         }
       ],
       '/features/': [
         {
-          text: '功能列表',
+          text: '核心功能',
           items: [
-            { text: '什么是SlidevAI', link: '/features/what-is-slidevai' },
-            { text: '快速开始', link: '/features/getting-started' },
-            { text: '配置', link: '/features/configuration' },
-            { text: '部署', link: '/features/deploy' }
+            { text: '首页功能', link: '/features/home' },
+            { text: '智能大纲生成', link: '/features/outline' },
+            { text: '幻灯片内容创作', link: '/features/create' },
+            { text: '图片生成与优化', link: '/features/image' },
+            { text: '内容润色与完善', link: '/features/polish' },
+            { text: '一键部署与分享', link: '/features/deploy' },
           ]
         }
       ],
     },
 
     socialLinks: [
-      { icon: 'github', link: 'https://github.com/your-repo/slidev-ai' }
+      { icon: 'github', link: 'https://github.com/addcn-ai-10829/slidev.ai' }
     ]
   }
 })
