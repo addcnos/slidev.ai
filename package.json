@@ -2,7 +2,7 @@
   "name": "slidev-ai",
   "productName": "Slidev AI",
   "version": "1.0.0",
-  "description": "My Electron application description",
+  "description": "Slidev AI 是一个基于人工智能的幻灯片创建工具，旨在简化和增强幻灯片制作过程。",
   "main": ".vite/build/main.js",
   "scripts": {
     "dev": "electron-forge start",
@@ -65,6 +65,7 @@
     "dayjs": "^1.11.11",
     "diff": "^5.2.0",
     "dotenv": "^16.4.5",
+    "changelogen": "0.5.7",
     "electron-squirrel-startup": "^1.0.1",
     "eslint-import-resolver-alias": "^1.1.2",
     "express": "4.19.2",
